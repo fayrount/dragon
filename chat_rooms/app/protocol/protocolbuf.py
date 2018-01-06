@@ -1,6 +1,7 @@
 #coding:utf8
 import ProtocolDesc
 import struct
+from twisted.python import log
 class protocolbuf:
     def __init__(self):
         return
@@ -9,38 +10,44 @@ class protocolbuf:
     def pack_int8(self,v):
         return struct.pack("B",v);
     def unpack_int8(self,buf):
-        return struct.unpack("B",buf);
+        log.msg("unpack_int8 ",len(buf)) 
+        return struct.unpack("B",buf)[0];
     def pack_int16(self,v):
         return struct.pack("H",v);
     def unpack_int16(self,buf):
-        return struct.unpack("H",buf);
+        log.msg("unpack_int16 ",len(buf)) 
+        return struct.unpack("H",buf)[0];
     def pack_int32(self,v):
         return struct.pack("I",v);
     def unpack_int32(self,buf):
-        return struct.unpack("I",buf);
+        log.msg("unpack_int32 ",len(buf)) 
+        return struct.unpack("I",buf)[0];
     def pack_string8(self,v):
         ret = self.pack_int32(len(v));
         sret = struct.pack("%ds"%(len(v)),v);
         return ret+sret;
     def unpack_string8(self,buf):
+        log.msg("unpack_string8 ",len(buf)) 
         count = self.unpack_int32(buf);
-        sret = struct.unpack("%ds"%(count),buf);
+        sret = struct.unpack("%ds"%(count),buf)[0];
         return sret;
     def pack_string16(self,v):
         ret = self.pack_int32(len(v));
         sret = struct.pack("%ds"%(len(v)),v);
         return ret+sret;
     def unpack_string16(self,buf):
+        log.msg("unpack_string16 ",len(buf)) 
         count = self.unpack_int32(buf);
-        sret = struct.unpack("%ds"%(count),buf);
+        sret = struct.unpack("%ds"%(count),buf)[0];
         return sret;
-    def pack_string16(self,v):
+    def pack_string32(self,v):
         ret = self.pack_int32(len(v));
         sret = struct.pack("%ds"%(len(v)),v);
         return ret+sret;
-    def unpack_string16(self,buf):
+    def unpack_string32(self,buf):
+        log.msg("unpack_string32 ",len(buf)) 
         count = self.unpack_int32(buf);
-        sret = struct.unpack("%ds"%(count),buf);
+        sret = struct.unpack("%ds"%(count),buf)[0];
         return sret;
     def pack_int_data(self,t,v):
         if t == 'int8':
