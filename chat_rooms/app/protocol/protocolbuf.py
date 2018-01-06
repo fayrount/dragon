@@ -46,6 +46,7 @@ class protocolbuf:
     def unpack_string16(self,buf,start):
         log.msg("unpack_string16 ",len(buf),start) 
         count,start = self.unpack_int32(buf,start);
+        log.msg("unpack_string161 ",len(buf),start,count)
         subbuf = buf[start:start+count]
         start += count;
         sret = struct.unpack("%ds"%(count),subbuf)[0];
