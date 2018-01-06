@@ -102,7 +102,7 @@ class protocolbuf:
                         ssv = j[2];
                         ret += self.pack_data(sst,ssv,i[p]);
             return ret;
-    def unpack_data(t,v,buf):
+    def unpack_data(self,t,v,buf):
         if t == "int8" or t == "int16" or t == "int32":
             return self.unpack_int_data(t,buf);
         elif t == "string8" or t == "string16" or t == "string32":
