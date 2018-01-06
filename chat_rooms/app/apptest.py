@@ -12,7 +12,7 @@ def echo_1(_conn,data):
     pb = protocol.protocolbuf.protocolbuf();
     chat_msg = pb.c2s_buf2data("chat_msg",data);
     send_buf = pb.s2c_data2buf("chat_msg",chat_msg);
-    log.msg("quit echo_1 ",chat_msg.id,chat_msg.content,len(send_buf));
+    log.msg("quit echo_1 ",chat_msg["id"],chat_msg["content"],len(send_buf));
 
     lis = GlobalObject().netfactory.connmanager._connections.keys()     #获取所有在线用户
     lis.remove(_conn.transport.sessionno)                               #移除发言者本身，                      (补充说明：避免和客户端显示重复)
