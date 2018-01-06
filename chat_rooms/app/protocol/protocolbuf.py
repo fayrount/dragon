@@ -13,41 +13,41 @@ class protocolbuf:
         log.msg("unpack_int8 ",len(buf),start) 
         subbuf = buf[start:start+1]
         start += 1;
-        ret = struct.unpack("B",subbuf)[0]
+        ret = struct.unpack("!B",subbuf)[0]
         log.msg("unpack_int8 ret ",ret)
         return ret,start;
     def pack_int16(self,v):
-        return struct.pack("H",v);
+        return struct.pack("!H",v);
     def unpack_int16(self,buf,start):
         log.msg("unpack_int16 ",len(buf),start) 
         subbuf = buf[start:start+2]
         start += 2;
-        ret = struct.unpack("H",subbuf)[0]
+        ret = struct.unpack("!H",subbuf)[0]
         log.msg("unpack_int16 ret ",ret)
         return ret,start;
     def pack_int32(self,v):
-        return struct.pack("I",v);
+        return struct.pack("!I",v);
     def unpack_int32(self,buf,start):
         log.msg("unpack_int32 ",len(buf),start) 
         subbuf = buf[start:start+4]
         start += 4;
-        ret = struct.unpack("I",subbuf)[0]
+        ret = struct.unpack("!I",subbuf)[0]
         log.msg("unpack_int32 ret ",ret)
         return ret,start;
     def pack_string8(self,v):
         ret = self.pack_int32(len(v));
-        sret = struct.pack("%ds"%(len(v)),v);
+        sret = struct.pack("!%ds"%(len(v)),v);
         return ret+sret;
     def unpack_string8(self,buf,start):
         log.msg("unpack_string8 ",len(buf),start) 
         count,start = self.unpack_int32(buf,start);
         subbuf = buf[start:start+count]
         start += count;
-        sret = struct.unpack("%ds"%(count),subbuf)[0];
+        sret = struct.unpack("!%ds"%(count),subbuf)[0];
         return sret,start;
     def pack_string16(self,v):
         ret = self.pack_int32(len(v));
-        sret = struct.pack("%ds"%(len(v)),v);
+        sret = struct.pack("!%ds"%(len(v)),v);
         return ret+sret;
     def unpack_string16(self,buf,start):
         log.msg("unpack_string16 ",len(buf),start) 
@@ -55,18 +55,18 @@ class protocolbuf:
         log.msg("unpack_string161 ",len(buf),start,count)
         subbuf = buf[start:start+count]
         start += count;
-        sret = struct.unpack("%ds"%(count),subbuf)[0];
+        sret = struct.unpack("!%ds"%(count),subbuf)[0];
         return sret,start;
     def pack_string32(self,v):
         ret = self.pack_int32(len(v));
-        sret = struct.pack("%ds"%(len(v)),v);
+        sret = struct.pack("!%ds"%(len(v)),v);
         return ret+sret;
     def unpack_string32(self,buf,start):
         log.msg("unpack_string32 ",len(buf),start) 
         count,start = self.unpack_int32(buf,start);
         subbuf = buf[start:start+count]
         start += count;
-        sret = struct.unpack("%ds"%(count),subbuf)[0];
+        sret = struct.unpack("!%ds"%(count),subbuf)[0];
         return sret,start;
     def pack_int_data(self,t,v):
         if t == 'int8':
