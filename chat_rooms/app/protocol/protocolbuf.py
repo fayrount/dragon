@@ -9,46 +9,58 @@ class protocolbuf:
         return ProtocolDesc.Protocol_desc[name];
     def pack_int8(self,v):
         return struct.pack("B",v);
-    def unpack_int8(self,buf):
-        log.msg("unpack_int8 ",len(buf)) 
-        return struct.unpack("B",buf)[0];
+    def unpack_int8(self,buf,start):
+        log.msg("unpack_int8 ",len(buf),start) 
+        subbuf = buf[start:start+1]
+        start += 1;
+        return struct.unpack("B",subbuf)[0],start;
     def pack_int16(self,v):
         return struct.pack("H",v);
-    def unpack_int16(self,buf):
-        log.msg("unpack_int16 ",len(buf)) 
-        return struct.unpack("H",buf)[0];
+    def unpack_int16(self,buf,start):
+        log.msg("unpack_int16 ",len(buf),start) 
+        subbuf = buf[start:start+2]
+        start += 2;
+        return struct.unpack("H",subbuf)[0],start;
     def pack_int32(self,v):
         return struct.pack("I",v);
-    def unpack_int32(self,buf):
-        log.msg("unpack_int32 ",len(buf)) 
-        return struct.unpack("I",buf)[0];
+    def unpack_int32(self,buf,start):
+        log.msg("unpack_int32 ",len(buf),start) 
+        subbuf = buf[start:start+4]
+        start += 4;
+        return struct.unpack("I",subbuf)[0],start;
     def pack_string8(self,v):
         ret = self.pack_int32(len(v));
         sret = struct.pack("%ds"%(len(v)),v);
         return ret+sret;
-    def unpack_string8(self,buf):
-        log.msg("unpack_string8 ",len(buf)) 
-        count = self.unpack_int32(buf);
-        sret = struct.unpack("%ds"%(count),buf)[0];
-        return sret;
+    def unpack_string8(self,buf,start):
+        log.msg("unpack_string8 ",len(buf),start) 
+        count,start = self.unpack_int32(buf,start);
+        subbuf = buf[start:start+count]
+        start += count;
+        sret = struct.unpack("%ds"%(count),subbuf)[0];
+        return sret,start;
     def pack_string16(self,v):
         ret = self.pack_int32(len(v));
         sret = struct.pack("%ds"%(len(v)),v);
         return ret+sret;
-    def unpack_string16(self,buf):
-        log.msg("unpack_string16 ",len(buf)) 
-        count = self.unpack_int32(buf);
-        sret = struct.unpack("%ds"%(count),buf)[0];
-        return sret;
+    def unpack_string16(self,buf,start):
+        log.msg("unpack_string16 ",len(buf),start) 
+        count,start = self.unpack_int32(buf,start);
+        subbuf = buf[start:start+count]
+        start += count;
+        sret = struct.unpack("%ds"%(count),subbuf)[0];
+        return sret,start;
     def pack_string32(self,v):
         ret = self.pack_int32(len(v));
         sret = struct.pack("%ds"%(len(v)),v);
         return ret+sret;
-    def unpack_string32(self,buf):
-        log.msg("unpack_string32 ",len(buf)) 
-        count = self.unpack_int32(buf);
-        sret = struct.unpack("%ds"%(count),buf)[0];
-        return sret;
+    def unpack_string32(self,buf,start):
+        log.msg("unpack_string32 ",len(buf),start) 
+        count,start = self.unpack_int32(buf,start);
+        subbuf = buf[start:start+count]
+        start += count;
+        sret = struct.unpack("%ds"%(count),subbuf)[0];
+        return sret,start;
     def pack_int_data(self,t,v):
         if t == 'int8':
             return self.pack_int8(v);
@@ -57,13 +69,13 @@ class protocolbuf:
         elif t == 'int32':
             return self.pack_int32(v);
         return
-    def unpack_int_data(self,t,buf):
+    def unpack_int_data(self,t,buf,start):
         if t == 'int8':
-            return self.unpack_int8(buf);
+            return self.unpack_int8(buf,start);
         elif t == 'int16':
-            return self.unpack_int16(buf);
+            return self.unpack_int16(buf,start);
         elif t == 'int32':
-            return self.unpack_int32(buf);
+            return self.unpack_int32(buf,start);
         return
     def pack_string_data(self,t,v):
         if t == 'string8':
@@ -73,13 +85,13 @@ class protocolbuf:
         elif t == 'string32':
             return self.pack_string32(v);
         return
-    def unpack_string_data(self,t,buf):
+    def unpack_string_data(self,t,buf,start):
         if t == 'string8':
-            return self.unpack_string8(buf);
+            return self.unpack_string8(buf,start);
         elif t == 'string16':
-            return self.unpack_string16(buf);
+            return self.unpack_string16(buf,start);
         elif t == 'string32':
-            return self.unpack_string32(buf);
+            return self.unpack_string32(buf,start);
         return
     def pack_data(self,t,v,d):
         if t == "int8" or t == "int16" or t == "int32":
@@ -109,27 +121,27 @@ class protocolbuf:
                         ssv = j[2];
                         ret += self.pack_data(sst,ssv,i[p]);
             return ret;
-    def unpack_data(self,t,v,buf):
+    def unpack_data(self,t,v,buf,start):
         if t == "int8" or t == "int16" or t == "int32":
-            return self.unpack_int_data(t,buf);
+            return self.unpack_int_data(t,buf,start);
         elif t == "string8" or t == "string16" or t == "string32":
-            return self.unpack_string_data(t,buf);
+            return self.unpack_string_data(t,buf,start);
         elif t == "list8" or t == "list16" or t == "list32":
             count = 0;
             if t == "list8":
-                count = self.unpack_int8(buf);
+                count,start = self.unpack_int8(buf,start);
             elif t == "list16":
-                count = self.unpack_int16(buf);
+                count,start = self.unpack_int16(buf,start);
             elif t == "list32":
-                count = self.unpack_int32(buf);
+                count,start = self.unpack_int32(buf,start);
             st = v;
             ret = [];
             for i in xrange(0,count):
                 if st == "int8" or st == "int16" or st == "int32":
-                    sv = self.unpack_int_data(st,buf);
+                    sv,start = self.unpack_int_data(st,buf,start);
                     ret.append(sv);
                 elif st == "string8" or st == "string16" or st == "string32":
-                    sv = self.unpack_string_data(st,buf);
+                    sv,start = self.unpack_string_data(st,buf,start);
                     ret.append(sv);
                 else:
                     desc = self.get_desc_byname(st);
@@ -138,17 +150,18 @@ class protocolbuf:
                         ssp = j[0];
                         sst = j[1];
                         ssv = j[2];
-                        iret[ssp] = self.unpack_data(sst,ssv,buf);
+                        iret[ssp],start = self.unpack_data(sst,ssv,buf,start);
                     ret.append(iret);
-            return ret;
+            return ret,start;
     def c2s_buf2data(self,desc_name,buf):
         ret = {};
+        start = 0;
         desc = self.get_desc_byname(desc_name);
         for i in desc:
             p = i[0];
             t = i[1];
             v = i[2];
-            ret[p] = self.unpack_data(t,v,buf);
+            ret[p],start = self.unpack_data(t,v,buf,start);
         return ret;
     def s2c_data2buf(self,desc_name,d):
         desc = self.get_desc_byname(desc_name);
