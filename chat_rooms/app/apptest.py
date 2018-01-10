@@ -17,9 +17,9 @@ def echo_1(_conn,data):
     lis = GlobalObject().netfactory.connmanager._connections.keys()     #获取所有在线用户
     lis.remove(_conn.transport.sessionno)                               #移除发言者本身，                      (补充说明：避免和客户端显示重复)
     #GlobalObject().netfactory.pushObject(1, chat_msg.SerializeToString(), [_conn.transport.sessionno])         #向用户群发送当前发言者发言信息
-    GlobalObject().netfactory.pushObject(1, send_buf, [_conn.transport.sessionno])         #向用户群发送当前发言者发言信息
-    return;
-    #return chat_msg.SerializeToString();
+    #GlobalObject().netfactory.pushObject(1, send_buf, [_conn.transport.sessionno])         #向用户群发送当前发言者发言信息
+    #return;
+    return send_buf;
 
     
 
