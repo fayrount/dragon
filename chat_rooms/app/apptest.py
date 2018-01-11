@@ -21,6 +21,7 @@ def echo_1(_conn,data):
     #return;
     return send_buf;
 
-    
-
+from firefly.netconnect.datapack import DataPackProtoc
+dataprotocl = DataPackProtoc(19,82,08,28,1,1)
+GlobalObject().netfactory.setDataProtocl(dataprotocl)
 
