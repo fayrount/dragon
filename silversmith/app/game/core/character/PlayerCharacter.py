@@ -57,11 +57,11 @@ class PlayerCharacter(Character):
     def updatePlayerDBInfo(self):
         '''更新角色在数据库中的数据'''
         pid = self.baseInfo.id
-        pmmode = tb_character_admin.getObj(pid)
-        mapping = {'level':self.level.getLevel(),'coin':self.finance.getCoin(),
-                   'gold':self.finance.getGold(),'exp':self.level.getExp(),
-                   'energy':self.attribute.getEnergy()}
-        pmmode.update_multi(mapping)
+        #pmmode = tb_character_admin.getObj(pid)
+        #mapping = {'level':self.level.getLevel(),'coin':self.finance.getCoin(),
+        #           'gold':self.finance.getGold(),'exp':self.level.getExp(),
+        #           'energy':self.attribute.getEnergy()}
+        #pmmode.update_multi(mapping)
 
     def getFightData(self,preDict = {'extVitper':0,'extStrper':0,
                                  'extDexper':0,'extWisper':0,'extSpiper':0}):

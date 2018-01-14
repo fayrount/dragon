@@ -13,18 +13,32 @@ from app.share.dbopear import dbuser
 from app.gate.core.scenesermanger import SceneSerManager
 from firefly.server.globalobject import GlobalObject
 
-
-def loginToServer(dynamicId,username ,password):
+import time
+import share.svr_config
+def genloginkey(id):
+    svr_id = share.svr_config.server_id;
+    tm = time.time();
+    return "%d_%f_%d"%(svr_id,tm,id);
+def loginToServer(dynamicId,username ,password,loginkey,bpassager):
     '''登陆服务器
     @param dynamicId: int 客户端动态ID
     @param username: str 用户名
     @param password: str 用户密码
     '''
-    if password=='crotaii':
-        return{'result':False}
-    userinfo = dbuser.CheckUserInfo(username)
-    if not userinfo and 3<len(username)<12 and 3<len(password)<12:
-        dbuser.creatUserInfo(username, password)
+    
+    if bpassager == 1:
+        if loginkey != null and len(loginkey) > 0:
+            userinfo = dbuser.CheckUserInfo(loginkey)
+            if not userinfo:
+                return {'result':False,'message':u'loginkey is invalid'}
+        else:
+            loginkey = genloginkey(dynamicId);
+            dbuser.creatUserInfo(loginkey, "bpassager");
+        username = loginkey;
+    else:
+        userinfo = dbuser.CheckUserInfo(username)
+        if not userinfo:
+            return {'result':False,'message':u'pwd is invalid'}
     oldUser = UsersManager().getUserByUsername(username)
     if oldUser:
         oldUser.dynamicId = dynamicId
@@ -39,10 +53,9 @@ def loginToServer(dynamicId,username ,password):
     UserCharacterInfo = user.getUserCharacterInfo()
     return{'result':True,'message':u'login_success','data':UserCharacterInfo}
     
-def activeNewPlayer(dynamicId,userId,nickName,profession):
+def activeNewPlayer(dynamicId,nickName,profession,shape):
     '''创建角色
-    arguments=(userId,nickName,profession)
-    userId用户ID
+    arguments=(nickName,profession)
     nickName角色昵称
     profession职业选择
     '''
@@ -53,7 +66,7 @@ def activeNewPlayer(dynamicId,userId,nickName,profession):
         return {'result':False,'message':u'conn_error'}
     if user is None:
         return {'result':False,'message':u'disconnect'}
-    result = user.creatNewCharacter(nickName, profession)
+    result = user.creatNewCharacter(nickName, profession,shape)
     return result
 
 def deleteRole(dynamicId, userId, characterId,password):
@@ -71,7 +84,7 @@ def deleteRole(dynamicId, userId, characterId,password):
     result = user.deleteCharacter(characterId,password)
     return result
 
-def roleLogin(dynamicId, userId, characterId):
+def roleLogin(dynamicId, characterId):
     '''角色登陆
     @param dynamicId: int 客户端的ID
     @param userId: int 用户的ID

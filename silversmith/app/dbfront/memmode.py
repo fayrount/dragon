@@ -8,5 +8,5 @@ from firefly.dbentrust.mmode import MAdmin
 
 tb_character_admin = MAdmin('tb_character','id',incrkey='id')
 tb_character_admin.insert()
-tbpetadmin = MAdmin('tb_pet','id',fk ='ownerID',incrkey='id')
-tbpetadmin.insert()
+#tbpetadmin = MAdmin('tb_pet','id',fk ='ownerID',incrkey='id')
+#tbpetadmin.insert()

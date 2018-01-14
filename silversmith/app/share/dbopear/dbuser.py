@@ -117,7 +117,7 @@ def checkCharacterName(nickname):
         return False
     return True
 
-def creatNewCharacter(nickname ,profession ,userId,sex=1):
+def creatNewCharacter(nickname ,profession ,shape,userId,sex=1):
     '''创建新的角色
     @param nickname: str 角色的昵称
     @param profession: int 角色的职业编号
@@ -125,8 +125,8 @@ def creatNewCharacter(nickname ,profession ,userId,sex=1):
     @param fieldname: str 用户角色关系表中的字段名，表示用户的第几个角色
     '''
     nowdatetime = str(datetime.datetime.today())
-    sql = "insert into `tb_character`(nickName,profession,sex,createtime) \
-    values('%s',%d,%d,'%s')"%(nickname ,profession,sex,nowdatetime)
+    sql = "insert into `tb_character`(nickName,profession,sex,createtime,figure) \
+    values('%s',%d,%d,'%s',%d)"%(nickname ,profession,sex,nowdatetime,shape)
     sql2 = "SELECT @@IDENTITY"
     conn = dbpool.connection()
     cursor = conn.cursor()

@@ -83,11 +83,11 @@ class User:
         '''获取用户动态ID'''
         return self.dynamicId
     
-    def creatNewCharacter(self ,nickname ,profession):
+    def creatNewCharacter(self ,nickname ,profession,shape):
         '''创建新角色
         @profession （int） 角色职业 （0 新手 1战士 2 法师 3 游侠 ）
         '''
-        if profession not in range(1,7):
+        if profession not in range(0,13):
             return {'result':False,'message':u'profession_error'}
         if len(nickname)<2 or len(nickname)>20:
             return {'result':False,'message':u'yhm_buhege'}
@@ -95,7 +95,7 @@ class User:
             return {'result':False,'message':u'yijingchuangjian'}
         if not dbuser.checkCharacterName(nickname):
             return {'result':False,'message':u'yhm_yicunzai'}
-        characterId = dbuser.creatNewCharacter(nickname, profession, self.id)
+        characterId = dbuser.creatNewCharacter(nickname, profession,shape, self.id)
         if characterId:
             self.characterId = characterId
             data = {}

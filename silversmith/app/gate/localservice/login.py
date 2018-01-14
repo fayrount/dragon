@@ -7,53 +7,84 @@ Created on 2012-2-27
 from app.gate.appinterface import login
 import json
 from app.gate.gateservice import localserviceHandle
-
+import protocol.netutil as netutil
+import protocol.protocol_def as protocol_def
+from twisted.python import log
 @localserviceHandle
-def loginToServer_101(key,dynamicId,request_proto):
+def loginToServer_1(key,dynamicId,request_proto):
 
-    argument = json.loads(request_proto)
+    argument = netutil.c2s_buf2data("c2s_login",request_proto);
     dynamicId = dynamicId
-    username = argument.get('username')
-    password = argument.get('password')
-    data = login.loginToServer(dynamicId, username, password)
+    username = argument['account']
+    password = argument['pwd']
+    loginkey = argument['localkey'];
+    bpassager = argument['bpassager']
+    data = login.loginToServer(dynamicId, username, password,loginkey,bpassager)
+    result = data.get('result',False)
     response = {}
-    _data = data.get('data')
-    response['result']=data.get('result',False)
-    responsedata = {}
-    response['data'] = responsedata
-    if _data:
-        responsedata['userId'] = _data.get('userId',0)
-        responsedata['hasRole'] = _data.get('hasRole',False)
-        responsedata['characterId'] = _data.get('defaultId',False)
-    return json.dumps(response)
+    response["cmdid"] = protocol_def.c2s_login;
+    if not result:
+        response["result"] = 1;
+    else:
+        response["result"] = 0;
+    buf = netutil.s2c_data2buf("s2c_common_rsp",response)
+    GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
+    return
 
 @localserviceHandle
-def activeNewPlayer_102(key,dynamicId,request_proto):
+def activeNewPlayer_2(key,dynamicId,request_proto):
     '''创建角色
     '''
-    argument = json.loads(request_proto)
-    userId = argument.get('userId')
-    nickName = argument.get('rolename')
-    profession = int(argument.get('profession'))
-    data  = login.activeNewPlayer(dynamicId, userId, nickName, profession)
-    return json.dumps(data)
-
+    argument = netutil.c2s_buf2data("c2s_createrole",request_proto);
+    shape = argument['shape'];
+    pcls = argument['class'];
+    name = argument['name'];
+    data  = login.activeNewPlayer(dynamicId, name, pcls)
+    result = data.get('result',False)
+    response = {}
+    response["cmdid"] = protocol_def.c2s_createrole;
+    if not result:
+        response["result"] = 1;
+    else:
+        response["result"] = 0;
+        uid = data['userId']
+        new_cid = data['newCharacterId'];
+    buf = netutil.s2c_data2buf("s2c_common_rsp",response)
+    GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
+    return
 def SerializePartialEnterScene(result,response):
     '''序列化进入场景的返回消息
     '''
-    return json.dumps(result)
+    log.msg('SerializePartialEnterScene %s ' % (str(response));
+    sceneid = response['sceneid'];
+    dynamicId = response['dynamicId']
+    ret = {};
+    ret['sceneid'] = sceneid;
+    buf = netutil.s2c_data2buf("s2c_enterscene",ret)
+    GlobalObject().netfactory.pushObject(protocol_def.s2c_enterscene,buf, [dynamicId])
+    return
 
 @localserviceHandle
-def roleLogin_103(key,dynamicId, request_proto):
+def roleLogin_3(key,dynamicId, request_proto):
     '''角色登陆'''
-    argument = json.loads(request_proto)
-    userId = argument.get('userId')
-    characterId = argument.get('characterId')
-    data = login.roleLogin(dynamicId, userId, characterId)
-    if not data.get('result'):
-        return json.dumps(data)
+    argument = netutil.c2s_buf2data("c2s_choserole",request_proto);
+    characterId = argument.get('roleid')
+    data = login.roleLogin(dynamicId, characterId)
+    result = data.get('result',False)
+    response = {}
+    response["cmdid"] = protocol_def.c2s_choserole;
+    if not result:
+        response["result"] = 1;
+    else:
+        response["result"] = 0;
+    buf = netutil.s2c_data2buf("s2c_common_rsp",response)
+    GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
+    if not result:
+        return;
     placeId = data['data'].get('placeId',1000)
     response = {}
+    response['sceneid'] = placeId;
+    response['dynamicId'] = dynamicId;
     dd = login.enterScene(dynamicId, characterId, placeId, True)
     if not dd:
         return

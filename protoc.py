@@ -106,7 +106,7 @@ class WebSocketLiberateProtocol(LiberateProtocol):
         while True:
             data = yield
             self.buff += data
-            log.msg('protoc dataHandleCoroutine get data ',data.__len__(),self.buff.__len__(),self._b_ready);
+            #log.msg('protoc dataHandleCoroutine get data ',data.__len__(),self.buff.__len__(),self._b_ready);
             if not self._b_ready:
                 if not self.check_handshake_key(self.buff):
                     continue;
@@ -120,7 +120,7 @@ class WebSocketLiberateProtocol(LiberateProtocol):
                 continue;
             opcode = self.get_opcode(self.buff);
             use_len, c_buff = self.parse_buff(self.buff, buff_len);
-            log.msg('protoc dataHandleCoroutine ',buff_len,use_len,self.buff.__len__(),c_buff.__len__(),opcode);
+            #log.msg('protoc dataHandleCoroutine ',buff_len,use_len,self.buff.__len__(),c_buff.__len__(),opcode);
             self.buff = self.buff[use_len:];
             if opcode == 0x8:
                 log.msg('protoc quit ',c_buff);
@@ -139,7 +139,7 @@ class WebSocketLiberateProtocol(LiberateProtocol):
                     break
                 c_buff = c_buff[length+rlength:]
                 d = self.factory.doDataReceived(self, command, request)
-                log.msg('protoc doDataReceived ',command,c_buff.__len__(),rlength,d);
+                #log.msg('protoc doDataReceived ',command,c_buff.__len__(),rlength,d);
                 if not d:
                     continue
                 d.addCallback(self.safeToWriteData, command)
@@ -151,9 +151,9 @@ class WebSocketLiberateProtocol(LiberateProtocol):
         '''
         if not self.transport.connected or data is None:
             return
-        log.msg('websocket safeToWriteData ',command,len(data))
+        #log.msg('websocket safeToWriteData ',command,len(data))
         senddata = self.factory.produceResult(data, command)
-        log.msg('websocket safeToWriteData startbuildmsg ',command,len(senddata))
+        #log.msg('websocket safeToWriteData startbuildmsg ',command,len(senddata))
         senddata = self.buildMessage(senddata, False);
         log.msg('websocket safeToWriteData send ',command,len(senddata))
         reactor.callFromThread(self.transport.write, senddata)
@@ -247,7 +247,7 @@ class WebSocketLiberateProtocol(LiberateProtocol):
         return head_len+ext_payload_len+mask_len+buff_len,ret
     ######
     def encodeMessage(self,buf, key):
-        log.msg('protoc encodeMessage ',len(buf));
+        #log.msg('protoc encodeMessage ',len(buf));
         encoded_msg = ""
         buf_len = len(buf)
         for i in xrange(buf_len):
@@ -256,7 +256,7 @@ class WebSocketLiberateProtocol(LiberateProtocol):
         return encoded_msg
     def buildMessage(self,buf, mask=True):
         import sys
-        log.msg("protoc buildMessage ",mask,sys.getdefaultencoding());
+        #log.msg("protoc buildMessage ",mask,sys.getdefaultencoding());
         c_buf = buf
         msg = ""
         if mask:
@@ -267,13 +267,13 @@ class WebSocketLiberateProtocol(LiberateProtocol):
         # second byte
         buf_len = len(buf)
         if buf_len < 126:
-            log.msg("protoc bm 1 ",mask);
+            #log.msg("protoc bm 1 ",mask);
             o = buf_len
             if mask:
                 msg += str(chr(o + (1<<7)))
             else:
                 msg += str(chr(o))
-            log.msg("protoc bm 1 add buff ",mask,msg,buf);
+            #log.msg("protoc bm 1 add buff ",mask,msg,buf);
             if mask:
                 msg += key
                 msg += self.encodeMessage(buf,key)
@@ -281,7 +281,7 @@ class WebSocketLiberateProtocol(LiberateProtocol):
                 msg += buf
             return msg;
         elif buf_len <= ((1 << 16) - 1):
-            log.msg("protoc bm 2 ",mask);
+            #log.msg("protoc bm 2 ",mask);
             if mask:
                 msg += str(chr(126 + (1 << 7)))
             else:
@@ -289,7 +289,7 @@ class WebSocketLiberateProtocol(LiberateProtocol):
             for i in range(1, 3):
                 o = (buf_len >> (16 - (8*i))) & (2**8 - 1)
                 msg += str(chr(o))
-            log.msg("protoc bm 2 add buff",mask);
+            #log.msg("protoc bm 2 add buff",mask);
             if mask:
                 msg += key
                 msg += self.encodeMessage(buf, key)
@@ -297,7 +297,7 @@ class WebSocketLiberateProtocol(LiberateProtocol):
                 msg += buf
             return msg;
         elif buf_len <= ((1 << 64) - 1):
-            log.msg("protoc bm 3 ",mask);
+            #log.msg("protoc bm 3 ",mask);
             if mask:
                 msg += str(chr(127 + (1 << 7)))
             else:
@@ -305,14 +305,14 @@ class WebSocketLiberateProtocol(LiberateProtocol):
             for i in range(1, 9):
                 o = (buf_len >> (64 - (8*i))) & (2**8 - 1)
                 msg += str(chr(o))
-            log.msg("protoc bm 3 add buff",mask);
+            #log.msg("protoc bm 3 add buff",mask);
             if mask:
                 msg += key
                 msg += self.encodeMessage(buf, key)
             else:
                 msg += buf
             return msg;
-        log.msg("protoc BuildMessage end ",len(msg));
+        #log.msg("protoc BuildMessage end ",len(msg));
         return msg
 # websocket end
 class LiberateFactory(protocol.ServerFactory):

@@ -12,8 +12,8 @@ from firefly.dbentrust import util
 def updatePlayerDB(player):
     '''更新角色的数据库信息'''
     characterId = player.baseInfo.id
-    props = {'level':player.level.getLevel(),'coin':player.finance.getCoin(),
-             'exp':player.level.getExp(),'hp':player.attribute.getHp()}
+    props = {'level':0,'coin':0,
+             'exp':0,'hp':0}
     sqlstr = util.forEachUpdateProps('tb_character',props, {'id':characterId})
     conn = dbpool.connection()
     cursor = conn.cursor()
