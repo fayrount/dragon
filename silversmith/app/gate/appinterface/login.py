@@ -14,9 +14,9 @@ from app.gate.core.scenesermanger import SceneSerManager
 from firefly.server.globalobject import GlobalObject
 
 import time
-import share.svr_config
+import app.share.svr_config
 def genloginkey(id):
-    svr_id = share.svr_config.server_id;
+    svr_id = app.share.svr_config.server_id;
     tm = time.time();
     return "%d_%f_%d"%(svr_id,tm,id);
 def loginToServer(dynamicId,username ,password,loginkey,bpassager):
