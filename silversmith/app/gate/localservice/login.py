@@ -7,8 +7,8 @@ Created on 2012-2-27
 from app.gate.appinterface import login
 import json
 from app.gate.gateservice import localserviceHandle
-import protocol.netutil as netutil
-import protocol.protocol_def as protocol_def
+import app.protocol.netutil as netutil
+import app.protocol.protocol_def as protocol_def
 from twisted.python import log
 @localserviceHandle
 def loginToServer_1(key,dynamicId,request_proto):
