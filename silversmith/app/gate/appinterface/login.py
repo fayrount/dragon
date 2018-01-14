@@ -43,7 +43,7 @@ def loginToServer(dynamicId,username ,password,loginkey,bpassager):
     if oldUser:
         oldUser.dynamicId = dynamicId
         UserCharacterInfo = oldUser.getUserCharacterInfo()
-        return {'result':True,'message':u'login_success','data':UserCharacterInfo,'localkey',loginkey}
+        return {'result':True,'message':u'login_success','data':UserCharacterInfo,'localkey':loginkey}
     user = User(username,password,dynamicId = dynamicId)
     if user.id ==0:
         return {'result':False,'message':u'psd_error'}
@@ -51,7 +51,7 @@ def loginToServer(dynamicId,username ,password,loginkey,bpassager):
         return {'result':False,'message':u'fenghao'}
     UsersManager().addUser(user)
     UserCharacterInfo = user.getUserCharacterInfo()
-    return{'result':True,'message':u'login_success','data':UserCharacterInfo,'localkey',loginkey}
+    return{'result':True,'message':u'login_success','data':UserCharacterInfo,'localkey':loginkey}
     
 def activeNewPlayer(dynamicId,nickName,profession,shape):
     '''创建角色
