@@ -19,6 +19,7 @@ def loginToServer_1(key,dynamicId,request_proto):
     password = argument['pwd']
     loginkey = argument['localkey'];
     bpassager = argument['bpassager']
+    log.msg('loginToServer_1 %d %s ' % (dynamicId,str(argument)));
     data = login.loginToServer(dynamicId, username, password,loginkey,bpassager)
     result = data.get('result',False)
     response = {}
