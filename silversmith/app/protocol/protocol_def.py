@@ -12,3 +12,4 @@ s2c_enterscene = 3;
 s2c_rolemove = 4;
 s2c_roleenter = 5;
 s2c_roleout = 6;
+s2c_localkey = 7;

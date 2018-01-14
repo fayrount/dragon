@@ -8,11 +8,9 @@ export let Protocol_desc = {
 	'maillist':[['data', 'list16', 'mail'],],
 	'bigmaillist':[['data', 'list32', 'mail'],],
 	'c2s_login':[['account', 'string8', ''],['pwd', 'string8', ''],['localkey', 'string16', ''],['bpassager', 'int8', ''],],
-	's2c_loginrsp':[['result', 'int8', ''],],
 	's2c_rolelist_info':[['id', 'int32', ''],['shape', 'int16', ''],['class', 'int8', ''],['lv', 'int16', ''],['name', 'string8', ''],],
 	's2c_rolelist':[['rolelist', 'list8', 's2c_rolelist_info'],],
 	'c2s_createrole':[['shape', 'int16', ''],['class', 'int8', ''],['name', 'string8', ''],],
-	's2c_createrolersp':[['result', 'int8', ''],],
 	'c2s_choserole':[['roleid', 'int32', ''],],
 	's2c_enterscene':[['sceneid', 'int8', ''],],
 	'c2s_role_move':[['x', 'int16', ''],['y', 'int16', ''],],
@@ -20,6 +18,7 @@ export let Protocol_desc = {
 	's2c_role_enter':[['id', 'int32', ''],['x', 'int8', ''],['y', 'int8', ''],['shape', 'int16', ''],['class', 'int8', ''],['lv', 'int16', ''],['name', 'string8', ''],],
 	's2c_role_out':[['id', 'int32', ''],],
 	's2c_common_rsp':[['cmdid', 'int8', ''],['result', 'int8', ''],],
+	's2c_localkey':[['key', 'string16', ''],],
 }
 
 
