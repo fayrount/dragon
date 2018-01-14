@@ -31,10 +31,12 @@ def loginToServer_1(key,dynamicId,request_proto):
         response["result"] = 0;
     buf = netutil.s2c_data2buf("s2c_common_rsp",response)
     GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
+    log.msg("loginToServer_1 end %s %s %s",bpassager,result,loginkey)
     if bpassager == 1 and result:
         if loginkey == None or len(loginkey) <= 0:
             loginkey =data.get('localkey');
             buf = netutil.s2c_data2buf("s2c_localkey",{"key":loginkey});
+            log.msg("send localkey %s"%loginkey);
             GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_localkey,buf, [dynamicId])
     return
 
