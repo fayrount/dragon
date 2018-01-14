@@ -55,7 +55,7 @@ def activeNewPlayer_2(key,dynamicId,request_proto):
 def SerializePartialEnterScene(result,response):
     '''序列化进入场景的返回消息
     '''
-    log.msg('SerializePartialEnterScene %s ' % (str(response));
+    log.msg('SerializePartialEnterScene %s ' % (str(response)));
     sceneid = response['sceneid'];
     dynamicId = response['dynamicId']
     ret = {};
