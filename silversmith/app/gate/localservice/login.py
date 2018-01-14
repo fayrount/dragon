@@ -10,6 +10,7 @@ from app.gate.gateservice import localserviceHandle
 import app.protocol.netutil as netutil
 import app.protocol.protocol_def as protocol_def
 from twisted.python import log
+from firefly.server.globalobject import GlobalObject
 @localserviceHandle
 def loginToServer_1(key,dynamicId,request_proto):
 
@@ -29,7 +30,7 @@ def loginToServer_1(key,dynamicId,request_proto):
     else:
         response["result"] = 0;
     buf = netutil.s2c_data2buf("s2c_common_rsp",response)
-    GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
+    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
     return
 
 @localserviceHandle
@@ -51,7 +52,8 @@ def activeNewPlayer_2(key,dynamicId,request_proto):
         uid = data['userId']
         new_cid = data['newCharacterId'];
     buf = netutil.s2c_data2buf("s2c_common_rsp",response)
-    GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
+    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
+    #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
     return
 def SerializePartialEnterScene(result,response):
     '''序列化进入场景的返回消息
@@ -62,7 +64,8 @@ def SerializePartialEnterScene(result,response):
     ret = {};
     ret['sceneid'] = sceneid;
     buf = netutil.s2c_data2buf("s2c_enterscene",ret)
-    GlobalObject().netfactory.pushObject(protocol_def.s2c_enterscene,buf, [dynamicId])
+    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])
+    #GlobalObject().netfactory.pushObject(protocol_def.s2c_enterscene,buf, [dynamicId])
     return
 
 @localserviceHandle
@@ -79,7 +82,8 @@ def roleLogin_3(key,dynamicId, request_proto):
     else:
         response["result"] = 0;
     buf = netutil.s2c_data2buf("s2c_common_rsp",response)
-    GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
+    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
+    #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
     if not result:
         return;
     placeId = data['data'].get('placeId',1000)
