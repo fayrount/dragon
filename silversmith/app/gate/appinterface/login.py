@@ -28,13 +28,16 @@ def loginToServer(dynamicId,username ,password,loginkey,bpassager):
     
     if bpassager == 1:
         if loginkey != None and len(loginkey) > 0:
-            userinfo = dbuser.CheckUserInfo(loginkey)
+            username = loginkey;
+            password = "bpassager";
+            userinfo = dbuser.CheckUserInfo(username)
             if not userinfo:
                 return {'result':False,'message':u'loginkey is invalid'}
         else:
             loginkey = genloginkey(dynamicId);
-            dbuser.creatUserInfo(loginkey, "bpassager");
-        username = loginkey;
+            username = loginkey;
+            password = "bpassager";
+            dbuser.creatUserInfo(username, password);
     else:
         userinfo = dbuser.CheckUserInfo(username)
         if not userinfo:
