@@ -27,7 +27,7 @@ def loginToServer(dynamicId,username ,password,loginkey,bpassager):
     '''
     
     if bpassager == 1:
-        if loginkey != null and len(loginkey) > 0:
+        if loginkey != None and len(loginkey) > 0:
             userinfo = dbuser.CheckUserInfo(loginkey)
             if not userinfo:
                 return {'result':False,'message':u'loginkey is invalid'}
