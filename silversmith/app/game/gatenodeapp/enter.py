@@ -20,14 +20,14 @@ def enterPlace_601(dynamicId, characterId, placeId,force,player):
     responsedata = {'result':True,'message':'',
                     'data':{'cid':playerinfo['id'],
                             'name':playerinfo['nickname'],
-                            'level':playerinfo['level'],
-                            'exp':playerinfo['exp'],
-                            'maxexp':playerinfo['maxExp'],
-                            'coin':playerinfo['coin'],
-                            'yuanbao':playerinfo['gold'],
-                            'power':playerinfo['maxHp'],
-                            'gas':playerinfo['energy'],
-                            'profession':playerinfo['profession']}
+                            'level':0,
+                            'exp':0,
+                            'maxexp':0,
+                            'coin':0,
+                            'yuanbao':0,
+                            'power':0,
+                            'gas':0,
+                            'profession':0}
                     }
     return responsedata
 
