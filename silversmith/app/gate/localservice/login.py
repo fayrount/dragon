@@ -48,7 +48,7 @@ def activeNewPlayer_2(key,dynamicId,request_proto):
     shape = argument['shape'];
     pcls = argument['class'];
     name = argument['name'];
-    data  = login.activeNewPlayer(dynamicId, name, pcls)
+    data  = login.activeNewPlayer(dynamicId, name, pcls,shape)
     result = data.get('result',False)
     response = {}
     response["cmdid"] = protocol_def.c2s_createrole;
