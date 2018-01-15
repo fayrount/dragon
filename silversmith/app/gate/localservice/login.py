@@ -128,7 +128,7 @@ def getrolelist_5(key,dynamicId, request_proto):
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
     #log.msg("test send end ");
 
-    if result and False:
+    if result:
         cid =data.get('cid',0);
         shape = data.get('shape',0);
         lv = data.get('lv',0);
