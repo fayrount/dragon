@@ -56,8 +56,6 @@ def activeNewPlayer_2(key,dynamicId,request_proto):
         response["result"] = 1;
     else:
         response["result"] = 0;
-        uid = data['userId']
-        new_cid = data['newCharacterId'];
     buf = netutil.s2c_data2buf("s2c_common_rsp",response)
     GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
