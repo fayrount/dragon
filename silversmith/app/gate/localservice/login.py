@@ -121,8 +121,8 @@ def getrolelist_5(key,dynamicId, request_proto):
         shape = data.get('shape',0);
         lv = data.get('lv',0);
         name = data.get('name','');
-        class = data.get('class','');
-        role_data = {'id':cid,'shape':shape,'lv':lv,'name':name,'class':class};
+        cls = data.get('class','');
+        role_data = {'id':cid,'shape':shape,'lv':lv,'name':name,'class':cls};
         buf = netutil.s2c_data2buf("s2c_rolelist",{'rolelist':[role_data]});
         log.msg("send rolelist ",role_data);
         GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_rolelist,buf, [dynamicId])
