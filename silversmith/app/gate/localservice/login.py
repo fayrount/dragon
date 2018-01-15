@@ -58,6 +58,18 @@ def activeNewPlayer_2(key,dynamicId,request_proto):
         response["result"] = 0;
     buf = netutil.s2c_data2buf("s2c_common_rsp",response)
     GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
+
+    ######
+    cid =1;
+    shape = 0;
+    lv = 0;
+    name = name;
+    cls = 0;
+    role_data = {'id':cid,'shape':shape,'lv':lv,'name':name,'class':cls};
+    buf = netutil.s2c_data2buf("s2c_rolelist",{'rolelist':[role_data]});
+    log.msg("send rolelist ",role_data);
+    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_rolelist,buf, [dynamicId])
+    ######
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
     return
 def SerializePartialEnterScene(result,response):
