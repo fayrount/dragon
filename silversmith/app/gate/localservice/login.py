@@ -120,13 +120,13 @@ def getrolelist_5(key,dynamicId, request_proto):
     GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
     log.msg("getrolelist_5 end ",result,data)
     ######
-    log.msg("test send start ");
-    response = {}
-    response["id"] = 1000;
-    buf = netutil.s2c_data2buf("s2c_role_out",response)
-    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_role_out,buf, [dynamicId])
+    #log.msg("test send start ");
+    #response = {}
+    #response["id"] = 1000;
+    #buf = netutil.s2c_data2buf("s2c_role_out",response)
+    #GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_role_out,buf, [dynamicId])
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
-    log.msg("test send end ");
+    #log.msg("test send end ");
 
     if result and False:
         cid =data.get('cid',0);
