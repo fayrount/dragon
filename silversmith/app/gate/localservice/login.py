@@ -127,8 +127,8 @@ def getrolelist_5(key,dynamicId, request_proto):
     GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_role_out,buf, [dynamicId])
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
     log.msg("test send end ");
-    
-    if result:
+
+    if result and False:
         cid =data.get('cid',0);
         shape = data.get('shape',0);
         lv = data.get('lv',0);
