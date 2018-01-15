@@ -102,6 +102,30 @@ def roleLogin_3(key,dynamicId, request_proto):
         return
     dd.addCallback(SerializePartialEnterScene,response)
     return dd
-
+@localserviceHandle
+def getrolelist_5(key,dynamicId, request_proto):
+    log.msg('getrolelist_5 %d %s ' % (dynamicId,str(request_proto)));
+    data = login.getrolelist(dynamicId)
+    result = data.get('result',False)
+    response = {}
+    response["cmdid"] = protocol_def.c2s_getrolelist;
+    if not result:
+        response["result"] = 1;
+    else:
+        response["result"] = 0;
+    buf = netutil.s2c_data2buf("s2c_common_rsp",response)
+    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
+    log.msg("getrolelist_5 end ",result,data)
+    if result:
+        cid =data.get('cid',0);
+        shape = data.get('shape',0);
+        lv = data.get('lv',0);
+        name = data.get('name','');
+        class = data.get('class','');
+        role_data = {'id':cid,'shape':shape,'lv':lv,'name':name,'class':class};
+        buf = netutil.s2c_data2buf("s2c_rolelist",{'rolelist':[role_data]});
+        log.msg("send rolelist ",role_data);
+        GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_rolelist,buf, [dynamicId])
+    return
 
 

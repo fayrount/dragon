@@ -110,7 +110,17 @@ def roleLogin(dynamicId, characterId):
         vcharacter = VirtualCharacter(characterId,dynamicId)
         VCharacterManager().addVCharacter(vcharacter)
     return {'result':True,'message':u'login_success','data':data}
-    
+def getrolelist(dynamicId):
+    user=UsersManager().getUserByDynamicId(dynamicId)
+    if not user:
+        return {'result':False,'message':u'user_error'}
+    if user.characterId != 0:
+        data = dbuser.getUserCharacterTotalInfo(user.characterId);
+        if data:
+            return {'result':True,'message':u'getrolelist_succeed','cid':user.characterId,'shape':data['figure'],'lv':data['level'],'name':data['nickname'],'class':data['profession']}
+        else:
+            return {'result':False,'message':u'characterId_error'}
+    return {'result':True,'message':u'getrolelist_succeed','cid':0,'shape':0,'lv':0,'name':'','class':0}
 def enterScene(dynamicId, characterId, placeId,force):
     '''进入场景
     @param dynamicId: int 客户端的ID

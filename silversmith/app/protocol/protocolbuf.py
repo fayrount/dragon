@@ -5,6 +5,8 @@ from twisted.python import log
 class protocolbuf:
     def __init__(self):
         return
+    def has_desc(self,name):
+        return ProtocolDesc.Protocol_desc.has_key(name);
     def get_desc_byname(self,name):
         return ProtocolDesc.Protocol_desc[name];
     def pack_int8(self,v):
@@ -162,22 +164,24 @@ class protocolbuf:
             return ret,start;
     def c2s_buf2data(self,desc_name,buf):
         ret = {};
-        start = 0;
-        desc = self.get_desc_byname(desc_name);
-        for i in desc:
-            p = i[0];
-            t = i[1];
-            v = i[2];
-            ret[p],start = self.unpack_data(t,v,buf,start);
+        if self.has_desc(desc_name):
+            start = 0;
+            desc = self.get_desc_byname(desc_name);
+            for i in desc:
+                p = i[0];
+                t = i[1];
+                v = i[2];
+                ret[p],start = self.unpack_data(t,v,buf,start);
         return ret;
     def s2c_data2buf(self,desc_name,d):
-        desc = self.get_desc_byname(desc_name);
-        ret = ""
-        for i in desc:
-            p = i[0]
-            t = i[1]
-            v = i[2]
-            ret += self.pack_data(t,v,d[p]);
+        ret = "";
+        if self.has_desc(desc_name):
+            desc = self.get_desc_byname(desc_name);
+            for i in desc:
+                p = i[0]
+                t = i[1]
+                v = i[2]
+                ret += self.pack_data(t,v,d[p]);
         return ret;
     
 

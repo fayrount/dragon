@@ -156,7 +156,15 @@ def getUserCharacterInfo(characterId):
     cursor.close()
     conn.close()
     return result
-
+def getUserCharacterTotalInfo(characterId):
+    sql = "select * from tb_character where id = %d"%(characterId)
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return result
 def CheckUserInfo(Uid):
     '''检测用户信息'''
     sql = "SELECT * from tb_register where username = '%s'"%Uid
