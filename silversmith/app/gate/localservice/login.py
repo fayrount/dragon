@@ -70,6 +70,11 @@ def activeNewPlayer_2(key,dynamicId,request_proto):
     #log.msg("send rolelist ",role_data);
     #GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_rolelist,buf, [dynamicId])
     ######
+
+    response = {}
+    response["id"] = 1000;
+    buf = netutil.s2c_data2buf("s2c_role_out",response)
+    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_role_out,buf, [dynamicId])
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
     return
 def SerializePartialEnterScene(result,response):
