@@ -10,7 +10,7 @@ from app.game.core.PlayersManager import PlayersManager
 import app.protocol.netutil as netutil
 import app.protocol.protocol_def as protocol_def
 from twisted.python import log
-
+from firefly.server.globalobject import GlobalObject
 
 @remoteserviceHandle
 def enterPlace_601(dynamicId, characterId, placeId,force,player):
