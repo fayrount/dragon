@@ -7,28 +7,22 @@ Created on 2013-8-14
 from app.game.gatenodeservice import remoteserviceHandle
 from app.game.core.character.PlayerCharacter import PlayerCharacter
 from app.game.core.PlayersManager import PlayersManager
-
+import app.protocol.netutil as netutil
+import app.protocol.protocol_def as protocol_def
+from twisted.python import log
 
 
 @remoteserviceHandle
 def enterPlace_601(dynamicId, characterId, placeId,force,player):
     '''进入场景'''
+    log.msg('enterPlace_601 %s %s %s %s %s' % (dynamicId,characterId,placeId,force,player));
     if not player:
         player = PlayerCharacter(characterId,dynamicId = dynamicId)
     PlayersManager().addPlayer(player)
-    playerinfo = player.formatInfo()
-    responsedata = {'result':True,'message':'',
-                    'data':{'cid':playerinfo['id'],
-                            'name':playerinfo['nickname'],
-                            'level':0,
-                            'exp':0,
-                            'maxexp':0,
-                            'coin':0,
-                            'yuanbao':0,
-                            'power':0,
-                            'gas':0,
-                            'profession':0}
-                    }
+    ret = {};
+    ret['sceneid'] = placeId;
+    buf = netutil.s2c_data2buf("s2c_enterscene",ret)
+    GlobalObject().root.callChild("gate","pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])
     return
 
                     

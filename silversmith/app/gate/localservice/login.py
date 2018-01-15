@@ -75,13 +75,13 @@ def activeNewPlayer_2(key,dynamicId,request_proto):
 def SerializePartialEnterScene(result,response):
     '''序列化进入场景的返回消息
     '''
-    log.msg('SerializePartialEnterScene %s ' % (str(response)));
+    log.msg('SerializePartialEnterScene %s %s' % (str(response),str(result)));
     sceneid = response['sceneid'];
     dynamicId = response['dynamicId']
     ret = {};
     ret['sceneid'] = 200;
     buf = netutil.s2c_data2buf("s2c_enterscene",ret)
-    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])
+    #GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_enterscene,buf, [dynamicId])
     return
 
@@ -104,13 +104,7 @@ def roleLogin_3(key,dynamicId, request_proto):
     if not result:
         return;
     placeId = data['data'].get('placeId',1000)
-    response = {}
-    response['sceneid'] = placeId;
-    response['dynamicId'] = dynamicId;
-    dd = login.enterScene(dynamicId, characterId, placeId, True)
-    if not dd:
-        return
-    dd.addCallback(SerializePartialEnterScene,response)
+    login.enterScene(dynamicId, characterId, placeId, True)
     return
 @localserviceHandle
 def getrolelist_5(key,dynamicId, request_proto):
