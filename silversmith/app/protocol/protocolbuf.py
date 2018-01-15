@@ -38,18 +38,18 @@ class protocolbuf:
         return ret,start;
     def pack_string8(self,v):
         ret = self.pack_int32(len(v));
-        sret = struct.pack("!%ds"%(len(v)),v);
+        sret = struct.pack("!%ds"%(len(v)),v.encode('utf-8'));
         return ret+sret;
     def unpack_string8(self,buf,start):
         #log.msg("unpack_string8 ",len(buf),start) 
         count,start = self.unpack_int32(buf,start);
         subbuf = buf[start:start+count]
         start += count;
-        sret = struct.unpack("!%ds"%(count),subbuf)[0];
+        sret = struct.unpack("!%ds"%(count),subbuf)[0].decode('utf-8');
         return sret,start;
     def pack_string16(self,v):
         ret = self.pack_int32(len(v));
-        sret = struct.pack("!%ds"%(len(v)),v);
+        sret = struct.pack("!%ds"%(len(v)),v.encode('utf-8'));
         return ret+sret;
     def unpack_string16(self,buf,start):
         #log.msg("unpack_string16 ",len(buf),start) 
@@ -57,18 +57,18 @@ class protocolbuf:
         #log.msg("unpack_string161 ",len(buf),start,count)
         subbuf = buf[start:start+count]
         start += count;
-        sret = struct.unpack("!%ds"%(count),subbuf)[0];
+        sret = struct.unpack("!%ds"%(count),subbuf)[0].decode('utf-8');
         return sret,start;
     def pack_string32(self,v):
         ret = self.pack_int32(len(v));
-        sret = struct.pack("!%ds"%(len(v)),v);
+        sret = struct.pack("!%ds"%(len(v)),v.encode('utf-8'));
         return ret+sret;
     def unpack_string32(self,buf,start):
         #log.msg("unpack_string32 ",len(buf),start) 
         count,start = self.unpack_int32(buf,start);
         subbuf = buf[start:start+count]
         start += count;
-        sret = struct.unpack("!%ds"%(count),subbuf)[0];
+        sret = struct.unpack("!%ds"%(count),subbuf)[0].decode('utf-8');
         return sret,start;
     def pack_int_data(self,t,v):
         if t == 'int8':
