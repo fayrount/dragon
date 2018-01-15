@@ -111,7 +111,7 @@ def roleLogin_3(key,dynamicId, request_proto):
     if not dd:
         return
     dd.addCallback(SerializePartialEnterScene,response)
-    return dd
+    return
 @localserviceHandle
 def getrolelist_5(key,dynamicId, request_proto):
     log.msg('getrolelist_5 %d %s ' % (dynamicId,str(request_proto)));
