@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `tb_character`;
 CREATE TABLE `tb_character` (
   `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '角色的id号',
   `viptype` tinyint(4) DEFAULT '0' COMMENT '角色的类型（0普通 1 VIP1  2 vip2）',
-  `nickname` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '角色的昵称',
+  `nickname` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '角色的昵称',
   `profession` tinyint(4) unsigned zerofill NOT NULL DEFAULT '0000' COMMENT '角色的职业 （0 新手 1战士 2 法师 3 游侠 4 牧师）',
   `figure` int(10) DEFAULT '0' COMMENT '角色的形象',
   `sex` tinyint(4) DEFAULT '1' COMMENT '1男 2女',
