@@ -81,7 +81,7 @@ def SerializePartialEnterScene(result,response):
     ret = {};
     ret['sceneid'] = sceneid;
     buf = netutil.s2c_data2buf("s2c_enterscene",ret)
-    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])
+    ##GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_enterscene,buf, [dynamicId])
     return
 
