@@ -60,15 +60,15 @@ def activeNewPlayer_2(key,dynamicId,request_proto):
     GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
 
     ######
-    cid =1;
-    shape = 0;
-    lv = 0;
-    name = name;
-    cls = 0;
-    role_data = {'id':cid,'shape':shape,'lv':lv,'name':name,'class':cls};
-    buf = netutil.s2c_data2buf("s2c_rolelist",{'rolelist':[role_data]});
-    log.msg("send rolelist ",role_data);
-    GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_rolelist,buf, [dynamicId])
+    #cid =1;
+    #shape = 0;
+    #lv = 0;
+    #name = name;
+    #cls = 0;
+    #role_data = {'id':cid,'shape':shape,'lv':lv,'name':name,'class':cls};
+    #buf = netutil.s2c_data2buf("s2c_rolelist",{'rolelist':[role_data]});
+    #log.msg("send rolelist ",role_data);
+    #GlobalObject().root.callChild("net","pushObject",protocol_def.s2c_rolelist,buf, [dynamicId])
     ######
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
     return
@@ -131,7 +131,9 @@ def getrolelist_5(key,dynamicId, request_proto):
         shape = data.get('shape',0);
         lv = data.get('lv',0);
         name = data.get('name','');
-        cls = data.get('class','');
+        if isinstance(name,unicode):
+            name = name.encode('utf-8');
+        cls = data.get('class',0);
         role_data = {'id':cid,'shape':shape,'lv':lv,'name':name,'class':cls};
         buf = netutil.s2c_data2buf("s2c_rolelist",{'rolelist':[role_data]});
         log.msg("send rolelist ",role_data);
