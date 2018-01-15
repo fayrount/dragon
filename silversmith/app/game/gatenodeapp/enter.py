@@ -22,7 +22,7 @@ def enterPlace_601(dynamicId, characterId, placeId,force,player):
     ret = {};
     ret['sceneid'] = placeId;
     buf = netutil.s2c_data2buf("s2c_enterscene",ret)
-    GlobalObject().root.callChild("gate","pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])
+    GlobalObject().remote['gate'].callRemote("pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])
     return
 
                     
