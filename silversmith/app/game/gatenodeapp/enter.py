@@ -25,12 +25,9 @@ def enterPlace_601(dynamicId, characterId, placeId,force,player):
 
     response = {}
     response["cmdid"] = protocol_def.s2c_roleout;
-    if not result:
-        response["result"] = 1;
-    else:
-        response["result"] = 0;
+    response["result"] = 0;
     buf = netutil.s2c_data2buf("s2c_common_rsp",response)
-    
+
     GlobalObject().remote['gate'].callRemote("pushObject",protocol_def.s2c_common_rsp,buf, [dynamicId])
     return
 
