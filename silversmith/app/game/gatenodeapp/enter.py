@@ -29,6 +29,6 @@ def enterPlace_601(dynamicId, characterId, placeId,force,player):
                             'gas':0,
                             'profession':0}
                     }
-    return responsedata
+    return
 
                     
