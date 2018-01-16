@@ -44,6 +44,7 @@ def loginToServer(dynamicId,username ,password,loginkey,bpassager):
             return {'result':False,'message':u'pwd is invalid'}
     oldUser = UsersManager().getUserByUsername(username)
     if oldUser:
+        GlobalObject().root.callChild("net","loseConnect",oldUser.dynamicId);
         oldUser.dynamicId = dynamicId
         UserCharacterInfo = oldUser.getUserCharacterInfo()
         return {'result':True,'message':u'login_success','data':UserCharacterInfo,'localkey':loginkey}

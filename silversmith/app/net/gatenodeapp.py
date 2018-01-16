@@ -10,3 +10,7 @@ from firefly.server.globalobject import GlobalObject,remoteserviceHandle
 @remoteserviceHandle('gate')
 def pushObject(topicID,msg,sendList):
     GlobalObject().netfactory.pushObject(topicID, msg, sendList)
+
+@remoteserviceHandle('gate')
+def loseConnect(id):
+    GlobalObject().netfactory.loseConnect(id);

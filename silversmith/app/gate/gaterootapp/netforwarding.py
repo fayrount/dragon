@@ -34,6 +34,11 @@ def pushObject(topicID,msg,sendList):
     """
     """
     GlobalObject().root.callChild("net","pushObject",topicID,msg,sendList)
+@rootserviceHandle
+def loseConnect(id):
+    """
+    """
+    GlobalObject().root.callChild("net","loseConnect",id)
 
 def SavePlayerInfoInDB(dynamicId):
     '''将玩家信息写入数据库'''
