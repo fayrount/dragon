@@ -6,8 +6,8 @@ Created on 2011-3-23
 '''
 from app.share.dbopear import dbuser
 
-INITTOWN = 1000
-
+INITTOWN = 1700
+from twisted.python import log
 class User:
     '''用户类'''
     
@@ -71,6 +71,7 @@ class User:
         '''获取角色的信息'''
         if not self.characterInfo:
             self.characterInfo = dbuser.getUserCharacterTotalInfo(self.characterId)
+            log.msg('User getCharacterInfo ',self.characterId,self.characterInfo)
         return self.characterInfo
         
     def setDynamicId(self,dynamicId):

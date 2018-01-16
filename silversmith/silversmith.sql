@@ -34,7 +34,7 @@ CREATE TABLE `tb_character` (
   `coin` int(20) DEFAULT '99999999' COMMENT '玩家的游戏币(金币) 初始为 10000',
   `gold` int(20) DEFAULT '99999999' COMMENT '魔钻 玩家充值购买的商城货币',
   `vipexp` int(20) DEFAULT '0' COMMENT 'vip经验值',
-  `town` int(10) DEFAULT '1000' COMMENT '角色所在的场景的ID',
+  `town` int(10) DEFAULT '1700' COMMENT '角色所在的场景的ID',
   `position_x` int(10) DEFAULT '100' COMMENT '角色的x坐标',
   `position_y` int(10) DEFAULT '100' COMMENT '角色的y坐标',
   `energy` int(10) DEFAULT '200' COMMENT '角色的活力值',
