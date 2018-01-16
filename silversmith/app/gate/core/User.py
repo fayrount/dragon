@@ -70,7 +70,7 @@ class User:
     def getCharacterInfo(self):
         '''获取角色的信息'''
         if not self.characterInfo:
-            self.characterInfo = dbuser.getUserCharacterInfo(self.characterId)
+            self.characterInfo = dbuser.getUserCharacterTotalInfo(self.characterId)
         return self.characterInfo
         
     def setDynamicId(self,dynamicId):

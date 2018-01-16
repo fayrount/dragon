@@ -14,7 +14,7 @@ Protocol_desc = {
 	's2c_rolelist':[['rolelist', 'list8', 's2c_rolelist_info'],],
 	'c2s_createrole':[['shape', 'int16', ''],['class', 'int8', ''],['name', 'string8', ''],],
 	'c2s_choserole':[['roleid', 'int32', ''],],
-	's2c_enterscene':[['sceneid', 'int8', ''],],
+	's2c_enterscene':[['sceneid', 'int32', ''],['x', 'int16', ''],['y', 'int16', ''],],
 	'c2s_role_move':[['x', 'int16', ''],['y', 'int16', ''],],
 	's2c_role_move':[['id', 'int32', ''],['x', 'int8', ''],['y', 'int8', ''],],
 	's2c_role_enter':[['id', 'int32', ''],['x', 'int8', ''],['y', 'int8', ''],['shape', 'int16', ''],['class', 'int8', ''],['lv', 'int16', ''],['name', 'string8', ''],],

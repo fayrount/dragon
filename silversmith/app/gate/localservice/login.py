@@ -102,8 +102,10 @@ def roleLogin_3(key,dynamicId, request_proto):
     #GlobalObject().netfactory.pushObject(protocol_def.s2c_common_rsp,buf, [dynamicId])
     if not result:
         return;
-    placeId = data['data'].get('placeId',1000)
-    login.enterScene(dynamicId, characterId, placeId, True)
+    placeId = data['data'].get('placeId',1700)
+    x = data['data'].get('position_x',66),
+    y = data['data'].get('position_y',66);
+    login.enterScene(dynamicId, characterId, placeId,x,y, True)
     return
 @localserviceHandle
 def getrolelist_5(key,dynamicId, request_proto):

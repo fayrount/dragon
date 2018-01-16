@@ -103,13 +103,13 @@ def roleLogin(dynamicId, characterId):
     if _characterId!=characterId:
         return {'result':False,'message':u'norole'}
     oldvcharacter = VCharacterManager().getVCharacterByCharacterId(characterId)
-    data = {'placeId':characterInfo.get('town',1000)}
+    #data = {'placeId':characterInfo.get('town',1700),'cinfo':characterInfo}
     if oldvcharacter:
         oldvcharacter.setDynamicId(dynamicId)
     else:
         vcharacter = VirtualCharacter(characterId,dynamicId)
         VCharacterManager().addVCharacter(vcharacter)
-    return {'result':True,'message':u'login_success','data':data}
+    return {'result':True,'message':u'login_success','data':characterInfo}
 def getrolelist(dynamicId):
     user=UsersManager().getUserByDynamicId(dynamicId)
     if not user:
@@ -121,7 +121,7 @@ def getrolelist(dynamicId):
         else:
             return {'result':False,'message':u'characterId_error'}
     return {'result':True,'message':u'getrolelist_succeed','cid':0,'shape':0,'lv':0,'name':'','class':0}
-def enterScene(dynamicId, characterId, placeId,force):
+def enterScene(dynamicId, characterId, placeId,x,y,force):
     '''进入场景
     @param dynamicId: int 客户端的ID
     @param characterId: int 角色的ID
@@ -132,7 +132,7 @@ def enterScene(dynamicId, characterId, placeId,force):
     if not vplayer:
         return None
     nownode = SceneSerManager().getBsetScenNodeId()
-    d = GlobalObject().root.callChild(nownode,601,dynamicId, characterId, placeId,force,None)
+    d = GlobalObject().root.callChild(nownode,601,x,y,dynamicId, characterId, placeId,force,None)
     vplayer.setNode(nownode)
     SceneSerManager().addClient(nownode, vplayer.dynamicId)
     return d
