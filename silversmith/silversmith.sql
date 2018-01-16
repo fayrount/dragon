@@ -36,7 +36,7 @@ CREATE TABLE `tb_character` (
   `vipexp` int(20) DEFAULT '0' COMMENT 'vip经验值',
   `town` int(10) DEFAULT '1700' COMMENT '角色所在的场景的ID',
   `position_x` int(10) DEFAULT '20' COMMENT '角色的x坐标',
-  `position_y` int(10) DEFAULT '10' COMMENT '角色的y坐标',
+  `position_y` int(10) DEFAULT '16' COMMENT '角色的y坐标',
   `energy` int(10) DEFAULT '200' COMMENT '角色的活力值',
   `exp` int(20) DEFAULT '0' COMMENT '角色的经验值',
   `hp` int(20) DEFAULT '500' COMMENT '角色的当前血量',
