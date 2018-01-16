@@ -13,5 +13,5 @@ def pushObject(topicID,msg,sendList):
 
 @remoteserviceHandle('gate')
 def loseConnect(id):
-    log("net loseConnect ",id);
+    log.msg("net loseConnect ",id);
     GlobalObject().netfactory.loseConnect(id);
