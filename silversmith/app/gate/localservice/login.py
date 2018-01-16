@@ -105,6 +105,7 @@ def roleLogin_3(key,dynamicId, request_proto):
     placeId = data['data'].get('placeId',1700)
     x = data['data'].get('position_x',66),
     y = data['data'].get('position_y',66);
+    log.msg("ready enterscene ",placeId,x,y,data['data']);
     login.enterScene(dynamicId, characterId, placeId,x,y, True)
     return
 @localserviceHandle
