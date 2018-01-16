@@ -47,6 +47,8 @@ class PlayerCharacter(Character):
         self.shape = data['figure'];
         self.lv = data['level'];
         self.name = data['nickname'];
+        if isinstance(self.name,unicode):
+            self.name = self.name.encode('utf-8');
         self.cls = data['profession'];
     def getDynamicId(self):
         '''获取角色的动态Id'''
