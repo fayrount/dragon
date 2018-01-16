@@ -13,16 +13,17 @@ from twisted.python import log
 from firefly.server.globalobject import GlobalObject
 
 @remoteserviceHandle
-def enterPlace_601(dynamicId, characterId, placeId,x,y,force,player):
+def enterPlace_601(dynamicId, characterId,force,player):
     '''进入场景'''
-    log.msg('enterPlace_601 %s %s %s %s %s %s %s' % (dynamicId,characterId,placeId,x,y,force,player));
+    log.msg('enterPlace_601 %s %s %s %s ' % (dynamicId,characterId,force,player));
     if not player:
         player = PlayerCharacter(characterId,dynamicId = dynamicId)
     PlayersManager().addPlayer(player)
     ret = {};
-    ret['sceneid'] = placeId;
-    ret['x'] = x;
-    ret['y'] = y
+    ret['sceneid'] = player.scene_id;
+    ret['x'] = player.x;
+    ret['y'] = player.y;
+    log.msg('player sceneid x y ',ret);
     buf = netutil.s2c_data2buf("s2c_enterscene",ret)
 
     GlobalObject().remote['gate'].callRemote("pushObject",protocol_def.s2c_enterscene,buf, [dynamicId])

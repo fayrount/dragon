@@ -122,7 +122,7 @@ def getrolelist(dynamicId):
         else:
             return {'result':False,'message':u'characterId_error'}
     return {'result':True,'message':u'getrolelist_succeed','cid':0,'shape':0,'lv':0,'name':'','class':0}
-def enterScene(dynamicId, characterId, placeId,x,y,force):
+def enterScene(dynamicId, characterId, force):
     '''进入场景
     @param dynamicId: int 客户端的ID
     @param characterId: int 角色的ID
@@ -133,7 +133,7 @@ def enterScene(dynamicId, characterId, placeId,x,y,force):
     if not vplayer:
         return None
     nownode = SceneSerManager().getBsetScenNodeId()
-    d = GlobalObject().root.callChild(nownode,601,dynamicId, characterId, placeId,x,y,force,None)
+    d = GlobalObject().root.callChild(nownode,601,dynamicId, characterId,force,None)
     vplayer.setNode(nownode)
     SceneSerManager().addClient(nownode, vplayer.dynamicId)
     return d

@@ -20,6 +20,9 @@ class PlayerCharacter(Character):
         Character.__init__(self, cid, name)
         self.setCharacterType(Character.PLAYERTYPE)#设置角色类型为玩家角色
         self.dynamicId = dynamicId    #角色登陆服务器时的动态id
+        self.scene_id = 0;
+        self.x = 0;
+        self.y = 0;
         #--------角色的各个组件类------------
         if status:
             self.initPlayerInfo() #初始化角色
@@ -34,7 +37,9 @@ class PlayerCharacter(Character):
         #------------初始化角色基础信息组件---------
         self.baseInfo.setType(data['viptype'])  #角色VIP类型
         self.baseInfo.setnickName(data['nickname']) #角色昵称
-        
+        self.x = data['position_x'];
+        self.y = data['position_y'];
+        self.scene_id = data['town'];
             
     def getDynamicId(self):
         '''获取角色的动态Id'''
@@ -57,11 +62,11 @@ class PlayerCharacter(Character):
     def updatePlayerDBInfo(self):
         '''更新角色在数据库中的数据'''
         pid = self.baseInfo.id
-        #pmmode = tb_character_admin.getObj(pid)
-        #mapping = {'level':self.level.getLevel(),'coin':self.finance.getCoin(),
-        #           'gold':self.finance.getGold(),'exp':self.level.getExp(),
-        #           'energy':self.attribute.getEnergy()}
-        #pmmode.update_multi(mapping)
+        pmmode = tb_character_admin.getObj(pid)
+        mapping = {'level':0,'coin':0,
+                   'gold':0,'exp':0,
+                   'energy':0,'position_x':self.x,'position_y':self.y,'town':self.scene_id}
+        pmmode.update_multi(mapping)
 
     def getFightData(self,preDict = {'extVitper':0,'extStrper':0,
                                  'extDexper':0,'extWisper':0,'extSpiper':0}):
