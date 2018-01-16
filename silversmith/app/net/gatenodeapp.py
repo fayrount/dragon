@@ -15,7 +15,8 @@ def pushObject(topicID,msg,sendList):
 def pushObjectOthers(topicID,msg,exclude_list):
     lis = GlobalObject().netfactory.connmanager._connections.keys()     #获取所有在线用户
     for i in exclude_list:
-        lis.remove(i) 
+        if i in lis:
+            lis.remove(i) 
     GlobalObject().netfactory.pushObject(topicID, msg, lis);
 
 
