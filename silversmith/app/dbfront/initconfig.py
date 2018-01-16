@@ -22,4 +22,4 @@ GlobalObject().stophandler = doWhenStop
 def loadModule():
     mclient.flush_all()
     registe_madmin()
-    CheckMemDB(1800)
+    CheckMemDB(60)
