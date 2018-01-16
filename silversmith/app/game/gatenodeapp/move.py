@@ -18,7 +18,7 @@ def roleMove_4(dynamicId,request_proto):
     x = argument['x']
     y = argument['y']
     log.msg('roleMove x y ',x,y);
-    player = PlayersManager.getPlayerBydynamicId(dynamicId);
+    player = PlayersManager().getPlayerBydynamicId(dynamicId);
     if not player:
         log.msg('move error!have not this role ',dynamicId);
         return;
