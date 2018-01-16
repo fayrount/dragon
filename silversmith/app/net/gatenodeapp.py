@@ -5,7 +5,7 @@ Created on 2013-8-14
 @author: lan
 '''
 from firefly.server.globalobject import GlobalObject,remoteserviceHandle
-
+from twisted.python import log
 
 @remoteserviceHandle('gate')
 def pushObject(topicID,msg,sendList):
@@ -13,4 +13,5 @@ def pushObject(topicID,msg,sendList):
 
 @remoteserviceHandle('gate')
 def loseConnect(id):
+    log("net loseConnect ",id);
     GlobalObject().netfactory.loseConnect(id);
