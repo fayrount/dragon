@@ -23,6 +23,10 @@ class PlayerCharacter(Character):
         self.scene_id = 0;
         self.x = 0;
         self.y = 0;
+        self.shape = 0;
+        self.lv = 0;
+        self.cls = 0;
+        self.name = "";
         #--------角色的各个组件类------------
         if status:
             self.initPlayerInfo() #初始化角色
@@ -40,7 +44,10 @@ class PlayerCharacter(Character):
         self.x = data['position_x'];
         self.y = data['position_y'];
         self.scene_id = data['town'];
-            
+        self.shape = data['figure'];
+        self.lv = data['level'];
+        self.name = data['nickname'];
+        self.cls = data['profession'];
     def getDynamicId(self):
         '''获取角色的动态Id'''
         return self.dynamicId
@@ -63,7 +70,7 @@ class PlayerCharacter(Character):
         '''更新角色在数据库中的数据'''
         pid = self.baseInfo.id
         pmmode = tb_character_admin.getObj(pid)
-        mapping = {'level':0,'coin':0,
+        mapping = {'level':self.lv,'coin':0,'figure':self.shape,'nickname':self.name,'profession':self.cls,
                    'gold':0,'exp':0,
                    'energy':0,'position_x':self.x,'position_y':self.y,'town':self.scene_id}
         pmmode.update_multi(mapping)

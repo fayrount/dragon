@@ -35,6 +35,12 @@ def pushObject(topicID,msg,sendList):
     """
     GlobalObject().root.callChild("net","pushObject",topicID,msg,sendList)
 @rootserviceHandle
+def pushObjectOthers(topicID,msg,exclude_list):
+    """
+    """
+    GlobalObject().root.callChild("net","pushObjectOthers",topicID,msg,exclude_list)
+
+@rootserviceHandle
 def loseConnect(id):
     """
     """
