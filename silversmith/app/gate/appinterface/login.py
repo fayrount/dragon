@@ -139,6 +139,6 @@ def enterScene(dynamicId, characterId, force):
     allsceids = SceneSerManager().getAllSceId();
     for i in allsceids:
         if i != nownode:
-            GlobalObject().root.callChild(nownode,600003,dynamicId, characterId)
+            GlobalObject().root.callChild(i,600003,dynamicId, characterId)
     return d
 
