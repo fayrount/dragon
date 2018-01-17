@@ -37,9 +37,11 @@ def enterPlace_601(dynamicId, characterId,force,player):
     GlobalObject().remote['gate'].callRemote("pushObjectOthers",protocol_def.s2c_role_enter,buf, [dynamicId])
 
     allothers = PlayersManager().getAll();
+    log.msg("role list ",len(allothers));
     for i in allothers:
         player = i;
         id = player.getBaseID();
+        log.msg("other roles id ",id,characterId);
         if id != characterId:
             shape = player.shape;
             lv = player.lv;
