@@ -50,7 +50,7 @@ def SavePlayerInfoInDB(dynamicId):
     '''将玩家信息写入数据库'''
     vcharacter = VCharacterManager().getVCharacterByClientId(dynamicId)
     node = vcharacter.getNode()
-    d = GlobalObject().root.callChild(node,2,dynamicId)
+    d = GlobalObject().root.callChild(node,600002,dynamicId)
     return d
 
 def SaveDBSuccedOrError(result,vcharacter):

@@ -12,7 +12,7 @@ from twisted.python import log
 from firefly.server.globalobject import GlobalObject
 
 @remoteserviceHandle
-def NetConnLost_2(dynamicId):
+def NetConnLost_600002(dynamicId):
     '''loginout
     '''
     player = PlayersManager().getPlayerBydynamicId(dynamicId)

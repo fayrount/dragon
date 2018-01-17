@@ -79,7 +79,8 @@ class SceneSerManager:
         '''获取公共场景中所有的客户端数量'''
         return sum([ser.getClientCnt() for ser in self._scenesers])
     
-    
+    def getAllSceId(self):
+        return self._scenesers.keys();
     def getBsetScenNodeId(self):
         '''获取最佳的game服务器
         '''
