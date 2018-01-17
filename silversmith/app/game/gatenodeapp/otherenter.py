@@ -13,8 +13,8 @@ from twisted.python import log
 from firefly.server.globalobject import GlobalObject
 
 @remoteserviceHandle
-def otherenterPlace_600003(dynamicId, characterId):
-    log.msg('otherenterPlace_600003 %s %s ' % (dynamicId,characterId));
+def otherenterPlace_600003(dynamicId, characterId,data):
+    log.msg('otherenterPlace_600003 %s %s ' % (dynamicId,characterId,data));
 
     allothers = PlayersManager().getAll();
     log.msg("role list ",len(allothers));

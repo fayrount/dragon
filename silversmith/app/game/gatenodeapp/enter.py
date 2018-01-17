@@ -52,6 +52,9 @@ def enterPlace_600001(dynamicId, characterId,force,player):
             log.msg("other roles ",id,shape,lv,cls,name,x,y);
             buf = netutil.s2c_data2buf("s2c_role_enter",{'id':id,'shape':shape,'class':cls,'lv':lv,'name':name,'x':x,'y':y});
             GlobalObject().remote['gate'].callRemote("pushObject",protocol_def.s2c_role_enter,buf, [dynamicId])
+
+    GlobalObject().remote['gate'].callRemote("callAllSces",600003,dynamicId,characterId,None);
+    
     return
 
                     

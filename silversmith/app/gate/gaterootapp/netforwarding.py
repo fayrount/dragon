@@ -9,6 +9,7 @@ from app.gate.gateservice import localservice
 from app.gate.core.UserManager import UsersManager
 from app.gate.core.VCharacterManager import VCharacterManager
 from app.gate.core.scenesermanger import SceneSerManager
+from twisted.python import log
 
 @rootserviceHandle
 def forwarding(key,dynamicId,data):
@@ -39,6 +40,15 @@ def pushObjectOthers(topicID,msg,exclude_list):
     """
     """
     GlobalObject().root.callChild("net","pushObjectOthers",topicID,msg,exclude_list)
+@rootserviceHandle
+def callAllSces(topicID,dynamicId, characterId,data):
+    """
+    """
+    allsceids = SceneSerManager().getAllSceId();
+    log.msg("callAllSces ",len(allsceids),allsceids);
+    for i in allsceids:
+        GlobalObject().root.callChild(i,topicID,dynamicId, characterId,data);
+
 
 @rootserviceHandle
 def loseConnect(id):

@@ -136,9 +136,5 @@ def enterScene(dynamicId, characterId, force):
     d = GlobalObject().root.callChild(nownode,600001,dynamicId, characterId,force,None)
     vplayer.setNode(nownode)
     SceneSerManager().addClient(nownode, vplayer.dynamicId)
-    allsceids = SceneSerManager().getAllSceId();
-    for i in allsceids:
-        if i != nownode:
-            GlobalObject().root.callChild(i,600003,dynamicId, characterId)
     return d
 
