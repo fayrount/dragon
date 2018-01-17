@@ -38,7 +38,7 @@ def enterPlace_601(dynamicId, characterId,force,player):
 
     allothers = PlayersManager().getAll();
     for i in allothers:
-        player = PlayersManager().getPlayerByID(i);
+        player = i;
         id = player.getBaseID();
         shape = player.shape;
         lv = player.lv;
