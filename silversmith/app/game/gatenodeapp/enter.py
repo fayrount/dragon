@@ -13,7 +13,7 @@ from twisted.python import log
 from firefly.server.globalobject import GlobalObject
 
 @remoteserviceHandle
-def enterPlace_601(dynamicId, characterId,force,player):
+def enterPlace_600001(dynamicId, characterId,force,player):
     '''进入场景'''
     log.msg('enterPlace_600001 %s %s %s %s ' % (dynamicId,characterId,force,player));
     if not player:
