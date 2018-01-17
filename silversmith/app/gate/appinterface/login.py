@@ -32,7 +32,7 @@ def loginToServer(dynamicId,username ,password,loginkey,bpassager):
             password = "bpassager";
             userinfo = dbuser.CheckUserInfo(username)
             if not userinfo:
-                return {'result':False,'message':u'loginkey is invalid'}
+                return {'result':False,'message':u'loginkey is invalid','code':9}
         else:
             loginkey = genloginkey(dynamicId);
             username = loginkey;
@@ -41,7 +41,7 @@ def loginToServer(dynamicId,username ,password,loginkey,bpassager):
     else:
         userinfo = dbuser.CheckUserInfo(username)
         if not userinfo:
-            return {'result':False,'message':u'pwd is invalid'}
+            return {'result':False,'message':u'pwd is invalid','code':1}
     oldUser = UsersManager().getUserByUsername(username)
     if oldUser:
         GlobalObject().root.callChild("net","loseConnect",oldUser.dynamicId);
@@ -50,9 +50,9 @@ def loginToServer(dynamicId,username ,password,loginkey,bpassager):
         return {'result':True,'message':u'login_success','data':UserCharacterInfo,'localkey':loginkey}
     user = User(username,password,dynamicId = dynamicId)
     if user.id ==0:
-        return {'result':False,'message':u'psd_error'}
+        return {'result':False,'message':u'psd_error','code':2}
     if not user.CheckEffective():#账号是否可用(封号)
-        return {'result':False,'message':u'fenghao'}
+        return {'result':False,'message':u'fenghao','code':3}
     UsersManager().addUser(user)
     UserCharacterInfo = user.getUserCharacterInfo()
     return{'result':True,'message':u'login_success','data':UserCharacterInfo,'localkey':loginkey}

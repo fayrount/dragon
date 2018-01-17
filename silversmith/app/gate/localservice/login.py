@@ -26,7 +26,7 @@ def loginToServer_1(key,dynamicId,request_proto):
     response = {}
     response["cmdid"] = protocol_def.c2s_login;
     if not result:
-        response["result"] = 1;
+        response["result"] = data.get('code',1);
     else:
         response["result"] = 0;
     buf = netutil.s2c_data2buf("s2c_common_rsp",response)

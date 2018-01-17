@@ -40,15 +40,16 @@ def enterPlace_601(dynamicId, characterId,force,player):
     for i in allothers:
         player = i;
         id = player.getBaseID();
-        shape = player.shape;
-        lv = player.lv;
-        cls = player.cls;
-        name = player.name;
-        x = player.x;
-        y = player.y;
-        log.msg("other roles ",id,shape,lv,cls,name,x,y);
-        buf = netutil.s2c_data2buf("s2c_role_enter",{'id':id,'shape':shape,'class':cls,'lv':lv,'name':name,'x':x,'y':y});
-        GlobalObject().remote['gate'].callRemote("pushObject",protocol_def.s2c_role_enter,buf, [dynamicId])
+        if id != characterId:
+            shape = player.shape;
+            lv = player.lv;
+            cls = player.cls;
+            name = player.name;
+            x = player.x;
+            y = player.y;
+            log.msg("other roles ",id,shape,lv,cls,name,x,y);
+            buf = netutil.s2c_data2buf("s2c_role_enter",{'id':id,'shape':shape,'class':cls,'lv':lv,'name':name,'x':x,'y':y});
+            GlobalObject().remote['gate'].callRemote("pushObject",protocol_def.s2c_role_enter,buf, [dynamicId])
     return
 
                     
