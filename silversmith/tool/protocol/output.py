@@ -263,6 +263,7 @@ def CheckError(prefix, err):
 		raise IOError
 
 def MakePyfile(arg):
+	print "start"
 	bk = xlrd.open_workbook('protocol.xls')
 	err = MakePythonProtocolFile(bk)
 	CheckError('protocol_desc error!:',err)
