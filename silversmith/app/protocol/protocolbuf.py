@@ -37,26 +37,26 @@ class protocolbuf:
         #log.msg("unpack_int32 ret ",ret)
         return ret,start;
     def pack_string8(self,v):
-        ret = self.pack_int32(len(v));
+        ret = self.pack_int8(len(v));
         #sret = struct.pack("!%ds"%(len(v)),v.encode('utf-8'));
         sret = struct.pack("!%ds"%(len(v)),v);
         return ret+sret;
     def unpack_string8(self,buf,start):
         #log.msg("unpack_string8 ",len(buf),start) 
-        count,start = self.unpack_int32(buf,start);
+        count,start = self.unpack_int8(buf,start);
         subbuf = buf[start:start+count]
         start += count;
         #sret = struct.unpack("!%ds"%(count),subbuf)[0].decode('utf-8');
         sret = struct.unpack("!%ds"%(count),subbuf)[0];
         return sret,start;
     def pack_string16(self,v):
-        ret = self.pack_int32(len(v));
+        ret = self.pack_int16(len(v));
         #sret = struct.pack("!%ds"%(len(v)),v.encode('utf-8'));
         sret = struct.pack("!%ds"%(len(v)),v);
         return ret+sret;
     def unpack_string16(self,buf,start):
         #log.msg("unpack_string16 ",len(buf),start) 
-        count,start = self.unpack_int32(buf,start);
+        count,start = self.unpack_int16(buf,start);
         #log.msg("unpack_string161 ",len(buf),start,count)
         subbuf = buf[start:start+count]
         start += count;
@@ -136,6 +136,15 @@ class protocolbuf:
                         ssv = j[2];
                         ret += self.pack_data(sst,ssv,i[p]);
             return ret;
+        else:
+            ret = ""
+            desc = self.get_desc_byname(t);
+            for j in desc:
+                p = j[0]
+                sst = j[1]
+                ssv = j[2];
+                ret += self.pack_data(sst,ssv,d[p]);
+            return ret;
     def unpack_data(self,t,v,buf,start):
         if t == "int8" or t == "int16" or t == "int32":
             return self.unpack_int_data(t,buf,start);
@@ -168,6 +177,15 @@ class protocolbuf:
                         iret[ssp],start = self.unpack_data(sst,ssv,buf,start);
                     ret.append(iret);
             return ret,start;
+        else:
+            desc = self.get_desc_byname(t);
+            iret = {};
+            for j in desc:
+                ssp = j[0];
+                sst = j[1];
+                ssv = j[2];
+                iret[ssp],start = self.unpack_data(sst,ssv,buf,start);
+            return iret,start;
     def c2s_buf2data(self,desc_name,buf):
         ret = {};
         if self.has_desc(desc_name):
