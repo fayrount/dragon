@@ -10,9 +10,12 @@ def netconnlost(dynamicId):
     '''客户端断开连接时的处理
     @param dynamicId: int 客户端的动态ID
     '''
-@webserviceHandle('/test')
-def test():
-    print("test func");
-    return "test succeed";
+@webserviceHandle('/testweb')
+class testweb(resource.Resource):
+    '''stop service'''
+    
+    def render(self, request):
+    	print "test web render "+str(request);
+        return "testweb succeed"
 
 
