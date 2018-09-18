@@ -1,7 +1,7 @@
 #coding:utf8
 
 
-from firefly.server.globalobject import GlobalObject, rootserviceHandle
+from firefly.server.globalobject import GlobalObject, rootserviceHandle,webserviceHandle
 from gate.gatelocalservice import gateLocalService
 
 
