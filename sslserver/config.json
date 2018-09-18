@@ -3,6 +3,7 @@
 "servers":{
 	"gate":{
 		"rootport":11111,
+		"webport":443,
 		"name":"gate",
 		"app":"app.gateapp",
 		"ssl":true,
