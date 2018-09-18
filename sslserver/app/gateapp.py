@@ -3,7 +3,7 @@
 
 from firefly.server.globalobject import GlobalObject, rootserviceHandle,webserviceHandle
 from gate.gatelocalservice import gateLocalService
-
+from twisted.web import resource
 
 @rootserviceHandle
 def netconnlost(dynamicId):
