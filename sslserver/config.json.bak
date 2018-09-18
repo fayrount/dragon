@@ -9,7 +9,7 @@
 		"sslkey":"",
 		"sslcrt":"",
 		"log":"app/logs/gate.log"
-	}
+	},
 },
 "db":{
 "host":"localhost",
