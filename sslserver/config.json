@@ -7,8 +7,8 @@
 		"name":"gate",
 		"app":"app.gateapp",
 		"ssl":true,
-		"sslkey":"",
-		"sslcrt":"",
+		"sslkey":"/home/cakey/2_feifanlingyu.cn.key",
+		"sslcrt":"/home/cakey/1_feifanlingyu.cn_bundle.crt",
 		"log":"app/logs/gate.log"
 	}
 },
