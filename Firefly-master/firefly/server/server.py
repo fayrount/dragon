@@ -81,7 +81,7 @@ class FFServer:
             self.webroot = vhost.NameVirtualHost()
             GlobalObject().webroot = self.webroot
             if self.isssl:
-                reactor.listenSSL(webport, DelaySite(self.webroot), sslContext)
+                reactor.listenSSL(webport, DelaySite(self.webroot), self.sslContext)
             else:
                 reactor.listenTCP(webport, DelaySite(self.webroot))
             
