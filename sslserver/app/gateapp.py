@@ -16,6 +16,7 @@ class testweb(resource.Resource):
     
     def render(self, request):
     	print "test web render "+str(request);
+    	print "args "+str(request.args);
         return "testweb succeed"
 
 
