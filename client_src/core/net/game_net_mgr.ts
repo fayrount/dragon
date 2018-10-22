@@ -20,6 +20,7 @@ module net{
         protected m_tmp_buf:Laya.Byte;
         protected m_buf_handle:protocolbuf.protocolbuf = new protocolbuf.protocolbuf();
         protected m_buff:laya.utils.Byte = new laya.utils.Byte();
+        protected m_recv_temp:Laya.Byte = new Laya.Byte();
         constructor()
         {
             this.m_byte = new Laya.Byte();
@@ -98,10 +99,12 @@ module net{
         }
         protected receiveHandler(msg: any = null): void {
             ///接收到数据触发函数
-            //core.net_errlog("=======receiveHandler ",msg,typeof(msg));
-            let recvbuff:laya.utils.Byte = msg as laya.utils.Byte;
-            for(let i:number = 0;i < recvbuff.length;++i){
-                this.m_buff.writeUint8(recvbuff.getUint8());
+            core.net_errlog("=======receiveHandler ",msg,typeof(msg));
+            this.m_recv_temp.clear();
+            this.m_recv_temp.writeArrayBuffer(msg);
+            this.m_recv_temp.pos = 0;
+            while(this.m_recv_temp.bytesAvailable > 0){
+                this.m_buff.writeUint8(this.m_recv_temp.getUint8());
             }
 
             //let data:{} = this.m_buf_handle.s2c_buf2data(this.m_socket.input);
@@ -115,6 +118,7 @@ module net{
         protected _on_split_netpack():void{
             //core.net_errlog("TL_Login_net receiveHandler normal pkg ",this.m_buff);
             //this._print_pkg(this.m_buff,"split buff ");
+            this.m_buff.pos = 0;
             while(this.m_buff.bytesAvailable > 0){
                 let data:{} = this.m_buf_handle.s2c_buf2data(this.m_buff);
                 if(data == null){
