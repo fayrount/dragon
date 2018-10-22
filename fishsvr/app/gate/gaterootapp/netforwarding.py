@@ -18,6 +18,8 @@ def forwarding(key,dynamicId,data):
     if localservice._targets.has_key(key):
         return localservice.callTarget(key,dynamicId,data)
     else:
+        GlobalObject().root.callChild("game1",key,dynamicId,data);
+        return
         user = UsersManager().getUserByDynamicId(dynamicId)
         if not user:
             return

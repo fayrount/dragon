@@ -3,3 +3,4 @@ import loginout
 import roleinfo
 import move
 import otherenter
+import test
