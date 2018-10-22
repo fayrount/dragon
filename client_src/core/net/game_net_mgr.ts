@@ -19,12 +19,14 @@ module net{
         public m_protobuf_root:any = null;
         protected m_tmp_buf:Laya.Byte;
         protected m_buf_handle:protocolbuf.protocolbuf = new protocolbuf.protocolbuf();
+        protected m_buff:laya.utils.Byte = new laya.utils.Byte();
         constructor()
         {
             this.m_byte = new Laya.Byte();
             this.m_tmp_buf = new Laya.Byte();
             //这里我们采用小端
             this.m_byte.endian = Laya.Byte.BIG_ENDIAN;
+            this.m_buff.endian = Laya.Byte.BIG_ENDIAN;
             this.m_socket = new Laya.Socket();
             
             //这里我们采用小端
@@ -97,12 +99,44 @@ module net{
         protected receiveHandler(msg: any = null): void {
             ///接收到数据触发函数
             //core.net_errlog("=======receiveHandler ",msg,typeof(msg));
-            let data:{} = this.m_buf_handle.s2c_buf2data(this.m_socket.input);
-            let cmd:number = data['cmd'];
-            let recv:{} = data['data'];
-            this.m_recv_list.push(new protocol_item(cmd,recv));
-            core.net_errlog("recv ",cmd,recv);
+            let recvbuff:laya.utils.Byte = msg as laya.utils.Byte;
+            for(let i:number = 0;i < recvbuff.length;++i){
+                this.m_buff.writeUint8(recvbuff.getUint8());
+            }
+
+            //let data:{} = this.m_buf_handle.s2c_buf2data(this.m_socket.input);
+            //let cmd:number = data['cmd'];
+            //let recv:{} = data['data'];
+            //this.m_recv_list.push(new protocol_item(cmd,recv));
+            //core.net_errlog("recv ",cmd,recv);
+            this._on_split_netpack();
         }
+        //
+        protected _on_split_netpack():void{
+            //core.net_errlog("TL_Login_net receiveHandler normal pkg ",this.m_buff);
+            //this._print_pkg(this.m_buff,"split buff ");
+            while(this.m_buff.bytesAvailable > 0){
+                let data:{} = this.m_buf_handle.s2c_buf2data(this.m_buff);
+                if(data == null){
+                    if(this.m_buff.pos > 0){
+                        let tmp:laya.utils.Byte = new laya.utils.Byte();
+                        while(this.m_buff.bytesAvailable > 0){
+                            tmp.writeUint8(this.m_buff.getUint8());
+                        }
+                        this.m_buff.clear();
+                        this.m_buff = tmp;
+                    }
+                    return;
+                }
+                
+                let cmd:number = data['cmd'];
+                let recv:{} = data['data'];
+                this.m_recv_list.push(new protocol_item(cmd,recv));
+                core.net_tiplog("recv ",cmd.toString(16),recv);
+            }
+            this.m_buff.clear();
+        }
+        //
         protected closeHandler(e: any = null): void {
             //关闭事件
             core.net_errlog("=======closeHandler ",e);
@@ -281,7 +315,6 @@ module net{
     }
     
     export class TL_Login_net extends game_net_mgr{
-        private m_buff:laya.utils.Byte = new laya.utils.Byte();
         private m_svrid:number = 0;
         private m_host:string = "";
         private m_port:number = 0;
@@ -761,7 +794,7 @@ module net{
             buff.pos = oldpos;
             //this._print_pkg(buff,"_decrypt_buff decode ");
         }
-        private _on_split_netpack():void{
+        protected _on_split_netpack():void{
             //core.net_errlog("TL_Login_net receiveHandler normal pkg ",this.m_buff);
             //this._print_pkg(this.m_buff,"split buff ");
             while(this.m_buff.bytesAvailable > 0){

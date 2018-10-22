@@ -141,12 +141,12 @@ module protocolbuf{
                 buf.writeUint8(v.getUint8());
             }
         }
-        public unpack_byte(buf:Laya.Byte):Laya.Byte
+        public unpack_byte(buf:Laya.Byte,blen:number):Laya.Byte
         {
             let ret:Laya.Byte = new Laya.Byte();
-            let len:number = buf.length - buf.pos;
-            while(buf.bytesAvailable > 0){
+            while(buf.bytesAvailable > 0 && blen > 0){
                 ret.writeUint8(buf.getUint8());
+                blen -= 1;
             }
             return ret;
         }
@@ -472,11 +472,14 @@ module protocolbuf{
                 }
             }
         }
-        public unpack_data(type:string,value:string,buf:Laya.Byte):any
+        public unpack_data(type:string,value:string,buf:Laya.Byte,max_len:number = -1):any
         {
             let nv:number;
             let sv:string;
             let bv:Laya.Byte;
+            if(max_len < 0){
+                max_len = buf.length;
+            }
             if(type == "int8" || type == "int16" || type == "int32" || type=="uint8" || type=="uint16" || type=="uint32")
             {
                 nv = this.unpack_int_data(buf,type);
@@ -500,7 +503,7 @@ module protocolbuf{
                 return bv;
             }
             else if(type == "byte"){
-                bv = this.unpack_byte(buf);
+                bv = this.unpack_byte(buf,max_len);
                 return bv;
             }
             else if(type == 'list8' || type == 'list16' || type == 'list32')
@@ -545,7 +548,7 @@ module protocolbuf{
                         listdata.push(bv);
                     }
                     else if(subtype == "byte"){
-                        bv = this.unpack_byte(buf);
+                        bv = this.unpack_byte(buf,max_len);
                         listdata.push(bv);
                     }
                     else
@@ -557,7 +560,7 @@ module protocolbuf{
                             let p:string = j[0];
                             let stype:string = j[1];
                             let svalue:string = j[2];
-                            ret[p] = this.unpack_data(stype,svalue,buf);
+                            ret[p] = this.unpack_data(stype,svalue,buf,max_len);
                         }
                         listdata.push(ret);
                     }
@@ -574,7 +577,7 @@ module protocolbuf{
                     let p:string = j[0];
                     let stype:string = j[1];
                     let svalue:string = j[2];
-                    ret[p] = this.unpack_data(stype,svalue,buf);
+                    ret[p] = this.unpack_data(stype,svalue,buf,max_len);
                 }
                 return ret;
             }
@@ -665,7 +668,7 @@ module protocolbuf{
                     let p:string = i[0];
                     let type:string = i[1];
                     let value:string = i[2];
-                    ret[p] = this.unpack_data(type,value,buf);
+                    ret[p] = this.unpack_data(type,value,buf,buflen);
                 }
             }
             
@@ -776,7 +779,7 @@ module protocolbuf{
                     let p:string = i[0];
                     let type:string = i[1];
                     let value:string = i[2];
-                    ret[p] = this.unpack_data(type,value,buf);
+                    ret[p] = this.unpack_data(type,value,buf,plen);
                 }
             }
             else{
