@@ -8,6 +8,7 @@ import app.protocol.netutil as netutil
 import app.protocol.ProtocolDesc as protocol_def
 from twisted.python import log
 from firefly.server.globalobject import GlobalObject
+from app.game.gatenodeservice import remoteserviceHandle
 
 @remoteserviceHandle
 def testnet_256(dynamicId, request_proto):
