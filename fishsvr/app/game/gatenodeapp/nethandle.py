@@ -29,7 +29,7 @@ def nethandle_3(cmd,dynamicId, characterId,request_proto):
         log.msg('msg:%s'%(c_data['msg']));
         c_data['msg'] = "svr reply:"+c_data['msg'];
         buf = netutil.s2c_data2buf("S2C_WEBSOCKET_HELLO",c_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",protocol_def.S2C_WEBSOCKET_HELLO,buf, [dynamicId]) 
+        GlobalObject().remote['gate'].callRemote("pushObject",ProtocolDesc.S2C_WEBSOCKET_HELLO,buf, [dynamicId]) 
     return 
 @remoteserviceHandle
 def broadcast_4(cmd,dynamicId, characterId,data):
