@@ -69,6 +69,8 @@ def loginToServer_275(key,dynamicId,request_proto):
 
 @localserviceHandle
 def selectrole_276(key,dynamicId,request_proto):
+    argument = netutil.c2s_buf2data("C2S_LOGIN_SELECTROLE",request_proto);
+    rid = argument['rid'];
     user=UsersManager().getUserByDynamicId(dynamicId)
     if not user:
         response = {}
@@ -79,6 +81,12 @@ def selectrole_276(key,dynamicId,request_proto):
     if user.characterId == 0:
         response = {}
         response["msg"] = "you haven't character";
+        buf = netutil.s2c_data2buf("S2C_NOTIFY_FLOAT",response)
+        GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_NOTIFY_FLOAT,buf, [dynamicId]);
+        return;
+    if user.characterId != rid:
+        response = {}
+        response["msg"] = "error characterId %d %d"%(rid,user.characterId);
         buf = netutil.s2c_data2buf("S2C_NOTIFY_FLOAT",response)
         GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_NOTIFY_FLOAT,buf, [dynamicId]);
         return;
@@ -96,6 +104,10 @@ def selectrole_276(key,dynamicId,request_proto):
     d = GlobalObject().root.callChild(nownode,1,dynamicId, characterId)
     user.setNode(nownode)
     SceneSerManager().addClient(nownode, dynamicId)
+
+    response = {}
+    buf = netutil.s2c_data2buf("S2C_LOGIN_SELECTROLE",response)
+    GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN_SELECTROLE,buf, [dynamicId]);
     return
 
 @localserviceHandle
