@@ -22,7 +22,7 @@ def NetConnLost_2(dynamicId):
     return True
 
 @remoteserviceHandle
-def nethandle_3(cmd,dynamicId, characterId):
+def nethandle_3(cmd,dynamicId, characterId,request_proto):
     if cmd == ProtocolDesc.C2S_WEBSOCKET_HELLO:
         log.msg('testnet_256 %s ' % (dynamicId));
         c_data = netutil.c2s_buf2data("C2S_WEBSOCKET_HELLO",request_proto);
