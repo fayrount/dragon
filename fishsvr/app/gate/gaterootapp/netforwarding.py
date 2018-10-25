@@ -27,7 +27,7 @@ def forwarding(key,dynamicId,data):
         if not user.CheckEffective():
             return;
         node = user.getNode();
-        return GlobalObject().root.callChild(node,3,key,dynamicId,data)
+        return GlobalObject().root.callChild(node,3,key,dynamicId,user.characterId,data)
     
 
 @rootserviceHandle
