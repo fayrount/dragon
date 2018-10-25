@@ -101,7 +101,7 @@ def selectrole_276(key,dynamicId,request_proto):
     if user.isLoginCharacter():
         return;
     nownode = SceneSerManager().getBsetScenNodeId()
-    d = GlobalObject().root.callChild(nownode,1,dynamicId, characterId)
+    d = GlobalObject().root.callChild(nownode,1,dynamicId, rid)
     user.setNode(nownode)
     SceneSerManager().addClient(nownode, dynamicId)
 
