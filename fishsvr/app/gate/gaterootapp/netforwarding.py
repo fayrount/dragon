@@ -7,7 +7,6 @@ Created on 2013-8-14
 from firefly.server.globalobject import rootserviceHandle,GlobalObject
 from app.gate.gateservice import localservice
 from app.gate.core.UserManager import UsersManager
-from app.gate.core.VCharacterManager import VCharacterManager
 from app.gate.core.scenesermanger import SceneSerManager
 from twisted.python import log
 
@@ -18,18 +17,17 @@ def forwarding(key,dynamicId,data):
     if localservice._targets.has_key(key):
         return localservice.callTarget(key,dynamicId,data)
     else:
-        GlobalObject().root.callChild("game1",key,dynamicId,data);
-        return
         user = UsersManager().getUserByDynamicId(dynamicId)
         if not user:
             return
-        oldvcharacter = VCharacterManager().getVCharacterByClientId(dynamicId)
-        if not oldvcharacter:
-            return
-        if oldvcharacter.getLocked():#判断角色对象是否被锁定
-            return
-        node = VCharacterManager().getNodeByClientId(dynamicId)
-        return GlobalObject().root.callChild(node,key,dynamicId,data)
+        if not user.isLoginCharacter():
+            return;
+        if user.isCharacterLocked():
+            return;
+        if not u.CheckEffective():
+            return;
+        node = user.getNode();
+        return GlobalObject().root.callChild(node,3,key,dynamicId,data)
     
 
 @rootserviceHandle
@@ -49,7 +47,7 @@ def callAllSces(topicID,dynamicId, characterId,data):
     allsceids = SceneSerManager().getAllSceId();
     log.msg("callAllSces ",len(allsceids),allsceids);
     for i in allsceids:
-        GlobalObject().root.callChild(i,topicID,dynamicId, characterId,data);
+        GlobalObject().root.callChild(i,4,topicID,dynamicId, characterId,data);
 
 
 @rootserviceHandle
@@ -60,28 +58,26 @@ def loseConnect(id):
 
 def SavePlayerInfoInDB(dynamicId):
     '''将玩家信息写入数据库'''
-    vcharacter = VCharacterManager().getVCharacterByClientId(dynamicId)
-    node = vcharacter.getNode()
-    d = GlobalObject().root.callChild(node,600002,dynamicId)
+    u = UsersManager().getUserByDynamicId(dynamicId)
+    node = u.getNode()
+    d = GlobalObject().root.callChild(node,2,dynamicId)
     return d
 
-def SaveDBSuccedOrError(result,vcharacter):
+def SaveDBSuccedOrError(result,u):
     '''写入角色数据成功后的处理
     @param result: 写入后返回的结果
     @param vcharacter: 角色的实例
     '''
-    vcharacter.release()#释放角色锁定
+    u.lockChar(False)#释放角色锁定
     return True
 
-def dropClient(deferResult,dynamicId,vcharacter):
+def dropClient(deferResult,dynamicId,u):
     '''清理客户端的记录
     @param result: 写入后返回的结果
     '''
-    node = vcharacter.getNode()
+    node = u.getNode()
     if node:#角色在场景中的处理
         SceneSerManager().dropClient(node, dynamicId)
-        
-    VCharacterManager().dropVCharacterByClientId(dynamicId)
     UsersManager().dropUserByDynamicId(dynamicId)
 
 @rootserviceHandle
@@ -89,12 +85,15 @@ def netconnlost(dynamicId):
     '''客户端断开连接时的处理
     @param dynamicId: int 客户端的动态ID
     '''
-    vcharacter = VCharacterManager().getVCharacterByClientId(dynamicId)
-    if vcharacter and vcharacter.getNode()>0:#判断是否已经登入角色
-        vcharacter.lock()#锁定角色
-        d = SavePlayerInfoInDB(dynamicId)#保存角色,写入角色数据
-        d.addErrback(SaveDBSuccedOrError,vcharacter)#解锁角色
-        d.addCallback(dropClient,dynamicId,vcharacter)#清理客户端的数据
+    u = UsersManager().getUserByDynamicId(dynamicId)
+    if u:
+        if u.isCharacterLocked():
+            return;
+        if u.isLoginCharacter():
+            u.lockChar(True);
+            d = SavePlayerInfoInDB(dynamicId)#保存角色,写入角色数据
+            d.addErrback(SaveDBSuccedOrError,u)#解锁角色
+            d.addCallback(dropClient,dynamicId,u)#清理客户端的数据
     else:
         UsersManager().dropUserByDynamicId(dynamicId)
 

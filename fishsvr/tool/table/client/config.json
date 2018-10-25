@@ -28,4 +28,9 @@
 "skillpassive_map":{
 		"2001":{"id":2001,"skilldata":[{"lv":1,"effect":"actor['atk']*=1.2","group":1},{"lv":2,"effect":"actor['atk']*=1.3","group":1},{"lv":3,"effect":"actor['atk']*=1.4","group":1}]},
 		"2002":{"id":2002,"skilldata":[{"lv":1,"effect":"actor['spd']+=20","group":1},{"lv":2,"effect":"actor['spd']+=30","group":1}]},
-		"2003":{"id":2003,"skilldata":[{"lv":1,"effect":"actor['hpmax']*=1.2","group":1}]}}}
+		"2003":{"id":2003,"skilldata":[{"lv":1,"effect":"actor['hpmax']*=1.2","group":1}]}},
+"item_map":{
+		"1001":{"shape":1001,"price":5504,"goldspd":3456},
+		"1700":{"shape":1700,"price":1536,"goldspd":1152}},
+"itemmerge_map":{
+		"101":{"shape":101,"src1":512,"src2":512}}}

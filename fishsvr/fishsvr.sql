@@ -25,12 +25,9 @@ CREATE TABLE `tb_character` (
   `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '角色的id号',
   `viptype` tinyint(4) DEFAULT '0' COMMENT '角色的类型（0普通 1 VIP1  2 vip2）',
   `nickname` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '角色的昵称',
-  `profession` tinyint(4) unsigned zerofill NOT NULL DEFAULT '0000' COMMENT '角色的职业 （0 新手 1战士 2 法师 3 游侠 4 牧师）',
   `figure` int(10) DEFAULT '101' COMMENT '角色的形象',
   `sex` tinyint(4) DEFAULT '1' COMMENT '1男 2女',
-  `camp` tinyint(4) DEFAULT '0' COMMENT '所属阵营 0无 1魏 2蜀 3 吴',
   `level` int(10) DEFAULT '1' COMMENT '角色的等级 初始为1',
-  `friendCount` int(10) DEFAULT '50' COMMENT '好友上限',
   `coin` int(20) DEFAULT '99999999' COMMENT '玩家的游戏币(金币) 初始为 10000',
   `gold` int(20) DEFAULT '99999999' COMMENT '魔钻 玩家充值购买的商城货币',
   `vipexp` int(20) DEFAULT '0' COMMENT 'vip经验值',
@@ -39,34 +36,9 @@ CREATE TABLE `tb_character` (
   `position_y` int(10) DEFAULT '16' COMMENT '角色的y坐标',
   `energy` int(10) DEFAULT '200' COMMENT '角色的活力值',
   `exp` int(20) DEFAULT '0' COMMENT '角色的经验值',
-  `hp` int(20) DEFAULT '500' COMMENT '角色的当前血量',
-  `mp` int(20) DEFAULT '100' COMMENT '角色的当前魔力值',
-  `baseStr` int(20) DEFAULT '5' COMMENT '系统根据职业赋予的基础力量点',
-  `baseVit` int(20) DEFAULT '5' COMMENT '系统根据职业赋予的基础体质点',
-  `baseDex` int(20) DEFAULT '5' COMMENT '系统根据职业赋予的基础灵巧点（敏捷）',
-  `baseWis` int(20) DEFAULT '5' COMMENT '系统根据职业赋予的基础智力点',
-  `baseSpi` int(20) DEFAULT '5' COMMENT '系统根据职业赋予的基础精神点',
   `LastonlineTime` datetime DEFAULT '2007-05-06 00:00:00' COMMENT '最后在线时间',
-  `contribution` int(20) DEFAULT '0' COMMENT '角色在行会的贡献度',
-  `glory` int(20) DEFAULT '0' COMMENT '角色的荣耀值，影响角色的军衔',
-  `rank` int(20) DEFAULT '0' COMMENT '角色的军衔',
-  `appellation` int(20) DEFAULT '0' COMMENT '角色的称号',
-  `packageSize` int(10) DEFAULT '24' COMMENT '包裹的大小，初始为24格',
-  `famPackSize` int(10) DEFAULT '6' COMMENT '殖民包裹的大小',
-  `outtime` datetime DEFAULT '2007-05-06 00:00:00' COMMENT '角色下线时间',
-  `spirit` varchar(500) COLLATE utf8_unicode_ci DEFAULT '这家伙很懒，什么都么有写' COMMENT '角色心情',
-  `nowmatrix` int(10) DEFAULT '100001' COMMENT '当前阵法',
-  `novicestep` int(10) DEFAULT '1' COMMENT '新手奖励步骤',
-  `dayawardtime` datetime DEFAULT '2007-05-06 00:00:00' COMMENT '每日奖励的领取时间',
-  `isOnline` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否在线',
-  `createtime` datetime NOT NULL COMMENT '创建日期',
-  `donttalk` int(2) DEFAULT '0' COMMENT '0不禁言  1禁言',
-  `prestige` int(20) DEFAULT '0' COMMENT '当前威望值',
-  `NobilityLevel` int(20) DEFAULT '1' COMMENT '当前爵位等级',
-  `morale` int(20) DEFAULT '0' COMMENT '当前斗气值',
-  `leavetime` datetime DEFAULT '2007-05-06 00:00:00' COMMENT '离开军团的时间',
-  `guanqia` int(20) DEFAULT '1000' COMMENT '角色当前的关卡ID',
-  `skill` int(20) DEFAULT '100006' COMMENT '角色的技能',
+  `goldspd` int(20) DEFAULT '0' COMMENT '金币产生速度',
+  `goldtm` int(20) DEFAULT '0' COMMENT '上次结算金币时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000001 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -87,7 +59,7 @@ CREATE TABLE `tb_register` (
   `logintimes` int(11) NOT NULL DEFAULT '0' COMMENT '登陆次数',
   `enable` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否可以登录',
   PRIMARY KEY (`id`,`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=2017 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2018 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_register` */
 /*
@@ -96,50 +68,31 @@ insert  into `tb_register`(`id`,`username`,`password`,`email`,`characterId`,`pid
 /*Table structure for table `tb_report` */
 
 
-/*Table structure for table `tb_scene` */
+/*Table structure for table `tb_item` */
 
-DROP TABLE IF EXISTS `tb_scene`;
+DROP TABLE IF EXISTS `tb_item`;
 
-CREATE TABLE `tb_scene` (
-  `id` int(20) NOT NULL DEFAULT '0' COMMENT '场景Id',
-  `name` varchar(200) NOT NULL DEFAULT '' COMMENT '场景名称',
-  `adjacencyId` varchar(200) NOT NULL DEFAULT '2' COMMENT '通过此场景可以到哪些场景中去例如 1，,3,5,6',
-  `levelRequired` int(20) NOT NULL DEFAULT '-1' COMMENT '等级需求',
-  `camp` int(20) NOT NULL DEFAULT '-1' COMMENT '阵营需求 此场景是否是几方pk',
-  `memberRequired` int(20) NOT NULL DEFAULT '-1' COMMENT '场景可容纳人数',
-  `areaHeight` int(20) NOT NULL DEFAULT '570' COMMENT '场景高度',
-  `areaWidth` int(20) NOT NULL DEFAULT '2099' COMMENT '场景宽度',
-  `monsters` varchar(500) NOT NULL DEFAULT '' COMMENT '场景中de怪物 id:(横坐标,纵坐标);',
-  `npcs` varchar(200) NOT NULL DEFAULT '' COMMENT '场景中的NPC id:(横坐标,纵坐标);',
-  `boss` int(20) NOT NULL DEFAULT '-1' COMMENT 'bossId,没有boss 填-1',
-  `initPointX` int(20) NOT NULL DEFAULT '200' COMMENT '人物进入场景后的横坐标',
-  `initPointY` int(20) NOT NULL DEFAULT '400' COMMENT '人物进入场景后的纵坐标',
-  `areaid` int(20) NOT NULL DEFAULT '-1' COMMENT '场景所属区域Id',
-  `resourceid` int(20) DEFAULT '1001' COMMENT '场景的资源id',
-  `npclist` varchar(500) DEFAULT '' COMMENT 'npc列表',
-  `portals` varchar(500) DEFAULT '' COMMENT '传送门列表',
-  `type` int(10) DEFAULT '2' COMMENT '场景类型 1公共 2副本',
+CREATE TABLE `tb_item` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '道具id',
+  `characterId` int(10) DEFAULT '0' COMMENT '所属角色id',
+  `shape` int(11) DEFAULT '0' COMMENT '道具造型',
+  `used` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否正在使用',
+  `pos` tinyint(4) NOT NULL DEFAULT '0' COMMENT '格子位置',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-/*Data for the table `tb_scene` */
+/*Data for the table `tb_item` */
 
-/*Table structure for table `tb_user_character` */
+/*Table structure for table `tb_item_open` */
 
-DROP TABLE IF EXISTS `tb_user_character`;
+DROP TABLE IF EXISTS `tb_item_open`;
 
-CREATE TABLE `tb_user_character` (
-  `id` int(11) NOT NULL COMMENT '用户id',
-  `character_1` int(11) DEFAULT '0' COMMENT '用户第一个角色的id',
-  `character_2` int(11) DEFAULT '0' COMMENT '用户第二个角色的id',
-  `character_3` int(11) DEFAULT '0' COMMENT '用户第三个角色的id',
-  `character_4` int(11) DEFAULT '0' COMMENT '用户第四个角色的id',
-  `character_5` int(11) DEFAULT '0' COMMENT '用户第五个角色的id',
-  `pid` int(11) DEFAULT '0' COMMENT '用户邀请人的id',
-  `last_character` int(11) DEFAULT '-1' COMMENT '上次登录的角色',
+CREATE TABLE `tb_item_open` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `characterId` int(10) DEFAULT '0' COMMENT '角色id',
+  `shape` int(11) DEFAULT '0' COMMENT '已经开启的造型',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-/*Data for the table `tb_user_character` */
-
+/*Data for the table `tb_item_open` */
 

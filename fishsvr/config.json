@@ -14,11 +14,11 @@
 "user":"root",
 "passwd":"rodger",
 "port":3306,
-"db":"silversmith",
+"db":"fishsvr",
 "charset":"utf8"
 },
 "memcached":{
 "urls":["127.0.0.1:11211"],
-"hostname":"silversmith"
+"hostname":"fishsvr"
 }
 }

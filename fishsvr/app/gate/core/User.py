@@ -28,6 +28,8 @@ class User:
         self.dynamicId = dynamicId
         self.isEffective = True
         self.characterId = 0
+        self.node = "";
+        self.Ischaracterlocked = False;#only used when client disconnected
         self.characterInfo = {}
         self.initUser()
     
@@ -47,7 +49,22 @@ class User:
         '''获取账号名
         '''
         return self.name
-        
+    def isLoginCharacter(self):
+        return len(self.node) > 0;
+    def getNode(self):
+        '''返回角色所在的节点服务ID'''
+        return self.node
+    
+    def setNode(self,node):
+        '''设置角色的节点服务ID
+        @param node: int 节点的id
+        '''
+        self.node = node
+    def isCharacterLocked(self):
+        return self.Ischaracterlocked;
+    def lockChar(self,f):
+        self.Ischaracterlocked = f;
+        return;
     def CheckEffective(self):
         '''检测账号是否有效'''
         return self.isEffective
@@ -55,17 +72,6 @@ class User:
     def checkClient(self,dynamicId):
         '''检测客户端ID是否匹配'''
         return self.dynamicId == dynamicId
-    
-    def getUserCharacterInfo(self):
-        '''获取角色信息'''
-        info = {}
-        info['userId'] = self.id
-        info['defaultId'] = self.characterId
-        if not self.characterId:
-            info['hasRole'] = False
-        else:
-            info['hasRole'] = True
-        return info
     
     def getCharacterInfo(self):
         '''获取角色的信息'''
@@ -86,36 +92,17 @@ class User:
     
     def creatNewCharacter(self ,nickname ,profession,shape):
         '''创建新角色
-        @profession （int） 角色职业 （0 新手 1战士 2 法师 3 游侠 ）
         '''
-        if profession not in range(0,13):
-            return {'result':False,'message':u'profession_error'}
         if len(nickname)<2 or len(nickname)>20:
-            return {'result':False,'message':u'yhm_buhege'}
+            return False
         if self.characterId:
-            return {'result':False,'message':u'yijingchuangjian'}
+            return False
         if not dbuser.checkCharacterName(nickname):
-            return {'result':False,'message':u'yhm_yicunzai'}
+            return False
         characterId = dbuser.creatNewCharacter(nickname, profession,shape, self.id)
         if characterId:
             self.characterId = characterId
-            data = {}
-            data['userId'] = self.id
-            data['newCharacterId'] = characterId
-            cinfo = {'id':characterId,'level':1,
-                     'profession':profession,
-                     'nickname':nickname}
-            return {'result':True,'message':u'创建角色成功','data':data}
-        else:
-            return {'result':False,'message':u'创建角色失败'}
-    
-    def disconnectClient(self):
-        '''断开'''
-        from services.rootsupport import SavePlayerInfoInDB
-        dynamicId = self.dynamicId
-        SavePlayerInfoInDB(dynamicId)
-        msg = u"您账户其他地方登录"
-        self.isEffective = False
-        pushOtherMessage(msg, [self.dynamicId])
+            return True;
+        return False;
     
             
