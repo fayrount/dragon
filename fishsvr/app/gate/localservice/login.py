@@ -61,7 +61,7 @@ def loginToServer_275(key,dynamicId,request_proto):
     if u.characterId == 0:
         u.creatNewCharacter("character_%d"%(u.id),0,0);
     response = {}
-    roleinfo = {"rid":u.characterId,"shape":0,"cls":0,"grade":0,"desc":"","flag":0,"newtm":0,"theme":0,"name":"","offline":0,"logintm":0,"orgsvrid":0};
+    roleinfo = {"rid":u.characterId,"shape":0,"cls":0,"grade":0,"desc":"","flag":0,"newtm":0,"theme":0,"name":"","offline":0,"logintm":0,"orgsrvid":0};
     response["roles"] = [roleinfo];
     buf = netutil.s2c_data2buf("S2C_LOGIN_ROLEINFO",response)
     GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN_ROLEINFO,buf, [dynamicId]);
