@@ -16,7 +16,7 @@ from app.gate.core.UserManager import UsersManager
 from app.gate.core.scenesermanger import SceneSerManager
 @localserviceHandle
 def loginToServer_275(key,dynamicId,request_proto):
-	argument = netutil.c2s_buf2data("C2S_LOGIN",request_proto);
+    argument = netutil.c2s_buf2data("C2S_LOGIN",request_proto);
     username = argument['account']
     password = argument['pwd']
     log.msg('loginToServer_1 %d %s ' % (dynamicId,str(argument)));
@@ -24,13 +24,13 @@ def loginToServer_275(key,dynamicId,request_proto):
     if not userinfo and 3<len(username)<12 and 3<len(password)<12:
         dbuser.creatUserInfo(username, password)
     #if not userinfo:
-    #	response = {}
-	#    response["errcode"] = 1;
-	#    response["errmsg"] = "account or pwd is invalid";
-	#    buf = netutil.s2c_data2buf("S2C_LOGIN",response)
-	#    GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN,buf, [dynamicId]);
-	#    return
-	oldUser = UsersManager().getUserByUsername(username)
+    #   response = {}
+    #    response["errcode"] = 1;
+    #    response["errmsg"] = "account or pwd is invalid";
+    #    buf = netutil.s2c_data2buf("S2C_LOGIN",response)
+    #    GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN,buf, [dynamicId]);
+    #    return
+    oldUser = UsersManager().getUserByUsername(username)
     if oldUser:
         if oldUser.dynamicId != dynamicId:
             response = {}
@@ -53,7 +53,7 @@ def loginToServer_275(key,dynamicId,request_proto):
         GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN,buf, [dynamicId]);
         return;
     UsersManager().addUser(user);
-	response = {}
+    response = {}
     response["flag"] = 0;
     buf = netutil.s2c_data2buf("S2C_LOGIN_OK",response)
     GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN_OK,buf, [dynamicId]);
