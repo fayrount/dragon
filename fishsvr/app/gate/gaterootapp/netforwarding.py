@@ -24,7 +24,7 @@ def forwarding(key,dynamicId,data):
             return;
         if user.isCharacterLocked():
             return;
-        if not u.CheckEffective():
+        if not user.CheckEffective():
             return;
         node = user.getNode();
         return GlobalObject().root.callChild(node,3,key,dynamicId,data)
