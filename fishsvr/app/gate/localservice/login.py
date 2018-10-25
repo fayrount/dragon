@@ -52,7 +52,7 @@ def loginToServer_275(key,dynamicId,request_proto):
         buf = netutil.s2c_data2buf("S2C_LOGIN",response)
         GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN,buf, [dynamicId]);
         return;
-    UsersManager().addUser(user);
+    UsersManager().addUser(u);
     response = {}
     response["flag"] = 0;
     buf = netutil.s2c_data2buf("S2C_LOGIN_OK",response)
