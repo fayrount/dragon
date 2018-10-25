@@ -125,8 +125,8 @@ def creatNewCharacter(nickname ,profession ,shape,userId,sex=1):
     @param fieldname: str 用户角色关系表中的字段名，表示用户的第几个角色
     '''
     nowdatetime = str(datetime.datetime.today())
-    sql = "insert into `tb_character`(nickName,profession,sex,createtime,figure) \
-    values('%s',%d,%d,'%s',%d)"%(nickname ,profession,sex,nowdatetime,shape)
+    sql = "insert into `tb_character`(nickName,sex,figure) \
+    values('%s',%d,%d)"%(nickname ,sex,shape)
     sql2 = "SELECT @@IDENTITY"
     conn = dbpool.connection()
     cursor = conn.cursor()
