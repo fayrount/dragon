@@ -11,10 +11,14 @@ import app.game.memmode as memmode
 from firefly.server.globalobject import GlobalObject
 import config.item
 import config.itemmerge
+import app.game.core.game_module_def as game_module_def
 class game_main(app.base.game_module_mgr.game_module):
 	def __init__(self):
 		super(game_main,self).__init__(self);
 		self.character_map = {};
+		return
+	def _init_module(self):
+		self.get_module(game_module_def.GM_MAIN).start();
 		return
 	def start(self):
 		super(game_main,self).start(self);
@@ -26,6 +30,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		self.register_net_event(C2S_ITEM_MOVE,self.on_itemmove);
 		self.register_net_event(C2S_ITEM_BUY,self.on_itembuy);
 		self.register_net_event(C2S_LOGIN_ASYN_TIME,self.on_asyn_time);
+		self._init_module();
 		return
 	def on_asyn_time(self,ud):
 		dId = ud["dId"];
@@ -61,6 +66,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		cId = ud["cId"];
 		del self.character_map[cId];
 		return
+	
 	def _get_item_goldspd(self,shape):
 		itemc = config.item.create_Item(shape);
 		if itemc:
@@ -113,6 +119,14 @@ class game_main(app.base.game_module_mgr.game_module):
 			log.msg('_push_role_info err %d'%(cId));
 			return
 		return
+	def _add_gold(self,dId,cId,count):
+		c_data = memmode.tb_character_admin.getObj(cId);
+		if not c_data:
+			return False
+		c_info = c_data.get('data');
+		gold = c_info['gold'];
+		c_data.update_multi({"gold":gold+count});
+		return True
 	def _push_role_info(self,dId,cId):
 		c_info = memmode.tb_character_admin.getObjData(cId);
 		if not c_info:

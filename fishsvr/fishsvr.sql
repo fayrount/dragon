@@ -28,7 +28,7 @@ CREATE TABLE `tb_character` (
   `figure` int(10) DEFAULT '101' COMMENT '角色的形象',
   `sex` tinyint(4) DEFAULT '1' COMMENT '1男 2女',
   `level` int(10) DEFAULT '1' COMMENT '角色的等级 初始为1',
-  `coin` int(20) DEFAULT '0' COMMENT '玩家的游戏币(金币) 初始为 10000',
+  `coin` int(20) DEFAULT '10000' COMMENT '玩家的游戏币(金币) 初始为 10000',
   `gold` int(20) DEFAULT '0' COMMENT '魔钻 玩家充值购买的商城货币',
   `vipexp` int(20) DEFAULT '0' COMMENT 'vip经验值',
   `town` int(10) DEFAULT '1700' COMMENT '角色所在的场景的ID',
