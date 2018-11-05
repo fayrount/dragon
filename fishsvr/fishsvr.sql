@@ -32,13 +32,14 @@ CREATE TABLE `tb_character` (
   `gold` int(20) DEFAULT '0' COMMENT '魔钻 玩家充值购买的商城货币',
   `vipexp` int(20) DEFAULT '0' COMMENT 'vip经验值',
   `town` int(10) DEFAULT '1700' COMMENT '角色所在的场景的ID',
-  `position_x` int(10) DEFAULT '20' COMMENT '角色的x坐标',
-  `position_y` int(10) DEFAULT '16' COMMENT '角色的y坐标',
-  `energy` int(10) DEFAULT '200' COMMENT '角色的活力值',
+  `position_x` int(10) DEFAULT '0' COMMENT '角色的x坐标',
+  `position_y` int(10) DEFAULT '0' COMMENT '角色的y坐标',
+  `energy` int(10) DEFAULT '0' COMMENT '角色的活力值',
   `exp` int(20) DEFAULT '0' COMMENT '角色的经验值',
   `LastonlineTime` datetime DEFAULT '2007-05-06 00:00:00' COMMENT '最后在线时间',
   `goldspd` int(20) DEFAULT '0' COMMENT '金币产生速度',
-  `goldtm` int(20) DEFAULT '0' COMMENT '上次结算金币时间',
+  `goldtm` float(20,2) DEFAULT '0' COMMENT '上次结算金币时间',
+  `tm` float(20,2) DEFAULT '0' COMMENT '创建角色时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000001 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -58,6 +59,7 @@ CREATE TABLE `tb_register` (
   `lastonline` datetime NOT NULL DEFAULT '2012-06-05 00:00:00' COMMENT '最后在线时间',
   `logintimes` int(11) NOT NULL DEFAULT '0' COMMENT '登陆次数',
   `enable` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否可以登录',
+  `tm` float(20,2) DEFAULT '0' COMMENT '创建账号时间',
   PRIMARY KEY (`id`,`username`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2018 DEFAULT CHARSET=utf8;
 

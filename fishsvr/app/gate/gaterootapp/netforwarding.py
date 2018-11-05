@@ -31,25 +31,24 @@ def forwarding(key,dynamicId,data):
     
 
 @rootserviceHandle
-def pushObject(topicID,msg,sendList):
+def pushObject(cmd,msg,sendList):
     """
     """
-    GlobalObject().root.callChild("net","pushObject",topicID,msg,sendList)
+    GlobalObject().root.callChild("net","pushObject",cmd,msg,sendList)
 @rootserviceHandle
-def pushObjectOthers(topicID,msg,exclude_list):
+def pushObjectOthers(cmd,msg,exclude_list):
     """
     """
-    GlobalObject().root.callChild("net","pushObjectOthers",topicID,msg,exclude_list)
+    GlobalObject().root.callChild("net","pushObjectOthers",cmd,msg,exclude_list)
 @rootserviceHandle
-def callAllSces(topicID,dynamicId, characterId,data):
+def broadcastObject(srcsvr,cmd,dynamicId, characterId,data):
     """
     """
     allsceids = SceneSerManager().getAllSceId();
-    log.msg("callAllSces ",len(allsceids),allsceids);
+    log.msg("broadcastObject ",len(allsceids),allsceids);
     for i in allsceids:
-        GlobalObject().root.callChild(i,4,topicID,dynamicId, characterId,data);
-
-
+        if i != srcsvr:
+            GlobalObject().root.callChild(i,4,i,cmd,dynamicId, characterId,data);
 @rootserviceHandle
 def loseConnect(id):
     """
@@ -60,7 +59,7 @@ def SavePlayerInfoInDB(dynamicId):
     '''将玩家信息写入数据库'''
     u = UsersManager().getUserByDynamicId(dynamicId)
     node = u.getNode()
-    d = GlobalObject().root.callChild(node,2,dynamicId)
+    d = GlobalObject().root.callChild(node,2,dynamicId,u.characterId)
     return d
 
 def SaveDBSuccedOrError(result,u):

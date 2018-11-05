@@ -8,6 +8,7 @@ from app.share.dbopear import dbuser
 
 INITTOWN = 1700
 from twisted.python import log
+
 class User:
     '''用户类'''
     
@@ -90,7 +91,7 @@ class User:
         '''获取用户动态ID'''
         return self.dynamicId
     
-    def creatNewCharacter(self ,nickname ,profession,shape):
+    def creatNewCharacter(self ,nickname ,profession,shape,tm):
         '''创建新角色
         '''
         if len(nickname)<2 or len(nickname)>20:
@@ -99,7 +100,7 @@ class User:
             return False
         if not dbuser.checkCharacterName(nickname):
             return False
-        characterId = dbuser.creatNewCharacter(nickname, profession,shape, self.id)
+        characterId = dbuser.creatNewCharacter(nickname, profession,shape, self.id,1,tm)
         if characterId:
             self.characterId = characterId
             return True;

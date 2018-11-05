@@ -58,7 +58,7 @@ def creatUserCharacter(uid):
     '''为新用户建立空的用户角色关系记录
     @param id: int 用户id
     '''
-    sql = "insert into `tb_user_character` (`id`) values(%d)" %uid
+    sql = "insert into `tb_user_character` (`id`) values(%d)" %(uid)
     conn = dbpool.connection()
     cursor = conn.cursor()
     count = cursor.execute(sql)
@@ -117,7 +117,7 @@ def checkCharacterName(nickname):
         return False
     return True
 
-def creatNewCharacter(nickname ,profession ,shape,userId,sex=1):
+def creatNewCharacter(nickname ,profession ,shape,userId,sex,tm):
     '''创建新的角色
     @param nickname: str 角色的昵称
     @param profession: int 角色的职业编号
@@ -125,8 +125,8 @@ def creatNewCharacter(nickname ,profession ,shape,userId,sex=1):
     @param fieldname: str 用户角色关系表中的字段名，表示用户的第几个角色
     '''
     nowdatetime = str(datetime.datetime.today())
-    sql = "insert into `tb_character`(nickName,sex,figure) \
-    values('%s',%d,%d)"%(nickname ,sex,shape)
+    sql = "insert into `tb_character`(nickName,sex,figure,tm) \
+    values('%s',%d,%d)"%(nickname ,sex,shape,tm)
     sql2 = "SELECT @@IDENTITY"
     conn = dbpool.connection()
     cursor = conn.cursor()
@@ -176,10 +176,10 @@ def CheckUserInfo(Uid):
     conn.close()
     return result
 
-def creatUserInfo(username,password):
+def creatUserInfo(username,password,tm):
     '''创建
     '''
-    sql = "insert into tb_register(username,`password`) values ('%s','%s')"%(username,password)
+    sql = "insert into tb_register(username,`password`,tm) values ('%s','%s',%d)"%(username,password,tm)
     conn = dbpool.connection()
     cursor = conn.cursor()
     count = cursor.execute(sql)

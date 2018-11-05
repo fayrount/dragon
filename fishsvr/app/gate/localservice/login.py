@@ -14,6 +14,7 @@ import app.protocol.ProtocolDesc as ProtocolDesc
 from app.gate.core.User import User
 from app.gate.core.UserManager import UsersManager
 from app.gate.core.scenesermanger import SceneSerManager
+import app.util.helper as helper
 @localserviceHandle
 def loginToServer_275(key,dynamicId,request_proto):
     argument = netutil.c2s_buf2data("C2S_LOGIN",request_proto);
@@ -22,7 +23,7 @@ def loginToServer_275(key,dynamicId,request_proto):
     log.msg('loginToServer_1 %d %s ' % (dynamicId,str(argument)));
     userinfo = dbuser.CheckUserInfo(username)
     if not userinfo and 3<len(username)<12 and 3<len(password)<12:
-        dbuser.creatUserInfo(username, password)
+        dbuser.creatUserInfo(username, password,helper.get_svr_tm())
     #if not userinfo:
     #   response = {}
     #    response["errcode"] = 1;
@@ -59,7 +60,7 @@ def loginToServer_275(key,dynamicId,request_proto):
     GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN_OK,buf, [dynamicId]);
 
     if u.characterId == 0:
-        u.creatNewCharacter("character_%d"%(u.id),0,0);
+        u.creatNewCharacter("character_%d"%(u.id),0,0,helper.get_svr_tm());
     response = {}
     roleinfo = {"rid":u.characterId,"shape":0,"cls":0,"grade":0,"desc":"","flag":0,"newtm":0,"theme":0,"name":"","offline":0,"logintm":0,"orgsrvid":0};
     response["roles"] = [roleinfo];
