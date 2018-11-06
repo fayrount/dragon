@@ -206,8 +206,8 @@ class game_main(app.base.game_module_mgr.game_module):
 		send_data['amount'] = itemdata['amount'];
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_UPDATE,dId,send_data]);
         if self._sync_role_gold(cId):
-			self._push_role_info(dId,cId);
-		return
+        	self._push_role_info(dId,cId);
+        return
 	def _get_result_merge(self,srcshape,dstshape):
 		for k,v in config.itemmerge.itemmerge_map.items():
 			s1 = v['src1'];
