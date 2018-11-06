@@ -9,8 +9,8 @@ import app.util.helper as helper
 import app.util.lang_config as lang_config
 import app.game.memmode as memmode
 from firefly.server.globalobject import GlobalObject
-import config.item
-import config.itemmerge
+import app.config.item
+import app.config.itemmerge
 import app.game.core.game_module_def as game_module_def
 class game_main(app.base.game_module_mgr.game_module):
 	def __init__(self):
@@ -74,7 +74,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		return
 	
 	def _get_item_goldspd(self,shape):
-		itemc = config.item.create_Item(shape);
+		itemc = app.config.item.create_Item(shape);
 		if itemc:
 			return itemc["goldspd"];
 		return 0
@@ -209,7 +209,7 @@ class game_main(app.base.game_module_mgr.game_module):
 			self._push_role_info(dId,cId);
 		return
 	def _get_result_merge(self,srcshape,dstshape):
-		for k,v in config.itemmerge.itemmerge_map.items():
+		for k,v in app.config.itemmerge.itemmerge_map.items():
 			s1 = v['src1'];
 			s2 = v['src2'];
 			r = v['shape'];
@@ -301,7 +301,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		shape = c_data["id"];
 		if not self._is_cId_valid(cId):
 			return
-		itemc = config.item.create_Item(shape);
+		itemc = app.config.item.create_Item(shape);
 		if not itemc:
 			return
 		price = itemc["price"];
@@ -340,7 +340,7 @@ class game_main(app.base.game_module_mgr.game_module):
 				break;
 		return start_pos;
 	def _additem(self,shape,cId,used,pos):
-		itemc = config.item.create_Item(shape);
+		itemc = app.config.item.create_Item(shape);
 		if not itemc:
 			return 0;
 		data = {};
