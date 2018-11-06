@@ -39,7 +39,7 @@ class gm_main(app.base.game_module_mgr.game_module):
 		if msg != None and len(msg) > 0:
 			params = msg.split();
 			if len(params) > 0:
-				self._parse_gm_cmd(params);
+				self._parse_gm_cmd(params,dId,cId);
 
 		return
 	def dispose(self):
