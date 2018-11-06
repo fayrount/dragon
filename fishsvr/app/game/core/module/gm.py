@@ -22,7 +22,7 @@ class gm_main(app.base.game_module_mgr.game_module):
 		gm_cmd = params[0];
 		if gm_cmd == "addgold":
 			if len(params) > 1:
-				game_ins = self.get_module(game_module_def.GM_MAIN);
+				game_ins = self.get_module(game_module_def.GAME_MAIN);
 				count = int(params[1]);
 				if game_ins._add_gold(dId,cId,count):
 					game_ins._push_role_info(dId,cId);
@@ -31,7 +31,7 @@ class gm_main(app.base.game_module_mgr.game_module):
 		dId = ud["dId"];
 		cId = ud["cId"];
 		data = ud["data"];
-		game_ins = self.get_module(game_module_def.GM_MAIN);
+		game_ins = self.get_module(game_module_def.GAME_MAIN);
 		if not game_ins._is_cId_valid(cId):
 			return
 		c_data = data;
