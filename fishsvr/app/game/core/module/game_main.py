@@ -342,7 +342,7 @@ class game_main(app.base.game_module_mgr.game_module):
 	def _additem(self,shape,cId,used,pos):
 		itemc = config.item.create_Item(shape);
 		if not itemc:
-			return 0；
+			return 0;
 		data = {};
 		data['characterId'] = cId;
 		data['used'] = used;
