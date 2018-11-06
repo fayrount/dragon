@@ -6,7 +6,7 @@ from app.protocol.ProtocolDesc import *
 import app.protocol.netutil as netutil
 from twisted.python import log
 import app.util.helper as helper
-from app.util.lang_config as lang_config
+import app.util.lang_config as lang_config
 import app.game.memmode as memmode
 from firefly.server.globalobject import GlobalObject
 import config.item
