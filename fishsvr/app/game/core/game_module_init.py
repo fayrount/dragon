@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import app.game.core.game_module_def as game_module_def
+import app.game.base.game_module_def as game_module_def
 import app.game.core.module.game_main as game_main
 import app.base.game_module_mgr
 import app.game.core.module.gm as gm
