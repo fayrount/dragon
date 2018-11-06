@@ -205,9 +205,9 @@ class game_main(app.base.game_module_mgr.game_module):
 		send_data['pos'] = itemdata['pos'];
 		send_data['amount'] = itemdata['amount'];
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_UPDATE,dId,send_data]);
-        if self._sync_role_gold(cId):
-        	self._push_role_info(dId,cId);
-        return
+		if self._sync_role_gold(cId):
+			self._push_role_info(dId,cId);
+		return
 	def _get_result_merge(self,srcshape,dstshape):
 		for k,v in config.itemmerge.itemmerge_map.items():
 			s1 = v['src1'];
@@ -349,8 +349,8 @@ class game_main(app.base.game_module_mgr.game_module):
 		data['shape'] = shape;
 		data['pos'] = pos;
 		newitemmode = memmode.tb_item_admin.new(data);
-        itemId = int(newitemmode._name.split(':')[1]);
-        return itemId
+		itemId = int(newitemmode._name.split(':')[1]);
+		return itemId
 	def _send_additem_netpack(self,itemid,dId,cId):
 		itemdata = memmode.tb_item_admin.getObj(itemid);
 		if not itemdata:
