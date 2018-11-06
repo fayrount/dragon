@@ -126,7 +126,7 @@ def creatNewCharacter(nickname ,profession ,shape,userId,sex,tm):
     '''
     nowdatetime = str(datetime.datetime.today())
     sql = "insert into `tb_character`(nickName,sex,figure,tm) \
-    values('%s',%d,%d)"%(nickname ,sex,shape,tm)
+    values('%s',%d,%d,%d)"%(nickname ,sex,shape,tm)
     sql2 = "SELECT @@IDENTITY"
     conn = dbpool.connection()
     cursor = conn.cursor()
