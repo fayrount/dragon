@@ -27,17 +27,17 @@ class event_dispatcher:
 		self._recv_map = {};
 		return
 	def register_event(self,e,efunc):
-		r_list = self._recv_map[e];
-		if not r_list:
+		if self._recv_map.has_key(e) == False:
 			self._recv_map[e] = [];
-			r_list = self._recv_map[e];
-		if recver not in r_list:
+		r_list = self._recv_map[e];
+		if efunc not in r_list:
 			r_list.append(efunc);
 		return
 	def unregister_event(self,e,efunc):
-		r_list = self._recv_map[e];
-		if r_list and efunc in r_list:
-			r_list.remove(efunc);
+		if self._recv_map.has_key(e):
+			r_list = self._recv_map[e];
+			if r_list and efunc in r_list:
+				r_list.remove(efunc);
 		return;
 	def _gen_net_cmd_e(self,cmd):
 		return "net_cmd_%d_%x"%(cmd,cmd);
