@@ -76,7 +76,7 @@ class game_main(app.base.game_module_mgr.game_module):
 	def _get_item_goldspd(self,shape):
 		itemc = app.config.item.create_Item(shape);
 		if itemc:
-			return itemc["goldspd"];
+			return itemc.goldspd;
 		return 0
 	def _get_itemlist_by_cId(self,cId):
 		itemlist = memmode.tb_item_admin.getAllPkByFk(cId)
@@ -304,7 +304,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		itemc = app.config.item.create_Item(shape);
 		if not itemc:
 			return
-		price = itemc["price"];
+		price = itemc.price;
 		roledata = memmode.tb_character_admin.getObj(cId);
 		if not roledata:
 			return
