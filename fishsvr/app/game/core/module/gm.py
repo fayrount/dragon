@@ -36,7 +36,7 @@ class gm_main(app.base.game_module_mgr.game_module):
 		game_ins = self.get_module(game_module_def.GM_MAIN);
 		if not game_ins._is_cId_valid(cId):
 			return
-		c_data = netutil.c2s_buf2data("C2S_CHAT_GM",data);
+		c_data = data;
 		msg = c_data["msg"];
 		if msg != None and len(msg) > 0:
 			params = msg.split();

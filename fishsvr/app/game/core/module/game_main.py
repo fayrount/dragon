@@ -30,7 +30,15 @@ class game_main(app.base.game_module_mgr.game_module):
 		self.register_net_event(C2S_ITEM_MOVE,self.on_itemmove);
 		self.register_net_event(C2S_ITEM_BUY,self.on_itembuy);
 		self.register_net_event(C2S_LOGIN_ASYN_TIME,self.on_asyn_time);
+		self.register_event(EVENT_SEND2CLIENT,self._send2client);
 		self._init_module();
+		return
+	def _send2client(self,ud):
+		cmd = ud[0]
+		dId = ud[1];
+		data = ud[2];
+		buf = netutil.s2c_data2bufbycmd(cmd,data);
+		GlobalObject().remote['gate'].callRemote("pushObject",cmd,buf, [dId])
 		return
 	def on_asyn_time(self,ud):
 		dId = ud["dId"];
@@ -38,21 +46,19 @@ class game_main(app.base.game_module_mgr.game_module):
 		data = ud["data"];
 		if not self._is_cId_valid(cId):
 			return
-		c_data = netutil.c2s_buf2data("C2S_LOGIN_ASYN_TIME",data);
+		c_data = data;
 		client_tm = c_data["time"];
 
 		svr_tm = helper.get_svr_tm();
 		send_data = {};
 		send_data['srvtime'] = svr_tm;
 		send_data['time'] = send_data;
-        buf = netutil.s2c_data2buf("S2C_ASYNTIME",c_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",S2C_ASYNTIME,buf, [dynamicId]) 
+		self.fire_event(EVENT_SEND2CLIENT,[S2C_ASYNTIME,dId,send_data]);
 		return
 	def _float_msg(self,dId,msg):
 		c_data = {};
 		c_data['msg'] = msg;
-        buf = netutil.s2c_data2buf("S2C_NOTIFY_FLOAT",c_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",S2C_NOTIFY_FLOAT,buf, [dId]) 
+		self.fire_event(EVENT_SEND2CLIENT,[S2C_NOTIFY_FLOAT,dId,c_data]);
         return;
 	def _is_cId_valid(self,cId):
 		return self.character_map.has_key(cId);
@@ -141,8 +147,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		send_data['gold'] = gold;
 		send_data['goldspd'] = goldspd;
 		send_data['tm'] = goldtm;
-        buf = netutil.s2c_data2buf("S2C_ROLE_INFO",send_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",S2C_ROLE_INFO,buf, [dId]) 
+		self.fire_event(EVENT_SEND2CLIENT,[S2C_ROLE_INFO,dId,send_data]);
 		return True;
 	def _gen_senditemdata(self,id,shape,used,pos):
 		ret = {};
@@ -172,14 +177,13 @@ class game_main(app.base.game_module_mgr.game_module):
 			
 		send_data = {};
 		send_data['items'] = send_list;
-		buf = netutil.s2c_data2buf("S2C_ITEM_LIST",send_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",S2C_ITEM_LIST,buf, [dId]) 
+		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_LIST,dId,send_data]);
 		return
 	def on_get_useitem(self,ud):
 		dId = ud["dId"];
 		cId = ud["cId"];
 		data = ud["data"];
-		c_data = netutil.c2s_buf2data("C2S_ITEM_USE",data);
+		c_data = data;
 		itemid = c_data["id"];
 		amount = c_data["amount"];
 
@@ -200,8 +204,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		send_data['key'] = v;
 		send_data['pos'] = itemdata['pos'];
 		send_data['amount'] = itemdata['amount'];
-		buf = netutil.s2c_data2buf("S2C_ITEM_UPDATE",send_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",S2C_ITEM_UPDATE,buf, [dId]) 
+		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_UPDATE,dId,send_data]);
         if self._sync_role_gold(cId):
 			self._push_role_info(dId,cId);
 		return
@@ -224,8 +227,7 @@ class game_main(app.base.game_module_mgr.game_module):
 	def _send_delitem_netpack(self,dId,cId,itemid):
 		send_data = {};
 		send_data['id'] = itemid;
-		buf = netutil.s2c_data2buf("S2C_ITEM_DEL",send_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",S2C_ITEM_DEL,buf, [dId]) 
+		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_DEL,dId,send_data]);
 		return
 	def _mergeitem(self,dId,cId,srcid,dstid):
 		if srcid == dstid:
@@ -259,7 +261,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		dId = ud["dId"];
 		cId = ud["cId"];
 		data = ud["data"];
-		c_data = netutil.c2s_buf2data("C2S_ITEM_MOVE",data);
+		c_data = data;
 		srcid = c_data["id"];
 		dstpos = c_data["dstpos"];
 
@@ -289,14 +291,13 @@ class game_main(app.base.game_module_mgr.game_module):
 		send_data['key'] = srcitemdata['used'];
 		send_data['pos'] = dstpos;
 		send_data['amount'] = srcitemdata['amount'];
-		buf = netutil.s2c_data2buf("S2C_ITEM_UPDATE",send_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",S2C_ITEM_UPDATE,buf, [dId]) 
+		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_UPDATE,dId,send_data]);
 		return
 	def on_itembuy(self,ud):
 		dId = ud["dId"];
 		cId = ud["cId"];
 		data = ud["data"];
-		c_data = netutil.c2s_buf2data("C2S_ITEM_BUY",data);
+		c_data = data;
 		shape = c_data["id"];
 		if not self._is_cId_valid(cId):
 			return
@@ -359,8 +360,7 @@ class game_main(app.base.game_module_mgr.game_module):
 			return
 		send_data = {};
 		send_data['item'] = self._gen_senditemdata(itemid,iteminfo['shape'],iteminfo['used'],iteminfo['pos']);
-		buf = netutil.s2c_data2buf("S2C_ITEM_ADD",send_data)
-        GlobalObject().remote['gate'].callRemote("pushObject",S2C_ITEM_ADD,buf, [dId]) 
+		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_ADD,dId,send_data]);
 		return
 	def dispose(self):
 		super(game_main,self).dispose(self);

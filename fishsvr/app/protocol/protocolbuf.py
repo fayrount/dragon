@@ -2,9 +2,38 @@
 import ProtocolDesc
 import struct
 from twisted.python import log
+
+s2c_cmd_2_desc = {};
+c2s_cmd_2_desc = {};
 class protocolbuf:
     def __init__(self):
         return
+    def has_s2c_cmd(self,cmd):
+        if s2c_cmd_2_desc.has_key(cmd):
+            return s2c_cmd_2_desc[cmd] != None
+        for k,v in ProtocolDesc.__dict__.items():
+            n = str(k);
+            n = n.lower();
+            if n.find("s2c_") == 0 and v == cmd:
+                s2c_cmd_2_desc[cmd] = str(k);
+                return True
+        s2c_cmd_2_desc[cmd] = None;
+        return False
+    def has_c2s_cmd(self,cmd):
+        if c2s_cmd_2_desc.has_key(cmd):
+            return c2s_cmd_2_desc[cmd] != None
+        for k,v in ProtocolDesc.__dict__.items():
+            n = str(k);
+            n = n.lower();
+            if n.find("c2s_") == 0 and v == cmd:
+                c2s_cmd_2_desc[cmd] = str(k);
+                return True
+        c2s_cmd_2_desc[cmd] = None;
+        return False
+    def get_s2cdesc_bycmd(self,cmd):
+        return self.get_desc_byname(s2c_cmd_2_desc[cmd]);
+    def get_c2sdesc_bycmd(self,cmd):
+        return self.get_desc_byname(c2s_cmd_2_desc[cmd]);
     def has_desc(self,name):
         return ProtocolDesc.Protocol_desc.has_key(name);
     def get_desc_byname(self,name):
@@ -272,6 +301,27 @@ class protocolbuf:
         ret = "";
         if self.has_desc(desc_name):
             desc = self.get_desc_byname(desc_name);
+            for i in desc:
+                p = i[0]
+                t = i[1]
+                v = i[2]
+                ret += self.pack_data(t,v,d[p]);
+        return ret;
+    def c2s_buf2databycmd(self,cmd,buf):
+        ret = {};
+        if self.has_c2s_cmd(cmd):
+            start = 0;
+            desc = self.get_c2sdesc_bycmd(cmd);
+            for i in desc:
+                p = i[0];
+                t = i[1];
+                v = i[2];
+                ret[p],start = self.unpack_data(t,v,buf,start,len(buf));
+        return ret;
+    def s2c_data2bufbycmd(self,cmd,d):
+        ret = "";
+        if self.has_s2c_cmd(cmd):
+            desc = self.get_s2cdesc_bycmd(cmd);
             for i in desc:
                 p = i[0]
                 t = i[1]
