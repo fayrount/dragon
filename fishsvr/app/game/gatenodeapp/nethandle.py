@@ -26,7 +26,7 @@ def NetConnLost_2(dynamicId, characterId):
 
 @remoteserviceHandle
 def nethandle_3(cmd,dynamicId, characterId,request_proto):
-    netdata = netutil.c2s_buff2databycmd(cmd);
+    netdata = netutil.c2s_buff2databycmd(cmd,request_proto);
     app.base.event_dispatcher.event_dispatcher().fire_net_event(cmd,{"dId":dynamicId,"cId":characterId,"data":netdata});
     #if cmd == ProtocolDesc.C2S_WEBSOCKET_HELLO:
     #    log.msg('testnet_256 %s ' % (dynamicId));
