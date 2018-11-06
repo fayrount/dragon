@@ -179,7 +179,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		send_data['items'] = send_list;
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_LIST,dId,send_data]);
 		return
-	def on_get_useitem(self,ud):
+	def on_itemuse(self,ud):
 		dId = ud["dId"];
 		cId = ud["cId"];
 		data = ud["data"];
@@ -257,7 +257,7 @@ class game_main(app.base.game_module_mgr.game_module):
 			self._send_additem_netpack(addid,dId,cId);
 		return
 
-	def on_get_moveitem(self,ud):
+	def on_itemmove(self,ud):
 		dId = ud["dId"];
 		cId = ud["cId"];
 		data = ud["data"];
