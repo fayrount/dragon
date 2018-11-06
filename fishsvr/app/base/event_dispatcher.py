@@ -1,6 +1,6 @@
 # coding: utf-8
 from singleton import Singleton
-class event_receiver:
+class event_receiver(object):
 	def __init__(self):
 		self._callback = {};
 		return
