@@ -14,14 +14,14 @@ import app.config.itemmerge
 import app.game.core.game_module_def as game_module_def
 class game_main(app.base.game_module_mgr.game_module):
 	def __init__(self):
-		super(game_main,self).__init__(self);
+		super(game_main,self).__init__();
 		self.character_map = {};
 		return
 	def _init_module(self):
 		self.get_module(game_module_def.GM_MAIN).start();
 		return
 	def start(self):
-		super(game_main,self).start(self);
+		super(game_main,self).start();
 		self.register_event(EVENT_LOGIN,self.on_login);
 		self.register_event(EVENT_LOGOUT,self.on_logout);
 		self.register_net_event(C2S_ROLE_INFO,self.on_get_roleinfo);
@@ -363,5 +363,5 @@ class game_main(app.base.game_module_mgr.game_module):
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_ADD,dId,send_data]);
 		return
 	def dispose(self):
-		super(game_main,self).dispose(self);
+		super(game_main,self).dispose();
 		return

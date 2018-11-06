@@ -12,10 +12,10 @@ from firefly.server.globalobject import GlobalObject
 import app.game.core.game_module_def as game_module_def
 class gm_main(app.base.game_module_mgr.game_module):
 	def __init__(self):
-		super(gm_main,self).__init__(self);
+		super(gm_main,self).__init__();
 		return
 	def start(self):
-		super(gm_main,self).start(self);
+		super(gm_main,self).start();
 		self.register_net_event(C2S_CHAT_GM,self.on_chat_gm)
 		return
 	def _parse_gm_cmd(self,params,dId,cId):
@@ -43,5 +43,5 @@ class gm_main(app.base.game_module_mgr.game_module):
 
 		return
 	def dispose(self):
-		super(gm_main,self).dispose(self);
+		super(gm_main,self).dispose();
 		return
