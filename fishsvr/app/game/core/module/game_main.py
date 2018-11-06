@@ -59,7 +59,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		c_data = {};
 		c_data['msg'] = msg;
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_NOTIFY_FLOAT,dId,c_data]);
-        return;
+		return;
 	def _is_cId_valid(self,cId):
 		return self.character_map.has_key(cId);
 	def on_login(self,ud):
@@ -80,8 +80,8 @@ class game_main(app.base.game_module_mgr.game_module):
 		return 0
 	def _get_itemlist_by_cId(self,cId):
 		itemlist = memmode.tb_item_admin.getAllPkByFk(cId)
-        itemobjlist = memmode.tb_item_admin.getObjList(itemlist)
-        return itemobjlist
+		itemobjlist = memmode.tb_item_admin.getObjList(itemlist)
+		return itemobjlist
 	def _sync_role_gold(self,cId):
 		c_data = memmode.tb_character_admin.getObj(cId);
 		if not c_data:
