@@ -335,7 +335,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		start_pos = 0;
 		while(True):
 			if pos_map.has_key(start_pos):
-				start_pos++;
+				start_pos = start_pos + 1;
 			else:
 				break;
 		return start_pos;
