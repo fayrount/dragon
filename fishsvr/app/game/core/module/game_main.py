@@ -349,8 +349,8 @@ class game_main(app.base.game_module_mgr.game_module):
 		data['shape'] = shape;
 		data['pos'] = pos;
 		newitemmode = memmode.tb_item_admin.new(data);
-        itemId = int(newitemmode._name.split(':')[1])
-		return itemId
+        itemId = int(newitemmode._name.split(':')[1]);
+        return itemId
 	def _send_additem_netpack(self,itemid,dId,cId):
 		itemdata = memmode.tb_item_admin.getObj(itemid);
 		if not itemdata:
