@@ -148,13 +148,13 @@ class MAdmin(MemObject):
         self._timeout = timeout
         
     def insert(self):
-        print "MAdmin insert %s %s %s"%(self._name,self._incrkey,self.get("_incrvalue"));
+        #print "MAdmin insert %s %s %s"%(self._name,self._incrkey,self.get("_incrvalue"));
         if self._incrkey and not self._incrvalue:
             memkey = self.get("_incrvalue")
             if not memkey:
                 memkey = util.GetTableIncrValue(self._name)
             self._incrvalue = memkey
-            print "MAdmin insert gettable %s"%(self._incrvalue);
+            #print "MAdmin insert gettable %s"%(self._incrvalue);
         MemObject.insert(self)
         
     def load(self):
