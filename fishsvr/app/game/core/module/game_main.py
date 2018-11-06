@@ -348,10 +348,11 @@ class game_main(app.base.game_module_mgr.game_module):
 		data['used'] = used;
 		data['shape'] = shape;
 		data['pos'] = pos;
+		log.msg("_additem incry id:%s"%(memmode.tb_item_admin._incrvalue));
 		newitemmode = memmode.tb_item_admin.new(data);
 		new_data = newitemmode.get('data');
 		itemId = new_data['id'];
-		log.msg("_additem %s"%(str(new_data)));
+		log.msg("_additem %s %s %s"%(memmode.tb_item_admin._incrvalue,(new_data),str(newitemmode)));
 		return itemId
 	def _send_additem_netpack(self,itemid,dId,cId):
 		itemdata = memmode.tb_item_admin.getObj(itemid);
