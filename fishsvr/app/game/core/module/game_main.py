@@ -290,7 +290,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		send_data['id'] = srcid;
 		send_data['key'] = srcitemdata['used'];
 		send_data['pos'] = dstpos;
-		send_data['amount'] = srcitemdata['amount'];
+		send_data['amount'] = 1;
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_UPDATE,dId,send_data]);
 		return
 	def on_itembuy(self,ud):
