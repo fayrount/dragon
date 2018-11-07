@@ -71,9 +71,8 @@ class MemClient:
         newmapping = dict(zip([self.produceKey(keyname) for keyname in mapping.keys()],
                               mapping.values()))
         result = self.connection.set_multi(newmapping)
-        print "memclient set_multi:%s"%(str(newmapping));
+        #print "memclient set_multi:%s"%(str(newmapping));
         if result:#如果写入失败
-            print "set_multi failed %s"%(result);
             self.connect(self._urls,self._hostname)#重新连接
             return self.connection.set_multi(newmapping)
         return result

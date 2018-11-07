@@ -102,7 +102,7 @@ class MemObject:
         newmapping = dict(zip([self.produceKey(keyname) for keyname in nowdict.keys()],
                               nowdict.values()))
         self._client.set_multi(newmapping)
-        print "memobject insert %s"%(str(newmapping));
+        #print "memobject insert %s"%(str(newmapping));
         
         
         
