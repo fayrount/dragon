@@ -2,7 +2,7 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":1,
-    "selecteID":10,
+    "selecteID":8,
     "props":{"y":0,"width":1440,"sceneColor":"#000000","left":0,"height":254},
     "nodeParent":-1,
     "label":"Dialog",
