@@ -13,7 +13,7 @@ class WorldMap extends ui.demo.WorldMapUI{
 
         this.areas = new Array<SeaArea>(areaIcons.length);
         for (let i = 0; i < areaIcons.length; i++) {
-            this.areas[i] = new SeaArea(areaIcons[i], "South Pacific", new BackGround());
+            this.areas[i] = new SeaArea(areaIcons[i], "South Pacific", new BackGround("demo/seafloor" + (i + 1) + ".jpg"));
             areaIcons[i].interval = 200;
             areaIcons[i].play(1, true);
             this.areaBoxs[i].on(Laya.Event.CLICK, this, this.onAreaClick, [i]);

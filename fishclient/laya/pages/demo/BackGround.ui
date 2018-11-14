@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":4,
+    "selecteID":2,
     "props":{"width":852,"sceneColor":"#000000","height":480},
     "nodeParent":-1,
     "label":"View",
@@ -15,29 +15,15 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":0,"x":0,"width":852,"var":"b1","skin":"demo/seafloor.jpg","height":480},
+            "props":{"y":0,"x":0,"width":1704,"var":"bg","skin":"demo/seafloor1.jpg","height":480},
             "nodeParent":1,
-            "label":"Image(b1)",
+            "label":"Image(bg)",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
             "compId":2,
             "child":[
                 ]
-        },
-        {
-            "x":15,
-            "type":"Image",
-            "props":{"y":0,"x":-852,"width":852,"var":"b2","skin":"demo/seafloor.jpg","height":480},
-            "nodeParent":1,
-            "label":"Image(b2)",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":4,
-            "child":[
-                ],
-            "$HIDDEN":true
         }],
     "animations":[
         {

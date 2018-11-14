@@ -3,8 +3,7 @@ import View=laya.ui.View;
 import Dialog=laya.ui.Dialog;
 module ui.demo {
     export class BackGroundUI extends View {
-		public b1:Laya.Image;
-		public b2:Laya.Image;
+		public bg:Laya.Image;
 
         constructor(){ super()}
         createChildren():void {
