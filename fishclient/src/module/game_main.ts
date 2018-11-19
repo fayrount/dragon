@@ -28,6 +28,7 @@ module game{
             this.register_net_event(protocol_def.S2C_LOGIN_ROLEINFO,this.on_roleid);
             this.register_net_event(protocol_def.S2C_ROLE_INFO,this.on_get_roleinfo);
             this.register_net_event(protocol_def.S2C_ITEM_LIST,this.on_get_itemlist);
+            
             utils.widget_ins().show_widget(widget_enum.WIDGET_MAINUI,true);
             this.register_event(game_event.EVENT_NET_CONNECTED,this.on_net_connected);
             this.register_event(game_event.EVENT_NET_CLOSED,this.on_net_closed);
@@ -39,6 +40,9 @@ module game{
 
 
             net.net_ins().connect("123.207.239.21",11009);
+            let i:Object = config.Item.get_Item(1001);
+            let shape:number = i["shape"];
+
         }
         private on_net_error(ud:any = null):void{
             console.log("on_net_error");
@@ -91,6 +95,7 @@ module game{
             net.net_ins().send(protocol_def.C2S_ITEM_GETLIST,{});
         }
         private on_testfunc(ud:any = null):void{
+            console.log("haha,i get event from main_ui");
             console.log("on_testfunc useitem",ud);
             //net.net_ins().send(protocol_def.C2S_CHAT_GM,{"msg":"addgold 10000"});
             if(this.m_itemlist.length > 0){

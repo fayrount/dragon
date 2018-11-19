@@ -1,0 +1,37 @@
+{
+    "x":0,
+    "type":"Dialog",
+    "selectedBox":1,
+    "selecteID":2,
+    "props":{"width":100,"sceneColor":"#ffffff","height":20},
+    "nodeParent":-1,
+    "label":"Dialog",
+    "isOpen":true,
+    "isDirectory":true,
+    "isAniNode":true,
+    "hasChild":true,
+    "compId":1,
+    "child":[
+        {
+            "x":15,
+            "type":"Label",
+            "props":{"y":0,"x":0,"width":100,"text":"tips","name":"label_test","height":20,"fontSize":15,"color":"#f60c08","align":"center"},
+            "nodeParent":1,
+            "label":"Label(label_test)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":2,
+            "child":[
+                ]
+        }],
+    "animations":[
+        {
+            "nodes":[
+                ],
+            "name":"ani1",
+            "id":1,
+            "frameRate":24,
+            "action":0
+        }]
+}
