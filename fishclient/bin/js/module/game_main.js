@@ -44,6 +44,8 @@ var game;
             this.register_event(game_event.EVENT_TEST2, this.on_testfunc2);
             this.register_event(game_event.EVENT_TEST3, this.on_testfunc3);
             net.net_ins().connect("123.207.239.21", 11009);
+            var i = config.Item.get_Item(1001);
+            var shape = i["shape"];
         };
         game_main.prototype.on_net_error = function (ud) {
             if (ud === void 0) { ud = null; }
@@ -105,6 +107,7 @@ var game;
         };
         game_main.prototype.on_testfunc = function (ud) {
             if (ud === void 0) { ud = null; }
+            console.log("haha,i get event from main_ui");
             console.log("on_testfunc useitem", ud);
             //net.net_ins().send(protocol_def.C2S_CHAT_GM,{"msg":"addgold 10000"});
             if (this.m_itemlist.length > 0) {

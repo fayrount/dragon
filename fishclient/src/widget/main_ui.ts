@@ -66,6 +66,7 @@ module widget {
         }
 
         public on_maincity(ud: any = null): void {
+            console.log("hahahaha");
             this.fire_event_next_frame(game_event.EVENT_TEST);
         }
 

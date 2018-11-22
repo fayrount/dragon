@@ -74,6 +74,7 @@ var widget;
         };
         main_ui.prototype.on_maincity = function (ud) {
             if (ud === void 0) { ud = null; }
+            console.log("hahahaha");
             this.fire_event_next_frame(game_event.EVENT_TEST);
         };
         main_ui.prototype.on_mainequip = function (ud) {
