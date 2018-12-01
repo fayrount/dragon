@@ -29,16 +29,21 @@ CREATE TABLE `tb_character` (
   `sex` tinyint(4) DEFAULT '1' COMMENT '1男 2女',
   `level` int(10) DEFAULT '1' COMMENT '角色的等级 初始为1',
   `coin` int(20) DEFAULT '10000' COMMENT '玩家的游戏币(金币) 初始为 10000',
-  `gold` int(20) DEFAULT '10000' COMMENT '魔钻 玩家充值购买的商城货币',
   `vipexp` int(20) DEFAULT '0' COMMENT 'vip经验值',
   `town` int(10) DEFAULT '1700' COMMENT '角色所在的场景的ID',
   `position_x` int(10) DEFAULT '0' COMMENT '角色的x坐标',
   `position_y` int(10) DEFAULT '0' COMMENT '角色的y坐标',
-  `energy` int(10) DEFAULT '0' COMMENT '角色的活力值',
-  `exp` int(20) DEFAULT '0' COMMENT '角色的经验值',
   `LastonlineTime` datetime DEFAULT '2007-05-06 00:00:00' COMMENT '最后在线时间',
-  `goldspd` int(20) DEFAULT '0' COMMENT '金币产生速度',
-  `goldtm` float(20,2) DEFAULT '0' COMMENT '上次结算金币时间',
+  `clickgold` int(20) DEFAULT '1' COMMENT 'extragold per click',
+  `clickexp` int(20) DEFAULT '1' COMMENT 'extraexp per click',
+  `lastclicktm` float(20,2) DEFAULT '0' COMMENT 'last click time',
+  `gold` int(20) DEFAULT '10000' COMMENT '魔钻 玩家充值购买的商城货币',
+  `exp` int(20) DEFAULT '0' COMMENT '角色的经验值',
+  `energy` int(10) DEFAULT '0' COMMENT '角色的活力值',
+  `goldspd` float(20,4) DEFAULT '0' COMMENT '金币产生速度',
+  `expspd` float(20,4) DEFAULT '0' COMMENT 'exp production rate',
+  `energyspd` float(20,4) DEFAULT '0' COMMENT 'energy production rate',
+  `goldtm` float(20,2) DEFAULT '0' COMMENT '上次结算时间',
   `tm` float(20,2) DEFAULT '0' COMMENT '创建角色时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000001 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -98,3 +103,89 @@ CREATE TABLE `tb_item_open` (
 
 /*Data for the table `tb_item_open` */
 
+/*Table structure for table `tb_skill` */
+
+DROP TABLE IF EXISTS `tb_skill`;
+
+CREATE TABLE `tb_skill` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `characterId` int(10) DEFAULT '0' COMMENT '所属角色id',
+  `skillid` int(11) DEFAULT '0' COMMENT 'skillid',
+  `skilllv` int(11) NOT NULL DEFAULT '0' COMMENT 'skilllv',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_skill` */
+
+/*Table structure for table `tb_pet` */
+
+DROP TABLE IF EXISTS `tb_pet`;
+
+CREATE TABLE `tb_pet` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'petid',
+  `characterId` int(10) DEFAULT '0' COMMENT '所属角色id',
+  `shape` int(11) DEFAULT '0' COMMENT 'shape',
+  `lv` int(10) NOT NULL DEFAULT '0' COMMENT 'lv',
+  `exp` int(20) NOT NULL DEFAULT '0' COMMENT 'exp',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_pet` */
+
+/*Table structure for table `tb_pet_skill` */
+
+DROP TABLE IF EXISTS `tb_pet_skill`;
+
+CREATE TABLE `tb_pet_skill` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `characterId` int(10) DEFAULT '0' COMMENT '所属角色id',
+  `skillid` int(11) DEFAULT '0' COMMENT 'skillid',
+  `skilllv` int(11) NOT NULL DEFAULT '0' COMMENT 'skilllv',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_pet_skill` */
+
+/*Table structure for table `tb_partner` */
+
+DROP TABLE IF EXISTS `tb_partner`;
+
+CREATE TABLE `tb_partner` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'partnerid',
+  `characterId` int(10) DEFAULT '0' COMMENT '所属角色id',
+  `shape` int(11) DEFAULT '0' COMMENT 'shape',
+  `lv` int(10) NOT NULL DEFAULT '0' COMMENT 'lv',
+  `exp` int(20) NOT NULL DEFAULT '0' COMMENT 'exp',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_partner` */
+
+/*Table structure for table `tb_partner_skill` */
+
+DROP TABLE IF EXISTS `tb_partner_skill`;
+
+CREATE TABLE `tb_partner_skill` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `characterId` int(10) DEFAULT '0' COMMENT '所属角色id',
+  `skillid` int(11) DEFAULT '0' COMMENT 'skillid',
+  `skilllv` int(11) NOT NULL DEFAULT '0' COMMENT 'skilllv',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_partner_skill` */
+
+/*Table structure for table `tb_spec_skill` */
+
+DROP TABLE IF EXISTS `tb_spec_skill`;
+
+CREATE TABLE `tb_spec_skill` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `characterId` int(10) DEFAULT '0' COMMENT '所属角色id',
+  `skillid` int(11) DEFAULT '0' COMMENT 'skillid',
+  `skilllv` int(11) NOT NULL DEFAULT '0' COMMENT 'skilllv',
+  `lasttm` float(20,2) DEFAULT '0' COMMENT '上次结算时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_spec_skill` */
