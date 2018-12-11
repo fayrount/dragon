@@ -136,7 +136,22 @@ Protocol_desc = {
 	'C2S_NPC_RESPOND':[['idx', 'int32', ''],],
 	'S2C_NPC_CHAT':[['id', 'int32', ''],['icon', 'int16', ''],['name', 'string8', ''],['text', 'string16', ''],['textid', 'int32', ''],['opts', 'list8', 'npctalkopt'],],
 	'C2S_ROLE_INFO':[],
-	'S2C_ROLE_INFO':[['lv', 'int16', ''],['gold', 'int32', ''],['goldspd', 'int32', ''],['tm', 'int32', ''],],
+	'S2C_ROLE_INFO':[['lv', 'int16', ''],['shape', 'int16', ''],['gold', 'int32', ''],['exp', 'int32', ''],['goldspd', 'int32', ''],['expspd', 'int32', ''],['stamina', 'int32', ''],['tm', 'int32', ''],],
+	'C2S_PET_INFO':[],
+	'S2C_PET_INFO':[['lv', 'int16', ''],['shape', 'int16', ''],['exp', 'int32', ''],],
+	'C2S_SKILL_INFO':[['id', 'int8', ''],],
+	'S2C_SKILL_INFO':[['id', 'int8', ''],['skill1lv', 'int16', ''],['skill2lv', 'int16', ''],],
+	'C2S_PARTNER_INFO':[],
+	'S2C_PARTNER_INFO':[['lv', 'int16', ''],['shape', 'int16', ''],['exp', 'int32', ''],],
+	'C2S_CLICK':[['x', 'int16', ''],['y', 'int16', ''],],
+	'S2C_CLICK':[['x', 'int16', ''],['y', 'int16', ''],['gold', 'int32', ''],['exp', 'int32', ''],],
+	'C2S_LV_UP':[['id', 'int8', ''],],
+	'C2S_SKILL_LVUP':[['id', 'int8', ''],['skillid', 'int8', ''],],
+	'C2S_SPEC_SKILLINFO':[],
+	'S2C_SPEC_SKILLINFO':[['skill1lv', 'int16', ''],['skill1tm', 'int32', ''],['skill1cd', 'int32', ''],['skill2lv', 'int16', ''],['skill2tm', 'int32', ''],['skill2cd', 'int32', ''],['skill3lv', 'int16', ''],['skill3tm', 'int32', ''],['skill3cd', 'int32', ''],['skill4lv', 'int16', ''],['skill4tm', 'int32', ''],['skill4cd', 'int32', ''],],
+	'C2S_SPEC_SKILL_USE':[['id', 'int8', ''],],
+	'C2S_SPEC_SKILL_LVUP':[['id', 'int8', ''],],
+	'C2S_SKILL_CLICK':[['x', 'int16', ''],['y', 'int16', ''],],
 	'C2S_ITEM_GETLIST':[],
 	'C2S_ITEM_USE':[['id', 'int32', ''],['amount', 'int32', ''],],
 	'C2S_ITEM_MOVE':[['id', 'int32', ''],['dstpos', 'int16', ''],],
@@ -245,6 +260,21 @@ C2S_NPC_RESPOND = 0x161;
 S2C_NPC_CHAT = 0x160;
 C2S_ROLE_INFO = 0x400;
 S2C_ROLE_INFO = 0x400;
+C2S_PET_INFO = 0x430;
+S2C_PET_INFO = 0x430;
+C2S_SKILL_INFO = 0x432;
+S2C_SKILL_INFO = 0x432;
+C2S_PARTNER_INFO = 0x431;
+S2C_PARTNER_INFO = 0x431;
+C2S_CLICK = 0x433;
+S2C_CLICK = 0x433;
+C2S_LV_UP = 0x434;
+C2S_SKILL_LVUP = 0x435;
+C2S_SPEC_SKILLINFO = 0x436;
+S2C_SPEC_SKILLINFO = 0x436;
+C2S_SPEC_SKILL_USE = 0x437;
+C2S_SPEC_SKILL_LVUP = 0x438;
+C2S_SKILL_CLICK = 0x439;
 C2S_ITEM_GETLIST = 0x401;
 C2S_ITEM_USE = 0x180;
 C2S_ITEM_MOVE = 0X402;
