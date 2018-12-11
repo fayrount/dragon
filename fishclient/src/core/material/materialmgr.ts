@@ -72,6 +72,16 @@ module core {
         public del_mat_ref(res:string):void{
             this.get_mat_loader(res).delref();
         }
+        public preload_mat(res:string,extrares:string = "",types:string = ""):void{
+            let mat_loader:material_loader = this.get_mat_loader(res);
+            if(!mat_loader.m_loaded && !mat_loader.m_loading){
+                if(extrares.length > 0){
+                    mat_loader.setextrares(extrares,types);
+                }
+                mat_loader.load_res(0);
+                mat_loader.update_ref_tm();
+            }
+        }
         public update(delta:number):void
         {
             
@@ -186,7 +196,9 @@ module core {
             }
             else{
                 mat_loader.add_unload_mat(mat);
-                mat_loader.load_res(4);
+                if(!mat_loader.m_loading){
+                    mat_loader.load_res(4);
+                }
             }
             mat_loader.addref();
             core.core_tiplog("materialmgr geteffmat load ",aniid,slotpath);
@@ -220,7 +232,9 @@ module core {
             }
             else{
                 mat_loader.add_unload_mat(mat);
-                mat_loader.load_res(4);
+                if(!mat_loader.m_loading){
+                    mat_loader.load_res(4);
+                }
             }
             mat_loader.addref();
             //
@@ -279,7 +293,9 @@ module core {
                 }
                 else{
                     mat_loader.add_unload_mat(mat);
-                    mat_loader.load_res(3);
+                    if(!mat_loader.m_loading){
+                        mat_loader.load_res(3);
+                    }
                 }
                 mat_loader.addref();
                 //
@@ -329,7 +345,9 @@ module core {
                 }
                 else{
                     mat_loader.add_unload_mat(mat);
-                    mat_loader.load_res(3);
+                    if(!mat_loader.m_loading){
+                        mat_loader.load_res(3);
+                    }
                 }
                 mat_loader.addref();
                 //
@@ -384,9 +402,12 @@ module core {
                 mat.load_res();
             }
             else{
-                mat_loader.addextrares(mat.m_ani_path,Laya.Loader.JSON);
                 mat_loader.add_unload_mat(mat);
-                mat_loader.load_res(4);
+                if(!mat_loader.m_loading){
+                    mat_loader.addextrares(mat.m_ani_path,Laya.Loader.JSON);
+                    mat_loader.load_res(4);
+                }
+                
             }
             mat_loader.addref();
             core.core_tiplog("materialmgr getlavataranimat load ",aniid,slotpath);

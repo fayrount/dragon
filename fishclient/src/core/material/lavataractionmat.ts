@@ -53,6 +53,12 @@ module core {
             this.m_framemillsec = 0;
             this.m_frametotalmillsec = 0;
         }
+        public get_frame(idx:number):avatar_ani_frame{
+            if(this.m_frames.length <= 0 || idx < 0 || idx >= this.m_frames.length ){
+                return null;
+            }
+            return this.m_frames[idx];
+        }
         public load_res():void{
             this.m_ani_data = mat_mgr().get_avatar_anidata(this.m_ani_path);
             this.m_atlas_data = mat_mgr().get_avatar_anitalasdata(this.m_atlas_path);
@@ -125,6 +131,12 @@ module core {
             this.m_mm.a = -1;
             this.m_mm.tx = 0;
             this.m_matrix = this.m_m;
+        }
+        public get_texture(idx:number):Laya.Texture{
+            if(this.m_frames.length <= 0 || idx < 0 || idx >= this.m_frames.length || this.m_frames[idx] == null){
+                return null;
+            }
+            return this.m_frames[idx].m_tex;
         }
         public set_mirror(flag:boolean):void{
             this.m_b_mirror = flag;

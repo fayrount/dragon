@@ -63,6 +63,9 @@ module core {
             
         }
         public is_contain(x:number,y:number):boolean{
+            if(this.m_obj == null){
+                return false;
+            }
             return this.m_obj.is_contain(x,y);
         }
     }

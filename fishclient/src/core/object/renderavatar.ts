@@ -156,8 +156,12 @@ module core {
         }
         public draw2sp(sp:Laya.Sprite,x:number,y:number,b_front:boolean = true):void{
             if(this.m_b_loaded && this.m_mat != null && this.m_mat.m_b_loaded&&this.m_front == b_front){
-                let f:avatar_ani_frame = this.m_mat.m_frames[this.m_framecurrent];
-                sp.graphics.drawTexture(f.m_tex,x+f.m_dx+this.m_dx,y+f.m_dy+this.m_dy);
+                //let f:avatar_ani_frame = this.m_mat.m_frames[this.m_framecurrent];
+                let f:avatar_ani_frame = this.m_mat.get_frame(this.m_framecurrent);
+                if(f){
+                    sp.graphics.drawTexture(f.m_tex,x+f.m_dx+this.m_dx,y+f.m_dy+this.m_dy);
+                }
+                
             }
         }
         public update(delta:number):void
@@ -1158,6 +1162,7 @@ module core {
 
         public m_mat:lavataractionmat;
         public m_mat_rt:Laya.Rectangle = new Laya.Rectangle();
+        public m_weapon_behind:boolean = false;
         public m_mat_weapon:lavataractionmat;
         public m_mat_weapon_rt:Laya.Rectangle = new Laya.Rectangle();
         public m_mat_wing:lavataractionmat;
@@ -1240,6 +1245,7 @@ module core {
             }
             this.m_mat_hair = null;
 
+            this.m_weapon_behind = false;
             this.m_shape_weapon = 0;
             this.m_shape_wing = 0;
             this.m_shape_ride = 0;
@@ -1252,7 +1258,7 @@ module core {
             this.m_buffeff_list = new Array<avatar_aura_new>();
             this.m_eff_list = new Array<avatar_aura_new>();
             this.reset_data();
-
+            this.graphics.clear();
         }
         public show_shadow(flag:boolean):void{
             if(flag){
@@ -1284,11 +1290,12 @@ module core {
                 this.m_sp_center.removeSelf();
             }
         }
-        public change_weapon(shape:number):void{
+        public change_weapon(shape:number,behind_body:boolean = false):void{
             if(shape == this.m_shape_weapon){
                 return;
             }
             this.m_shape_weapon = shape;
+            this.m_weapon_behind = behind_body;
         }
         public change_wing(shape:number):void{
             if(shape == this.m_shape_wing){
@@ -1441,7 +1448,7 @@ module core {
             let aura_adorn:avatar_aura_new = utils.getitembycls("avatar_aura_new",avatar_aura_new);
             aura_adorn.re_init(eff_id);
             let id:number = aura_adorn.m_id;
-            this.add_adorn(aura_adorn,true);
+            this.add_adorn(aura_adorn,false);
             this.m_buffeff_list.push(aura_adorn);
             return id;
         }
@@ -1673,15 +1680,19 @@ module core {
                 let matf:lavatartextureframes;
           
                 matf = mat.m_dir_tex[this.m_dir];
-                tex = matf.m_frames[this.m_framecurrent].m_tex;
-                this.graphics.drawTexture(tex,drawx,drawy,mat.m_width,mat.m_height,matf.m_matrix);
-                rt.x = drawx+tex.offsetX;
-                if(b_mirrior){
-                    rt.x = drawx+tex.sourceWidth-tex.offsetX-tex.width;
+                //tex = matf.m_frames[this.m_framecurrent].m_tex;
+                tex = matf.get_texture(this.m_framecurrent);
+                if(tex){
+                    this.graphics.drawTexture(tex,drawx,drawy,mat.m_width,mat.m_height,matf.m_matrix);
+                    rt.x = drawx+tex.offsetX;
+                    if(b_mirrior){
+                        rt.x = drawx+tex.sourceWidth-tex.offsetX-tex.width;
+                    }
+                    rt.y = drawy+tex.offsetY;
+                    rt.width = tex.width;
+                    rt.height = tex.height;
                 }
-                rt.y = drawy+tex.offsetY;
-                rt.width = tex.width;
-                rt.height = tex.height;
+                
             }
             return rt;
         }
@@ -1778,8 +1789,7 @@ module core {
                 }
                 mat = this.m_mat_backride;
                 matf = mat.m_dir_tex[this.m_dir];
-                tex = matf.m_frames[this.m_framecurrent].m_tex;
-
+                
                 let pt:Laya.Point = this.m_mat_backride.get_link(link_dir,3,this.m_framecurrent);
                 let pt1:Laya.Point = this.m_mat_backride.get_link(link_dir,0,this.m_framecurrent);
                 
@@ -1798,41 +1808,61 @@ module core {
                 }
                 
                 drawy = dy+this.m_dy;
-    
-                this.graphics.drawTexture(tex,drawx,drawy,mat.m_width,mat.m_height,matf.m_matrix);
-                this.m_mat_backeride_rt.x = drawx+tex.offsetX;
-                if(b_mirrior){
-                    this.m_mat_backeride_rt.x = drawx+tex.sourceWidth-tex.offsetX-tex.width;
+                
+                //tex = matf.m_frames[this.m_framecurrent].m_tex;
+                tex = matf.get_texture(this.m_framecurrent);
+                if(tex){
+                    this.graphics.drawTexture(tex,drawx,drawy,mat.m_width,mat.m_height,matf.m_matrix);
+                    this.m_mat_backeride_rt.x = drawx+tex.offsetX;
+                    if(b_mirrior){
+                        this.m_mat_backeride_rt.x = drawx+tex.sourceWidth-tex.offsetX-tex.width;
+                    }
+                    this.m_mat_backeride_rt.y = drawy+tex.offsetY;
+                    this.m_mat_backeride_rt.width = tex.width;
+                    this.m_mat_backeride_rt.height = tex.height;
                 }
-                this.m_mat_backeride_rt.y = drawy+tex.offsetY;
-                this.m_mat_backeride_rt.width = tex.width;
-                this.m_mat_backeride_rt.height = tex.height;
+
+                
             }
             //
             if(this.m_dir >=2 && this.m_dir <= 5){
-                this.m_mat_weapon_rt = this._draw_mat(this.m_mat_weapon,3,this.m_mat_weapon_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
+                if(!this.m_weapon_behind){
+                    this.m_mat_weapon_rt = this._draw_mat(this.m_mat_weapon,3,this.m_mat_weapon_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
+                }
             }
             else{
+                if(this.m_weapon_behind){
+                    this.m_mat_weapon_rt = this._draw_mat(this.m_mat_weapon,3,this.m_mat_weapon_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
+                }
                 this.m_mat_wing_rt = this._draw_mat(this.m_mat_wing,1,this.m_mat_wing_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
             }
             
             mat = this.m_mat;
             matf = mat.m_dir_tex[this.m_dir];
-            tex = matf.m_frames[this.m_framecurrent].m_tex;
-            this.graphics.drawTexture(tex,dx+rdx+this.m_dx,dy+rdy+this.m_dy,mat.m_width,mat.m_height,matf.m_matrix);
-            this.m_mat_rt.x = dx+rdx+tex.offsetX+this.m_dx;
-            if(b_mirrior){
-                this.m_mat_rt.x = dx+rdx+tex.sourceWidth-tex.offsetX-tex.width+this.m_dx;
+            //tex = matf.m_frames[this.m_framecurrent].m_tex;
+            tex = matf.get_texture(this.m_framecurrent);
+            if(tex){
+                this.graphics.drawTexture(tex,dx+rdx+this.m_dx,dy+rdy+this.m_dy,mat.m_width,mat.m_height,matf.m_matrix);
+                this.m_mat_rt.x = dx+rdx+tex.offsetX+this.m_dx;
+                if(b_mirrior){
+                    this.m_mat_rt.x = dx+rdx+tex.sourceWidth-tex.offsetX-tex.width+this.m_dx;
+                }
+                this.m_mat_rt.y = dy+rdy+tex.offsetY+this.m_dy;
+                this.m_mat_rt.width = tex.width;
+                this.m_mat_rt.height = tex.height;
             }
-            this.m_mat_rt.y = dy+rdy+tex.offsetY+this.m_dy;
-            this.m_mat_rt.width = tex.width;
-            this.m_mat_rt.height = tex.height;
+            
 
             if(this.m_dir >=2 && this.m_dir <= 5){
                 this.m_mat_wing_rt = this._draw_mat(this.m_mat_wing,1,this.m_mat_wing_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
+                if(this.m_weapon_behind){
+                    this.m_mat_weapon_rt = this._draw_mat(this.m_mat_weapon,3,this.m_mat_weapon_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
+                }
             }
             else{
-                this.m_mat_weapon_rt = this._draw_mat(this.m_mat_weapon,3,this.m_mat_weapon_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
+                if(!this.m_weapon_behind){
+                    this.m_mat_weapon_rt = this._draw_mat(this.m_mat_weapon,3,this.m_mat_weapon_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
+                }
             }
             
             
@@ -1857,15 +1887,19 @@ module core {
 
                 mat = this.m_mat_ride;
                 matf = mat.m_dir_tex[this.m_dir];
-                tex = matf.m_frames[this.m_framecurrent].m_tex;
-                this.graphics.drawTexture(tex,drawx,drawy,mat.m_width,mat.m_height,matf.m_matrix);
-                this.m_mat_ride_rt.x = drawx+tex.offsetX;
-                if(b_mirrior){
-                    this.m_mat_ride_rt.x = drawy+tex.sourceWidth-tex.offsetX-tex.width;
+                //tex = matf.m_frames[this.m_framecurrent].m_tex;
+                tex = matf.get_texture(this.m_framecurrent);
+                if(tex){
+                    this.graphics.drawTexture(tex,drawx,drawy,mat.m_width,mat.m_height,matf.m_matrix);
+                    this.m_mat_ride_rt.x = drawx+tex.offsetX;
+                    if(b_mirrior){
+                        this.m_mat_ride_rt.x = drawy+tex.sourceWidth-tex.offsetX-tex.width;
+                    }
+                    this.m_mat_ride_rt.y = drawy+tex.offsetY;
+                    this.m_mat_ride_rt.width = tex.width;
+                    this.m_mat_ride_rt.height = tex.height;
                 }
-                this.m_mat_ride_rt.y = drawy+tex.offsetY;
-                this.m_mat_ride_rt.width = tex.width;
-                this.m_mat_ride_rt.height = tex.height;
+                
             }
             this.m_mat_hair_rt = this._draw_mat(this.m_mat_hair,2,this.m_mat_hair_rt,dx+rdx+this.m_dx,dy+rdy+this.m_dy,b_body_mirrior,body_link_dir);
             

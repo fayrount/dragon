@@ -7,6 +7,7 @@ module core {
         public m_cur_node_idx:number;
         public m_ret_node:pathnode = null;
         public m_unit_id:number = 0;
+        public m_force_dir:number = -1;
         constructor(spd:number){
             this.m_nodes = new Array<pathnode>();
             this.init(spd);
@@ -15,6 +16,7 @@ module core {
             this.m_speed = spd;
             this.m_ret_node = utils.getitembycls("pathnode",pathnode);
             this.m_ret_node.init(0,0,0,0);
+            this.m_force_dir = -1;
         }
         public push_pt(sx:number,sy:number,dx:number,dy:number):void
         {
@@ -76,6 +78,9 @@ module core {
             this.m_ret_node.x = cur_node.x;
             this.m_ret_node.y = cur_node.y;
             this.m_ret_node.m_dir = this.m_nodes[idx].m_dir;
+            if(this.m_force_dir >= 0){
+                this.m_ret_node.m_dir = this.m_force_dir;
+            }
             return this.m_ret_node;
         }
         public dispose():void
