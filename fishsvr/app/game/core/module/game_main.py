@@ -24,13 +24,15 @@ class game_main(app.base.game_module_mgr.game_module):
 		super(game_main,self).start();
 		self.register_event(EVENT_LOGIN,self.on_login);
 		self.register_event(EVENT_LOGOUT,self.on_logout);
-		self.register_net_event(C2S_ROLE_INFO,self.on_get_roleinfo);
 		self.register_net_event(C2S_ITEM_GETLIST,self.on_get_itemlist);
 		self.register_net_event(C2S_ITEM_USE,self.on_itemuse);
 		self.register_net_event(C2S_ITEM_MOVE,self.on_itemmove);
 		self.register_net_event(C2S_ITEM_BUY,self.on_itembuy);
 		self.register_net_event(C2S_LOGIN_ASYN_TIME,self.on_asyn_time);
 		self.register_event(EVENT_SEND2CLIENT,self._send2client);
+		self.register_net_event(C2S_LV_UP,self.on_req_lvup);
+		self.register_net_event(C2S_SKILL_INFO,self.on_req_skillinfo);
+		self.register_net_event(C2S_SKILL_LVUP,self.on_req_skilllvup);
 		self._init_module();
 		return
 	def _send2client(self,ud):
@@ -40,6 +42,42 @@ class game_main(app.base.game_module_mgr.game_module):
 		buf = netutil.s2c_data2bufbycmd(cmd,data);
 		GlobalObject().remote['gate'].callRemote("pushObject",cmd,buf, [dId])
 		return
+	def on_req_skilllvup(self,ud):
+		dId = ud["dId"];
+		cId = ud["cId"];
+		data = ud["data"];
+		if not self._is_cId_valid(cId):
+			return
+		rid = data["id"];
+		if rid == 1:
+			self.get_module(game_module_def.MAIN_PLAYER).on_req_skilllvup(ud);
+		elif rid == 2:
+			self.get_module(game_module_def.PET).on_req_skilllvup(ud);
+		return
+	def on_req_skillinfo(self,ud):
+		dId = ud["dId"];
+		cId = ud["cId"];
+		data = ud["data"];
+		if not self._is_cId_valid(cId):
+			return
+		rid = data["id"];
+		if rid == 1:
+			self.get_module(game_module_def.MAIN_PLAYER).on_req_skillinfo(ud);
+		elif rid == 2:
+			self.get_module(game_module_def.PET).on_req_skillinfo(ud);
+		return
+	def on_req_lvup(self,ud):
+		dId = ud["dId"];
+		cId = ud["cId"];
+		data = ud["data"];
+		if not self._is_cId_valid(cId):
+			return
+		rid = data["id"];
+		if rid == 1:
+			self.get_module(game_module_def.MAIN_PLAYER).on_req_lvup(ud);
+		elif rid == 2:
+			self.get_module(game_module_def.PET).on_req_lvup(ud);
+		return;
 	def on_asyn_time(self,ud):
 		dId = ud["dId"];
 		cId = ud["cId"];
@@ -60,7 +98,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		c_data['msg'] = msg;
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_NOTIFY_FLOAT,dId,c_data]);
 		return;
-	def _is_cId_valid(self,cId):
+	def _is_cId_valid(self,cId):#其实就是角色是否在线的判定
 		return self.character_map.has_key(cId);
 	def on_login(self,ud):
 		dId = ud["dId"];
@@ -82,49 +120,6 @@ class game_main(app.base.game_module_mgr.game_module):
 		itemlist = memmode.tb_item_admin.getAllPkByFk(cId)
 		itemobjlist = memmode.tb_item_admin.getObjList(itemlist)
 		return itemobjlist
-	def _sync_role_gold(self,cId):
-		c_data = memmode.tb_character_admin.getObj(cId);
-		if not c_data:
-			log.msg('_sync_role_gold err %d'%(cId));
-			return False
-
-		c_info = c_data.get('data');
-		gold = c_info['gold'];
-		goldspd = c_info['goldspd'];
-		goldtm = c_info['goldtm'];
-		tm = c_info['tm'];
-		if int(goldtm) == 0:
-			goldtm = tm;
-		svr_tm = helper.get_svr_tm();
-		plus_tm = svr_tm - goldtm;
-
-		tgoldspd = 0;
-		itemlist = self._get_itemlist_by_cId(cId);
-		for itemobj in itemlist:
-			idata = itemobj.get('data');
-			used = idata['used']
-			if used != 0:
-				tgoldspd += self._get_item_goldspd(idata['shape']);
-		goldspd = tgoldspd;
-		plus_gold = goldspd*plus_tm;
-		gold += plus_gold;
-		c_data.update_multi({"gold":gold,"goldspd":goldspd,"goldtm":goldtm});
-		return True
-	def on_get_roleinfo(self,ud):
-		dId = ud["dId"];
-		cId = ud["cId"];
-		if not self._is_cId_valid(cId):
-			return
-		
-		if not self._sync_role_gold(cId):
-			self._float_msg(lang_config.LANG_CALCGOLDFAILED+' %d'%cId);
-			log.msg('sync_role_gold err %d'%(cId));
-			return
-		if not self._push_role_info(dId,cId):
-			self._float_msg(lang_config.LANG_INVALID_ROLE+' %d'%cId);
-			log.msg('_push_role_info err %d'%(cId));
-			return
-		return
 	def _add_gold(self,dId,cId,count):
 		c_data = memmode.tb_character_admin.getObj(cId);
 		if not c_data:
@@ -133,22 +128,6 @@ class game_main(app.base.game_module_mgr.game_module):
 		gold = c_info['gold'];
 		c_data.update_multi({"gold":gold+count});
 		return True
-	def _push_role_info(self,dId,cId):
-		c_info = memmode.tb_character_admin.getObjData(cId);
-		if not c_info:
-			return False
-		lv = c_info['level']
-		gold = c_info['gold'];
-		goldspd = c_info['goldspd'];
-		goldtm = c_info['goldtm'];
-		
-		send_data = {};
-		send_data['lv'] = lv;
-		send_data['gold'] = gold;
-		send_data['goldspd'] = goldspd;
-		send_data['tm'] = goldtm;
-		self.fire_event(EVENT_SEND2CLIENT,[S2C_ROLE_INFO,dId,send_data]);
-		return True;
 	def _gen_senditemdata(self,id,shape,used,pos):
 		ret = {};
 		ret['id'] = id;
@@ -205,8 +184,6 @@ class game_main(app.base.game_module_mgr.game_module):
 		send_data['pos'] = itemdata['pos'];
 		send_data['amount'] = itemdata['amount'];
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_ITEM_UPDATE,dId,send_data]);
-		if self._sync_role_gold(cId):
-			self._push_role_info(dId,cId);
 		return
 	def _get_result_merge(self,srcshape,dstshape):
 		for k,v in app.config.itemmerge.itemmerge_map.items():
