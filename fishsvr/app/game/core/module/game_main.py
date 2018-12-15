@@ -53,6 +53,8 @@ class game_main(app.base.game_module_mgr.game_module):
 			self.get_module(game_module_def.MAIN_PLAYER).on_req_skilllvup(ud);
 		elif rid == 2:
 			self.get_module(game_module_def.PET).on_req_skilllvup(ud);
+		elif rid == 3:
+			self.get_module(game_module_def.PARTNER).on_req_skilllvup(ud);
 		return
 	def on_req_skillinfo(self,ud):
 		dId = ud["dId"];
@@ -65,6 +67,8 @@ class game_main(app.base.game_module_mgr.game_module):
 			self.get_module(game_module_def.MAIN_PLAYER).on_req_skillinfo(ud);
 		elif rid == 2:
 			self.get_module(game_module_def.PET).on_req_skillinfo(ud);
+		elif rid == 3:
+			self.get_module(game_module_def.PARTNER).on_req_skillinfo(ud);
 		return
 	def on_req_lvup(self,ud):
 		dId = ud["dId"];
@@ -77,6 +81,8 @@ class game_main(app.base.game_module_mgr.game_module):
 			self.get_module(game_module_def.MAIN_PLAYER).on_req_lvup(ud);
 		elif rid == 2:
 			self.get_module(game_module_def.PET).on_req_lvup(ud);
+		elif rid == 3:
+			self.get_module(game_module_def.PARTNER).on_req_lvup(ud);
 		return;
 	def on_asyn_time(self,ud):
 		dId = ud["dId"];
