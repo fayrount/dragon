@@ -15,13 +15,11 @@ def doWhenStop():
     """
     #todo
     #在这里做所有角色强制下线前的数据处理，主要用在有状态缓存的模块
+    return
     
 GlobalObject().stophandler = doWhenStop
 
 def loadModule():
-    """
-    """
-    
     load_config_data()
     registe_madmin()
     from gatenodeapp import *
