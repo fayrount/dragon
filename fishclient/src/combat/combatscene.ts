@@ -278,8 +278,8 @@ module combat{
             this.m_view_w = 720;
             this.m_view_h = 1280;
             this.m_render.setviewport(this.m_view_w,this.m_view_h);
-            sp.width = this.m_view_w;
-            sp.height = this.m_view_h;
+            sp.width = this.m_mw;
+            sp.height = this.m_mh;
             //
             this.m_render.setcamerapos(this.m_camera_x,this.m_camera_y);
             //
@@ -496,6 +496,11 @@ module combat{
                 this.m_lineupsp.dispose();
                 this.m_lineupsp = null;
             }
+        }
+        public set_viewport(w:number,h:number):void{
+            this.m_view_w = w;
+            this.m_view_h = h;
+            this.m_render.setviewport(w,h);
         }
         private on_enter(user_data:any):void{
             //this.m_render.setmapbk(this.m_map);
@@ -1089,11 +1094,28 @@ module combat{
             let x:number = user_data["x"];
             let y:number = user_data["y"];
             this.m_render.unit_walk2(this.get_warrior_avatarid(src),x,y,true,true);
+            let fdir:number = -1;
+            if(user_data["forcedir"] != null){
+                fdir = user_data["forcedir"];
+                let p:core.path = this.m_render.get_unit_walk(this.get_warrior_avatarid(src));
+                if(p != null){
+                    p.m_force_dir = fdir;
+                }
+            }
         }
         private on_warriormoveback(user_data:any):void{
             let src:number = user_data["src"];
+            
             let pos:laya.maths.Point = this.get_pos(this.get_posid_bywid(src));
             this.m_render.unit_walk2(this.get_warrior_avatarid(src),pos.x,pos.y,true,true);
+            let fdir:number = -1;
+            if(user_data["forcedir"] != null){
+                fdir = user_data["forcedir"];
+                let p:core.path = this.m_render.get_unit_walk(this.get_warrior_avatarid(src));
+                if(p != null){
+                    p.m_force_dir = fdir;
+                }
+            }
         }
         private on_warriormove2warrior(user_data:any):void{
             let src:number = user_data["src"];
@@ -1108,6 +1130,14 @@ module combat{
                 pos.y -= this.m_pos_dy;
             }
             this.m_render.unit_walk2(this.get_warrior_avatarid(src),pos.x,pos.y,true,true);
+            let fdir:number = -1;
+            if(user_data["forcedir"] != null){
+                fdir = user_data["forcedir"];
+                let p:core.path = this.m_render.get_unit_walk(this.get_warrior_avatarid(src));
+                if(p != null){
+                    p.m_force_dir = fdir;
+                }
+            }
         }
         
         private on_warriordir2w(user_data:any):void{

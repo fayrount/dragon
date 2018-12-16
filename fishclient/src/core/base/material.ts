@@ -150,9 +150,10 @@ module core {
             this.m_unload_mat = new Object();
         }
         public addextrares(res:string,types:string){
-            if(this.m_loading){
-                return;
-            }
+            this.m_extra_res.push({url:res,type:types});
+        }
+        public setextrares(res:string,types:string){
+            this.m_extra_res = new Array<any>();
             this.m_extra_res.push({url:res,type:types});
         }
         public load_res(line:number):void{
@@ -180,8 +181,11 @@ module core {
         {
             this.m_ref--;
             if(this.m_ref <= 0){
-                this.m_ref_tm = Laya.Browser.now();
+                this.update_ref_tm();
             }
+        }
+        public update_ref_tm():void{
+            this.m_ref_tm = Laya.Browser.now();
         }
         public check_release():boolean{
             if(!this.m_loaded){

@@ -71,6 +71,9 @@ module core {
         public check_release():void{
             mat_mgr().check_release();
         }
+        public preload_matres(res:string,extrares:string = "",types:string = ""):void{
+            mat_mgr().preload_mat(res,extrares,types);
+        }
         public clearmap():void{
             this.m_render.m_scene.m_map.clear();
         }

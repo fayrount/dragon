@@ -20,7 +20,6 @@ module net{
         protected m_tmp_buf:Laya.Byte;
         protected m_buf_handle:protocolbuf.protocolbuf = new protocolbuf.protocolbuf();
         protected m_buff:laya.utils.Byte = new laya.utils.Byte();
-        protected m_recv_temp:Laya.Byte = new Laya.Byte();
         constructor()
         {
             this.m_byte = new Laya.Byte();
@@ -95,16 +94,14 @@ module net{
             core.net_errlog("=======openHandler ",event);
             //正确建立连接；
             this.m_b_connect = true;
-            utils.event_ins().fire_event(game_event.EVENT_NET_CONNECTED);
+            utils.event_ins().fire_event(game_event.EVENT_NET_CONNECTED,this);
         }
         protected receiveHandler(msg: any = null): void {
             ///接收到数据触发函数
-            core.net_errlog("=======receiveHandler ",msg,typeof(msg));
-            this.m_recv_temp.clear();
-            this.m_recv_temp.writeArrayBuffer(msg);
-            this.m_recv_temp.pos = 0;
-            while(this.m_recv_temp.bytesAvailable > 0){
-                this.m_buff.writeUint8(this.m_recv_temp.getUint8());
+            //core.net_errlog("=======receiveHandler ",msg,typeof(msg));
+            let recvbuff:laya.utils.Byte = msg as laya.utils.Byte;
+            for(let i:number = 0;i < recvbuff.length;++i){
+                this.m_buff.writeUint8(recvbuff.getUint8());
             }
 
             //let data:{} = this.m_buf_handle.s2c_buf2data(this.m_socket.input);
@@ -118,7 +115,6 @@ module net{
         protected _on_split_netpack():void{
             //core.net_errlog("TL_Login_net receiveHandler normal pkg ",this.m_buff);
             //this._print_pkg(this.m_buff,"split buff ");
-            this.m_buff.pos = 0;
             while(this.m_buff.bytesAvailable > 0){
                 let data:{} = this.m_buf_handle.s2c_buf2data(this.m_buff);
                 if(data == null){
@@ -144,13 +140,13 @@ module net{
         protected closeHandler(e: any = null): void {
             //关闭事件
             core.net_errlog("=======closeHandler ",e);
-            utils.event_ins().fire_event(game_event.EVENT_NET_CLOSED,e);
+            utils.event_ins().fire_event(game_event.EVENT_NET_CLOSED,[e,this]);
             this.close();
         }
         protected errorHandler(e: any = null): void {
             //连接出错
             core.net_errlog("=======errorHandler ",e);
-            utils.event_ins().fire_event(game_event.EVENT_NET_ERROR,e);
+            utils.event_ins().fire_event(game_event.EVENT_NET_ERROR,[e,this]);
             this.close();
         }
         public connect(host:string,port:number,svrid:number = 11):void
@@ -221,6 +217,16 @@ module net{
                 for(let i of this.m_recv_list)
                 {
                     utils.event_ins().fire_event(game_event.gen_netcmd_event(i.m_cmd),i.m_data);
+                }
+                this.m_recv_list = new Array<protocol_item>();
+            }
+        }
+        public update2():void{
+            if(this.m_recv_list.length > 0)
+            {
+                for(let i of this.m_recv_list)
+                {
+                    utils.event_ins().fire_event(game_event.gen_netcmd_event(i.m_cmd),[i.m_data,this]);
                 }
                 this.m_recv_list = new Array<protocol_item>();
             }
@@ -743,7 +749,7 @@ module net{
                 this.m_parent.on_notify("connect succeed");
             }
             core.net_errlog("connected succeed");
-            utils.event_ins().fire_event(game_event.EVENT_NET_CONNECTED);
+            utils.event_ins().fire_event(game_event.EVENT_NET_CONNECTED,this);
             if(this.m_buff.length > 0){
                 this.m_buff.pos = 0;
                 this._decrypt_buff(this.m_buff);
@@ -855,6 +861,9 @@ module net{
             }
         }
         public send_raw_buff(cmd:number,buff:Laya.Byte):void{
+            if(!this.m_b_connected){
+                return;
+            }
             core.net_errlog("send_raw_buff ",cmd.toString(16),buff.length);
             this.m_sendbuff.clear();
             this.m_sendbuff.endian = Laya.Byte.LITTLE_ENDIAN;
@@ -869,7 +878,6 @@ module net{
         public send(cmd:number,data:Object = null):void
         {
             if(!this.m_b_connected){
-                alert("Have not connected to svr");
                 return;
             }
             core.net_errlog("send ",cmd.toString(16),data);
