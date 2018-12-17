@@ -19,6 +19,9 @@ class game_main(app.base.game_module_mgr.game_module):
 		return
 	def _init_module(self):
 		self.get_module(game_module_def.GM_MAIN).start();
+		self.get_module(game_module_def.MAIN_PLAYER).start();
+		self.get_module(game_module_def.PET).start();
+		self.get_module(game_module_def.PARTNER).start();
 		return
 	def start(self):
 		super(game_main,self).start();
