@@ -10,6 +10,9 @@ import app.util.lang_config as lang_config
 import app.game.memmode as memmode
 from firefly.server.globalobject import GlobalObject
 import app.game.core.game_module_def as game_module_def
+import app.config.pet_exp
+import app.config.petskill1
+import app.config.petskill2
 class pet(app.base.game_module_mgr.game_module):
 	def __init__(self):
 		super(pet,self).__init__();
