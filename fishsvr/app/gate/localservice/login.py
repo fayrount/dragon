@@ -32,6 +32,7 @@ def loginToServer_275(key,dynamicId,request_proto):
     #    GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN,buf, [dynamicId]);
     #    return
     oldUser = UsersManager().getUserByUsername(username)
+    u = oldUser;
     if oldUser:
         if oldUser.dynamicId != dynamicId:
             response = {}
@@ -43,24 +44,22 @@ def loginToServer_275(key,dynamicId,request_proto):
         response["flag"] = 1;
         buf = netutil.s2c_data2buf("S2C_LOGIN_OK",response)
         GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN_OK,buf, [dynamicId]);
-        return
-
-    u = User(username,password,dynamicId);
-    if not u.CheckEffective():
+    else:
+        u = User(username,password,dynamicId);
+        if not u.CheckEffective():
+            response = {}
+            response["errcode"] = 2;
+            response["errmsg"] = "account is banned";
+            buf = netutil.s2c_data2buf("S2C_LOGIN",response)
+            GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN,buf, [dynamicId]);
+            return;
+        UsersManager().addUser(u);
         response = {}
-        response["errcode"] = 2;
-        response["errmsg"] = "account is banned";
-        buf = netutil.s2c_data2buf("S2C_LOGIN",response)
-        GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN,buf, [dynamicId]);
-        return;
-    UsersManager().addUser(u);
-    response = {}
-    response["flag"] = 0;
-    buf = netutil.s2c_data2buf("S2C_LOGIN_OK",response)
-    GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN_OK,buf, [dynamicId]);
-
-    if u.characterId == 0:
-        u.creatNewCharacter("character_%d"%(u.id),0,0,helper.get_svr_tm());
+        response["flag"] = 0;
+        buf = netutil.s2c_data2buf("S2C_LOGIN_OK",response)
+        GlobalObject().root.callChild("net","pushObject",ProtocolDesc.S2C_LOGIN_OK,buf, [dynamicId]);
+        if u.characterId == 0:
+            u.creatNewCharacter("character_%d"%(u.id),0,0,helper.get_svr_tm());
     response = {}
     roleinfo = {"rid":u.characterId,"shape":0,"cls":0,"grade":0,"desc":"","flag":0,"newtm":0,"theme":0,"name":"","offline":0,"logintm":0,"orgsrvid":0};
     response["roles"] = [roleinfo];
