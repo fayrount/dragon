@@ -88,6 +88,9 @@ var GameMain = /** @class */ (function () {
     GameMain.prototype.start_preload = function () {
         var assets = [];
         assets.push({ url: "ui.json", type: Laya.Loader.JSON });
+        assets.push({ url: "res/atlas/ui.atlas", type: Laya.Loader.ATLAS });
+        assets.push({ url: "res/atlas/ui/bk.atlas", type: Laya.Loader.ATLAS });
+        assets.push({ url: "res/atlas/ui/bk1.atlas", type: Laya.Loader.ATLAS });
         assets.push({ url: "config.json", type: Laya.Loader.JSON });
         //
         for (var _i = 0, assets_2 = assets; _i < assets_2.length; _i++) {

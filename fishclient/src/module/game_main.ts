@@ -26,6 +26,8 @@ module game{
 
             Laya.stage.addChild(this.m_ui_sp);
 
+            
+
             this.register_net_event(protocol_def.S2C_NOTIFY_MESSAGE,this.on_svr_messagebox);
             this.register_net_event(protocol_def.S2C_WEBSOCKET_HELLO,this.on_svr_notify);
             this.register_net_event(protocol_def.S2C_LOGIN,this.on_login_err);
@@ -34,11 +36,10 @@ module game{
             this.register_net_event(protocol_def.S2C_NOTIFY_FLOAT,this.on_notifyfloat);
             this.register_net_event(protocol_def.S2C_LOGIN_SELECTROLE,this.on_selectrole);
             this.register_net_event(protocol_def.S2C_LOGIN_ROLEINFO,this.on_roleid);
-            this.register_net_event(protocol_def.S2C_ROLE_INFO,this.on_get_roleinfo);
+            
             this.register_net_event(protocol_def.S2C_ITEM_LIST,this.on_get_itemlist);
             this.register_net_event(protocol_def.S2C_ASYNTIME,this.on_sync_svrtime);
-            
-            utils.widget_ins().show_widget(widget_enum.WIDGET_MAINUI,true);
+
             this.register_event(game_event.EVENT_NET_CONNECTED,this.on_net_connected);
             this.register_event(game_event.EVENT_NET_CLOSED,this.on_net_closed);
             this.register_event(game_event.EVENT_NET_ERROR,this.on_net_error);
@@ -48,6 +49,12 @@ module game{
             this.register_event(game_event.EVENT_TEST3,this.on_testfunc3);
 
             timer.timer_ins().add_timer(1000,this,this.on_1s_tick);
+
+            get_module(module_enum.MODULE_PLAYER).start();
+
+            utils.widget_ins().show_widget(widget_enum.WIDGET_MAINUI,true);
+            utils.widget_ins().show_widget(widget_enum.WIDGET_MAINTOPUI,true);
+
 
             net.net_ins().connect("123.207.239.21",11009);
         }
@@ -154,18 +161,7 @@ module game{
                 this.m_itemlist.push(i);
             }
         }
-        private on_get_roleinfo(ud:any = null):void{
-            console.log("on_get_roleinfo ",ud);
-            let lv:number = ud['lv'];
-            let shape:number = ud['shape'];
-            let exp:number = ud['exp'];
-            let gold:number = ud['gold'];
-            let expspd:number = ud['expspd'];
-            let goldspd:number = ud['goldspd'];
-            let stamina:number = ud['stamina'];
-            let tm:number = ud['tm'];
-            console.log("info:",lv,shape,exp,gold,expspd,goldspd,stamina,tm);
-        }
+        
         private on_selectrole(ud:any = null):void{
             console.log("on_selectrole ",ud);
             net.net_ins().send(protocol_def.C2S_ROLE_INFO,{});

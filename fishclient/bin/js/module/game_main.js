@@ -19,7 +19,6 @@ var game;
             _this.m_itemlist = new Array();
             _this.m_svr_tm = 0;
             _this.m_svr_clitm = 0;
-            _this.m_svr_clireqtm = 0;
             frametask.add_task(_this, _this.update30, 1);
             frametask.add_task(_this, _this.update20, 2);
             frametask.add_task(_this, _this.update10, 6);
@@ -43,10 +42,8 @@ var game;
             this.register_net_event(protocol_def.S2C_NOTIFY_FLOAT, this.on_notifyfloat);
             this.register_net_event(protocol_def.S2C_LOGIN_SELECTROLE, this.on_selectrole);
             this.register_net_event(protocol_def.S2C_LOGIN_ROLEINFO, this.on_roleid);
-            this.register_net_event(protocol_def.S2C_ROLE_INFO, this.on_get_roleinfo);
             this.register_net_event(protocol_def.S2C_ITEM_LIST, this.on_get_itemlist);
             this.register_net_event(protocol_def.S2C_ASYNTIME, this.on_sync_svrtime);
-            utils.widget_ins().show_widget(widget_enum.WIDGET_MAINUI, true);
             this.register_event(game_event.EVENT_NET_CONNECTED, this.on_net_connected);
             this.register_event(game_event.EVENT_NET_CLOSED, this.on_net_closed);
             this.register_event(game_event.EVENT_NET_ERROR, this.on_net_error);
@@ -55,6 +52,9 @@ var game;
             this.register_event(game_event.EVENT_TEST2, this.on_testfunc2);
             this.register_event(game_event.EVENT_TEST3, this.on_testfunc3);
             timer.timer_ins().add_timer(1000, this, this.on_1s_tick);
+            game.get_module(module_enum.MODULE_PLAYER).start();
+            utils.widget_ins().show_widget(widget_enum.WIDGET_MAINUI, true);
+            utils.widget_ins().show_widget(widget_enum.WIDGET_MAINTOPUI, true);
             net.net_ins().connect("123.207.239.21", 11009);
         };
         game_main.prototype.on_net_error = function (ud) {
@@ -99,17 +99,23 @@ var game;
             console.log("req_svr_tm ");
             var curtm = laya.utils.Browser.now() / 1000;
             net.net_ins().send(protocol_def.C2S_LOGIN_ASYN_TIME, { "time": curtm, "sign": "" });
-            this.m_svr_clireqtm = curtm;
+        };
+        game_main.prototype.get_svr_tm = function () {
+            if (this.m_svr_clitm == 0) {
+                return 0;
+            }
+            var curclitm = laya.utils.Browser.now() / 1000;
+            var delta = curclitm - this.m_svr_clitm;
+            return this.m_svr_tm + delta;
         };
         game_main.prototype.on_sync_svrtime = function (ud) {
             if (ud === void 0) { ud = null; }
             console.log("on_sync_svrtime ", ud);
             var clitm = ud["time"];
             var svrtm = ud["srvtime"];
-            var curclitm = laya.utils.Browser.now() / 1000;
-            var delta = curclitm - clitm;
-            this.m_svr_tm = svrtm - delta;
-            console.log("on_sync_svrtime cur svrtm ", svrtm, clitm, delta, this.m_svr_tm);
+            this.m_svr_tm = svrtm;
+            this.m_svr_clitm = clitm;
+            console.log("on_sync_svrtime cur svrtm ", clitm, this.m_svr_tm);
         };
         game_main.prototype.on_testfunc2 = function (ud) {
             if (ud === void 0) { ud = null; }
@@ -165,19 +171,6 @@ var game;
                 idx += 1;
                 this.m_itemlist.push(i);
             }
-        };
-        game_main.prototype.on_get_roleinfo = function (ud) {
-            if (ud === void 0) { ud = null; }
-            console.log("on_get_roleinfo ", ud);
-            var lv = ud['lv'];
-            var shape = ud['shape'];
-            var exp = ud['exp'];
-            var gold = ud['gold'];
-            var expspd = ud['expspd'];
-            var goldspd = ud['goldspd'];
-            var stamina = ud['stamina'];
-            var tm = ud['tm'];
-            console.log("info:", lv, shape, exp, gold, expspd, goldspd, stamina, tm);
         };
         game_main.prototype.on_selectrole = function (ud) {
             if (ud === void 0) { ud = null; }
