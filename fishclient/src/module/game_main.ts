@@ -4,10 +4,18 @@ module game{
         private m_curtime:number = 0;
         private m_roleid:number = 0;
         private m_itemlist:Array<Object> = new Array<Object>();
+        private m_svr_tm:number = 0;
+        private m_svr_clitm:number = 0;
         constructor()
         {
             super();
-            
+            frametask.add_task(this,this.update30,1);
+            frametask.add_task(this,this.update20,2);
+            frametask.add_task(this,this.update10,6);
+            frametask.add_task(this,this.update1,60);
+        }
+        private on_1s_tick():void{
+            this.fire_event_next_frame(game_event.EVENT_TIMER_TICK_1S);
         }
         public start(){
             super.start();
@@ -28,6 +36,7 @@ module game{
             this.register_net_event(protocol_def.S2C_LOGIN_ROLEINFO,this.on_roleid);
             this.register_net_event(protocol_def.S2C_ROLE_INFO,this.on_get_roleinfo);
             this.register_net_event(protocol_def.S2C_ITEM_LIST,this.on_get_itemlist);
+            this.register_net_event(protocol_def.S2C_ASYNTIME,this.on_sync_svrtime);
             
             utils.widget_ins().show_widget(widget_enum.WIDGET_MAINUI,true);
             this.register_event(game_event.EVENT_NET_CONNECTED,this.on_net_connected);
@@ -38,11 +47,9 @@ module game{
             this.register_event(game_event.EVENT_TEST2,this.on_testfunc2);
             this.register_event(game_event.EVENT_TEST3,this.on_testfunc3);
 
+            timer.timer_ins().add_timer(1000,this,this.on_1s_tick);
 
             net.net_ins().connect("123.207.239.21",11009);
-            let i:Object = config.Item.get_Item(1001);
-            let shape:number = i["shape"];
-
         }
         private on_net_error(ud:any = null):void{
             console.log("on_net_error");
@@ -76,6 +83,28 @@ module game{
         }
         private on_login_ok(ud:any = null):void{
             console.log("on_login_ok ",ud);
+        }
+        private req_svr_tm():void{
+            console.log("req_svr_tm ");
+            let curtm:number = laya.utils.Browser.now()/1000;
+            net.net_ins().send(protocol_def.C2S_LOGIN_ASYN_TIME,{"time":curtm,"sign":""});
+        }
+        public get_svr_tm():number{
+            if(this.m_svr_clitm == 0){
+                return 0;
+            }
+            let curclitm:number = laya.utils.Browser.now()/1000;
+            let delta:number = curclitm - this.m_svr_clitm;
+            return this.m_svr_tm + delta;
+        }
+        private on_sync_svrtime(ud:any = null):void{
+            console.log("on_sync_svrtime ",ud);
+            let clitm:number = ud["time"];
+            let svrtm:number = ud["srvtime"];
+            
+            this.m_svr_tm = svrtm;
+            this.m_svr_clitm = clitm;
+            console.log("on_sync_svrtime cur svrtm ",clitm,this.m_svr_tm);
         }
         private on_testfunc2(ud:any = null):void{
             console.log("on_testfunc2 move item",ud);
@@ -128,15 +157,20 @@ module game{
         private on_get_roleinfo(ud:any = null):void{
             console.log("on_get_roleinfo ",ud);
             let lv:number = ud['lv'];
+            let shape:number = ud['shape'];
+            let exp:number = ud['exp'];
             let gold:number = ud['gold'];
+            let expspd:number = ud['expspd'];
             let goldspd:number = ud['goldspd'];
+            let stamina:number = ud['stamina'];
             let tm:number = ud['tm'];
-            console.log("info:",lv,gold,goldspd,tm);
+            console.log("info:",lv,shape,exp,gold,expspd,goldspd,stamina,tm);
         }
         private on_selectrole(ud:any = null):void{
             console.log("on_selectrole ",ud);
             net.net_ins().send(protocol_def.C2S_ROLE_INFO,{});
             net.net_ins().send(protocol_def.C2S_ITEM_GETLIST,{});
+            this.req_svr_tm();
         }
         private on_login_err(ud:any = null):void{
             console.log("on_login_err ",ud);
@@ -147,19 +181,33 @@ module game{
         private on_svr_messagebox(ud:any = null):void{
 
         }
+        public update30():void{
+            //update here
+            timer.timer_ins().update(laya.utils.Browser.now());
+        }
+        public update20():void{
 
+        }
         public update10():void{
             utils.event_ins().dispatch_all_delay_event();
             net.net_ins().update();
         }
         public update1():void{
-            //utils.widget_ins().check_release();
+            utils.widget_ins().check_release();
         }
         public update(d:number):void
         {
             this.update10();
             //
-            
+            if(this.m_curtime == 0){
+                this.m_curtime = laya.utils.Browser.now();
+                return;
+            }
+            let nowtime:number = laya.utils.Browser.now();
+            //render here
+            let nowtimeafterrender:number = laya.utils.Browser.now();
+            let tm_total:number = 17;
+            frametask.run(tm_total - nowtimeafterrender + nowtime);
         }
         public dispose()
         {

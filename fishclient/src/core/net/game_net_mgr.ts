@@ -99,7 +99,8 @@ module net{
         protected receiveHandler(msg: any = null): void {
             ///接收到数据触发函数
             //core.net_errlog("=======receiveHandler ",msg,typeof(msg));
-            let recvbuff:laya.utils.Byte = msg as laya.utils.Byte;
+            //let recvbuff:laya.utils.Byte = msg as laya.utils.Byte;
+            let recvbuff:laya.utils.Byte = this.m_socket.input as laya.utils.Byte;
             for(let i:number = 0;i < recvbuff.length;++i){
                 this.m_buff.writeUint8(recvbuff.getUint8());
             }
@@ -109,6 +110,7 @@ module net{
             //let recv:{} = data['data'];
             //this.m_recv_list.push(new protocol_item(cmd,recv));
             //core.net_errlog("recv ",cmd,recv);
+            this.m_buff.pos = 0;
             this._on_split_netpack();
         }
         //

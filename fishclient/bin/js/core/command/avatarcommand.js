@@ -72,6 +72,9 @@ var core;
             }
         };
         avatarcommand_new.prototype.is_contain = function (x, y) {
+            if (this.m_obj == null) {
+                return false;
+            }
             return this.m_obj.is_contain(x, y);
         };
         return avatarcommand_new;

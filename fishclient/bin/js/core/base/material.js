@@ -150,9 +150,10 @@ var core;
             this.m_unload_mat = new Object();
         };
         material_loader.prototype.addextrares = function (res, types) {
-            if (this.m_loading) {
-                return;
-            }
+            this.m_extra_res.push({ url: res, type: types });
+        };
+        material_loader.prototype.setextrares = function (res, types) {
+            this.m_extra_res = new Array();
             this.m_extra_res.push({ url: res, type: types });
         };
         material_loader.prototype.load_res = function (line) {
@@ -178,8 +179,11 @@ var core;
         material_loader.prototype.delref = function () {
             this.m_ref--;
             if (this.m_ref <= 0) {
-                this.m_ref_tm = Laya.Browser.now();
+                this.update_ref_tm();
             }
+        };
+        material_loader.prototype.update_ref_tm = function () {
+            this.m_ref_tm = Laya.Browser.now();
         };
         material_loader.prototype.check_release = function () {
             if (!this.m_loaded) {

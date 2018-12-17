@@ -63,6 +63,11 @@ var core;
         renderagent.prototype.check_release = function () {
             core.mat_mgr().check_release();
         };
+        renderagent.prototype.preload_matres = function (res, extrares, types) {
+            if (extrares === void 0) { extrares = ""; }
+            if (types === void 0) { types = ""; }
+            core.mat_mgr().preload_mat(res, extrares, types);
+        };
         renderagent.prototype.clearmap = function () {
             this.m_render.m_scene.m_map.clear();
         };
