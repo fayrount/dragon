@@ -99,7 +99,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		svr_tm = helper.get_svr_tm();
 		send_data = {};
 		send_data['srvtime'] = svr_tm;
-		send_data['time'] = send_data;
+		send_data['time'] = client_tm;
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_ASYNTIME,dId,send_data]);
 		return
 	def _float_msg(self,dId,msg):
