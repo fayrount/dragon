@@ -18,7 +18,7 @@ class pet(app.base.game_module_mgr.game_module):
 		self.open_lv = 10;
 		self.lv_max = 99;
 		self.skill1id = 1;
-		self,skill2id = 2;
+		self.skill2id = 2;
 		self.skill1lv_max = 99;
 		self.skill2lv_max = 99;
 		return
