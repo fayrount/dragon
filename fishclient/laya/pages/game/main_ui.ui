@@ -2,7 +2,7 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":1,
-    "selecteID":8,
+    "selecteID":19,
     "props":{"y":0,"width":1440,"sceneColor":"#000000","left":0,"height":254},
     "nodeParent":-1,
     "label":"Dialog",
@@ -23,7 +23,8 @@
             "hasChild":false,
             "compId":2,
             "child":[
-                ]
+                ],
+            "$HIDDEN":false
         },
         {
             "x":15,
@@ -153,7 +154,8 @@
             "hasChild":false,
             "compId":15,
             "child":[
-                ]
+                ],
+            "$LOCKED":true
         },
         {
             "x":15,

@@ -106,7 +106,7 @@ class GameMain{
         //net.net_ins().connect()
         //net.net_ins().send()
 
-        data.init_data_module();
+        game.init_data_module();
         widget.init_game_widget();
         game.init_game_module();
         this.m_game_start = true;

@@ -2,8 +2,8 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":2,
-    "props":{"width":852,"sceneColor":"#000000","height":480},
+    "selecteID":15,
+    "props":{"width":2560,"sceneColor":"#000000","height":1440},
     "nodeParent":-1,
     "label":"View",
     "isOpen":true,
@@ -14,28 +14,227 @@
     "child":[
         {
             "x":15,
-            "type":"UIView",
-            "source":"demo/GoldBox.ui",
-            "props":{"y":7,"x":390,"var":"goldBox"},
+            "type":"Image",
+            "props":{"y":0,"x":0,"width":5120,"skin":"demo/seafloor1.jpg","name":"bg","height":1440},
             "nodeParent":1,
-            "label":"UIView(goldBox)",
+            "label":"Image(bg)",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
-            "compId":3,
+            "compId":19,
+            "child":[
+                ],
+            "$HIDDEN":false
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":1184,"x":0,"width":2560,"skin":"bigpic/mainuibg.png","sizeGrid":"0,400,0,400","height":254,"bottom":2},
+            "nodeParent":1,
+            "label":"Image",
+            "isOpen":true,
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":5,
+            "child":[
+                ],
+            "$HIDDEN":false
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "props":{"y":1213,"x":187,"width":195,"var":"btn1","stateNum":"2","skin":"mainui/maincity.png","name":"btn1","height":184,"bottom":39},
+            "nodeParent":1,
+            "label":"Button(btn1)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":7,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "props":{"y":1213,"x":517,"width":195,"var":"btn2","stateNum":"2","skin":"mainui/role.png","name":"btn2","height":184,"bottom":43},
+            "nodeParent":1,
+            "label":"Button(btn2)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":8,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "props":{"y":1213,"x":832,"width":195,"var":"btn3","stateNum":"2","skin":"mainui/qianghua.png","name":"btn3","height":184,"bottom":47},
+            "nodeParent":1,
+            "label":"Button(btn3)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":9,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "props":{"y":1213,"x":1150,"width":195,"var":"btn4","stateNum":"2","skin":"mainui/pal.png","name":"btn4","height":184},
+            "nodeParent":1,
+            "label":"Button(btn4)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":25,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "props":{"y":1213,"x":1460,"width":195,"var":"btn5","stateNum":"2","skin":"mainui/pet.png","name":"btn5","height":184},
+            "nodeParent":1,
+            "label":"Button(btn5)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":11,
             "child":[
                 ]
         },
         {
             "x":15,
             "type":"Image",
-            "props":{"y":11,"x":774,"width":67,"var":"mapBtn","skin":"demo/map.png","height":62},
+            "props":{"y":1226,"x":323,"skin":"ui/ballred.png","name":"red_1","bottom":152},
             "nodeParent":1,
-            "label":"Image(mapBtn)",
+            "label":"Image(red_1)",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
-            "compId":4,
+            "compId":12,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":1213,"x":641,"skin":"ui/ballred.png","name":"red_2","bottom":156},
+            "nodeParent":1,
+            "label":"Image(red_2)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":13,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":1226,"x":958,"skin":"ui/ballred.png","name":"red_3","bottom":160},
+            "nodeParent":1,
+            "label":"Image(red_3)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":14,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":1226,"x":1279,"skin":"ui/ballred.png","name":"red_4"},
+            "nodeParent":1,
+            "label":"Image(red_4)",
+            "isOpen":false,
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":26,
+            "child":[
+                ],
+            "$LOCKED":true
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":1226,"x":1586,"skin":"ui/ballred.png","name":"red_5"},
+            "nodeParent":1,
+            "label":"Image(red_5)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":15,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":5,"x":1172,"width":93,"skin":"demo/mgold.png","height":100},
+            "nodeParent":1,
+            "label":"Image",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":20,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Label",
+            "props":{"y":41,"x":1280,"width":174,"var":"goldLabel","text":"123456","name":"goldLabel","height":49,"fontSize":35,"font":"Microsoft YaHei","color":"#f6ee2c","bold":true},
+            "nodeParent":1,
+            "label":"Label(goldLabel)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":21,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":572,"x":151,"skin":"demo/pet.png","name":"pet"},
+            "nodeParent":1,
+            "label":"Image(pet)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":22,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Sprite",
+            "props":{"name":"treasureBox"},
+            "nodeParent":1,
+            "label":"Sprite(treasureBox)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":23,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Label",
+            "props":{"y":521,"x":214,"width":111,"text":"黑 铁","name":"strengthenLabel","height":48,"fontSize":45,"font":"Microsoft YaHei","color":"#60cf2b","bold":true},
+            "nodeParent":1,
+            "label":"Label(strengthenLabel)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":24,
             "child":[
                 ]
         }],
