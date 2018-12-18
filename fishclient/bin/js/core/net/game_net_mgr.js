@@ -29,7 +29,6 @@ var net;
             this.m_protobuf_root = null;
             this.m_buf_handle = new protocolbuf.protocolbuf();
             this.m_buff = new laya.utils.Byte();
-            this.m_recv_temp = new Laya.Byte();
             this.m_byte = new Laya.Byte();
             this.m_tmp_buf = new Laya.Byte();
             //这里我们采用小端
@@ -92,30 +91,29 @@ var net;
             core.net_errlog("=======openHandler ", event);
             //正确建立连接；
             this.m_b_connect = true;
-            utils.event_ins().fire_event(game_event.EVENT_NET_CONNECTED);
+            utils.event_ins().fire_event(game_event.EVENT_NET_CONNECTED, this);
         };
         game_net_mgr.prototype.receiveHandler = function (msg) {
             if (msg === void 0) { msg = null; }
             ///接收到数据触发函数
-            core.net_errlog("=======receiveHandler ", msg, typeof (msg));
-            this.m_recv_temp.clear();
-            this.m_recv_temp.writeArrayBuffer(msg);
-            this.m_recv_temp.pos = 0;
-            while (this.m_recv_temp.bytesAvailable > 0) {
-                this.m_buff.writeUint8(this.m_recv_temp.getUint8());
+            //core.net_errlog("=======receiveHandler ",msg,typeof(msg));
+            //let recvbuff:laya.utils.Byte = msg as laya.utils.Byte;
+            var recvbuff = this.m_socket.input;
+            for (var i = 0; i < recvbuff.length; ++i) {
+                this.m_buff.writeUint8(recvbuff.getUint8());
             }
             //let data:{} = this.m_buf_handle.s2c_buf2data(this.m_socket.input);
             //let cmd:number = data['cmd'];
             //let recv:{} = data['data'];
             //this.m_recv_list.push(new protocol_item(cmd,recv));
             //core.net_errlog("recv ",cmd,recv);
+            this.m_buff.pos = 0;
             this._on_split_netpack();
         };
         //
         game_net_mgr.prototype._on_split_netpack = function () {
             //core.net_errlog("TL_Login_net receiveHandler normal pkg ",this.m_buff);
             //this._print_pkg(this.m_buff,"split buff ");
-            this.m_buff.pos = 0;
             while (this.m_buff.bytesAvailable > 0) {
                 var data_1 = this.m_buf_handle.s2c_buf2data(this.m_buff);
                 if (data_1 == null) {
@@ -141,14 +139,14 @@ var net;
             if (e === void 0) { e = null; }
             //关闭事件
             core.net_errlog("=======closeHandler ", e);
-            utils.event_ins().fire_event(game_event.EVENT_NET_CLOSED, e);
+            utils.event_ins().fire_event(game_event.EVENT_NET_CLOSED, [e, this]);
             this.close();
         };
         game_net_mgr.prototype.errorHandler = function (e) {
             if (e === void 0) { e = null; }
             //连接出错
             core.net_errlog("=======errorHandler ", e);
-            utils.event_ins().fire_event(game_event.EVENT_NET_ERROR, e);
+            utils.event_ins().fire_event(game_event.EVENT_NET_ERROR, [e, this]);
             this.close();
         };
         game_net_mgr.prototype.connect = function (host, port, svrid) {
@@ -208,6 +206,15 @@ var net;
                 for (var _i = 0, _a = this.m_recv_list; _i < _a.length; _i++) {
                     var i = _a[_i];
                     utils.event_ins().fire_event(game_event.gen_netcmd_event(i.m_cmd), i.m_data);
+                }
+                this.m_recv_list = new Array();
+            }
+        };
+        game_net_mgr.prototype.update2 = function () {
+            if (this.m_recv_list.length > 0) {
+                for (var _i = 0, _a = this.m_recv_list; _i < _a.length; _i++) {
+                    var i = _a[_i];
+                    utils.event_ins().fire_event(game_event.gen_netcmd_event(i.m_cmd), [i.m_data, this]);
                 }
                 this.m_recv_list = new Array();
             }
@@ -683,7 +690,7 @@ var net;
                 this.m_parent.on_notify("connect succeed");
             }
             core.net_errlog("connected succeed");
-            utils.event_ins().fire_event(game_event.EVENT_NET_CONNECTED);
+            utils.event_ins().fire_event(game_event.EVENT_NET_CONNECTED, this);
             if (this.m_buff.length > 0) {
                 this.m_buff.pos = 0;
                 this._decrypt_buff(this.m_buff);
@@ -791,6 +798,9 @@ var net;
             }
         };
         TL_Login_net.prototype.send_raw_buff = function (cmd, buff) {
+            if (!this.m_b_connected) {
+                return;
+            }
             core.net_errlog("send_raw_buff ", cmd.toString(16), buff.length);
             this.m_sendbuff.clear();
             this.m_sendbuff.endian = Laya.Byte.LITTLE_ENDIAN;
@@ -805,7 +815,6 @@ var net;
         TL_Login_net.prototype.send = function (cmd, data) {
             if (data === void 0) { data = null; }
             if (!this.m_b_connected) {
-                alert("Have not connected to svr");
                 return;
             }
             core.net_errlog("send ", cmd.toString(16), data);

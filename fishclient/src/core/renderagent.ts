@@ -90,6 +90,21 @@ module core {
         {
             this.m_render.m_scene.m_map.setbk(res);
         }
+        public addmapscrollbk(res:string,w:number,h:number):void{
+            this.m_render.m_scene.m_map.addscrollbk(res,w,h);
+        }
+        public setmapscrollbkpos(x:number,y:number):void{
+            this.m_render.m_scene.m_map.setscrollbkpos(x,y);
+        }
+        public setmapscrollbkview(w:number,h:number):void{
+            this.m_render.m_scene.m_map.setscrollbkview(w,h);
+        }
+        public setmapscrollbkspd(spd:number):void{
+            this.m_render.m_scene.m_map.setscrollbkspd(spd);
+        }
+        public clearmapscrollbk():void{
+            this.m_render.m_scene.m_map.clearscrollbk();
+        }
         public setmapbksp(sp:Laya.Sprite):void{
             this.m_render.m_scene.m_map.setsp(sp);
         }

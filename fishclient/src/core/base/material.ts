@@ -112,6 +112,7 @@ module core {
     }
     export class material_loader{
         public m_mat_res:string = "";
+        public m_mat_res_type:string = "";
         public m_loaded:boolean = false;
         public m_loading:boolean = false;
         public m_ref:number = 0;
@@ -119,11 +120,12 @@ module core {
         public m_ref_tm:number = 0;
         public m_res_release:boolean = false;
         public m_extra_res:Array<any> = new Array<any>();
-        constructor(res:string){
-            this.re_init(res);
+        constructor(res:string,restype:string){
+            this.re_init(res,restype);
         }
-        public re_init(res:string):void{
+        public re_init(res:string,restype:string):void{
             this.m_mat_res = res;
+            this.m_mat_res_type = restype;
             this.m_loaded = false;
             this.m_loading = false;
             this.m_ref = 0;
@@ -163,7 +165,7 @@ module core {
             if(this.m_loading){
                 return;
             }
-            this.addextrares(this.m_mat_res,Laya.Loader.ATLAS);
+            this.addextrares(this.m_mat_res,this.m_mat_res_type);
             this.m_loading = true;
             if(this.m_res_release){
                 this.on_load();

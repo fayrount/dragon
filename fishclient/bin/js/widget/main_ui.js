@@ -23,30 +23,6 @@ var widget;
         }
         main_ui.prototype.on_init = function () {
         };
-        main_ui.prototype._init_ui = function () {
-            var truew = this.m_ui.width;
-            var gap = truew / 7;
-            var uiins = this.m_ui;
-            var width = 195;
-            uiins.btn1.x = gap - (width / 2);
-            uiins.red_1.x = uiins.btn1.x + 125;
-            uiins.red_1.visible = false;
-            uiins.btn2.x = gap * 2 - (width / 2);
-            uiins.red_2.x = uiins.btn2.x + 125;
-            uiins.red_2.visible = false;
-            uiins.btn3.x = gap * 3 - (width / 2);
-            uiins.red_3.x = uiins.btn3.x + 125;
-            uiins.red_3.visible = false;
-            uiins.btn4.x = gap * 4 - (width / 2);
-            uiins.red_4.x = uiins.btn4.x + 125;
-            uiins.red_4.visible = false;
-            uiins.btn5.x = gap * 5 - (width / 2);
-            uiins.red_5.x = uiins.btn5.x + 125;
-            uiins.red_5.visible = false;
-            uiins.btn6.x = gap * 6 - (width / 2);
-            uiins.red_6.x = uiins.btn6.x + 125;
-            uiins.red_6.visible = false;
-        };
         main_ui.prototype.on_show = function (flag) {
             if (flag) {
                 this.UIins = this.m_ui;
@@ -56,7 +32,8 @@ var widget;
                 this.UIins.btn4.on(Laya.Event.CLICK, this, this.on_add);
                 this.UIins.btn5.on(Laya.Event.CLICK, this, this.on_partner);
                 this.UIins.btn6.on(Laya.Event.CLICK, this, this.on_summon);
-                this._init_ui();
+                this.UIins.y = Laya.stage.designHeight - this.UIins.height;
+                this.register_event(game_event.EVENT_UI_MAINUPDATE, this.on_update_data);
             }
             else {
                 this.UIins.btn1.off(Laya.Event.CLICK, this, this.on_battle);
@@ -68,6 +45,14 @@ var widget;
                 this.unregister_allevent();
                 this.UIins = null;
             }
+        };
+        main_ui.prototype.on_update_data = function (ud) {
+            if (ud === void 0) { ud = null; }
+            var exp = ud[0];
+            var expmax = ud[1];
+            var rate = exp / expmax;
+            this.UIins.pgbar.value = rate;
+            this.UIins.lab_exp.changeText((rate * 100).toFixed(2) + "%");
         };
         main_ui.prototype.on_battle = function (ud) {
             if (ud === void 0) { ud = null; }
