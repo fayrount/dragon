@@ -17,6 +17,7 @@ module core {
                 mat_mgr().delmapbkres(this.m_mat);
             }
             this.m_mat = mat_mgr().getmapbkres(res);
+            this.removeChildren();
             this.addChild(this.m_mat.m_graphic);
         }
         public setsp(sp:Laya.Sprite):void{

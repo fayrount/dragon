@@ -134,7 +134,22 @@ var protocol_def;
         'C2S_NPC_RESPOND': [['idx', 'int32', ''],],
         'S2C_NPC_CHAT': [['id', 'int32', ''], ['icon', 'int16', ''], ['name', 'string8', ''], ['text', 'string16', ''], ['textid', 'int32', ''], ['opts', 'list8', 'npctalkopt'],],
         'C2S_ROLE_INFO': [],
-        'S2C_ROLE_INFO': [['lv', 'int16', ''], ['gold', 'int32', ''], ['goldspd', 'int32', ''], ['tm', 'int32', ''],],
+        'S2C_ROLE_INFO': [['lv', 'int16', ''], ['shape', 'int16', ''], ['gold', 'int32', ''], ['exp', 'int32', ''], ['goldspd', 'int32', ''], ['expspd', 'int32', ''], ['stamina', 'int32', ''], ['tm', 'int32', ''],],
+        'C2S_PET_INFO': [],
+        'S2C_PET_INFO': [['lv', 'int16', ''], ['shape', 'int16', ''], ['exp', 'int32', ''],],
+        'C2S_SKILL_INFO': [['id', 'int8', ''],],
+        'S2C_SKILL_INFO': [['id', 'int8', ''], ['skill1lv', 'int16', ''], ['skill2lv', 'int16', ''],],
+        'C2S_PARTNER_INFO': [],
+        'S2C_PARTNER_INFO': [['lv', 'int16', ''], ['shape', 'int16', ''], ['exp', 'int32', ''],],
+        'C2S_CLICK': [['x', 'int16', ''], ['y', 'int16', ''],],
+        'S2C_CLICK': [['x', 'int16', ''], ['y', 'int16', ''], ['gold', 'int32', ''], ['exp', 'int32', ''],],
+        'C2S_LV_UP': [['id', 'int8', ''],],
+        'C2S_SKILL_LVUP': [['id', 'int8', ''], ['skillid', 'int8', ''],],
+        'C2S_SPEC_SKILLINFO': [],
+        'S2C_SPEC_SKILLINFO': [['skill1lv', 'int16', ''], ['skill1tm', 'int32', ''], ['skill1cd', 'int32', ''], ['skill2lv', 'int16', ''], ['skill2tm', 'int32', ''], ['skill2cd', 'int32', ''], ['skill3lv', 'int16', ''], ['skill3tm', 'int32', ''], ['skill3cd', 'int32', ''], ['skill4lv', 'int16', ''], ['skill4tm', 'int32', ''], ['skill4cd', 'int32', ''],],
+        'C2S_SPEC_SKILL_USE': [['id', 'int8', ''],],
+        'C2S_SPEC_SKILL_LVUP': [['id', 'int8', ''],],
+        'C2S_SKILL_CLICK': [['x', 'int16', ''], ['y', 'int16', ''],],
         'C2S_ITEM_GETLIST': [],
         'C2S_ITEM_USE': [['id', 'int32', ''], ['amount', 'int32', ''],],
         'C2S_ITEM_MOVE': [['id', 'int32', ''], ['dstpos', 'int16', ''],],
@@ -243,6 +258,21 @@ var protocol_def;
     protocol_def.S2C_NPC_CHAT = 0x160;
     protocol_def.C2S_ROLE_INFO = 0x400;
     protocol_def.S2C_ROLE_INFO = 0x400;
+    protocol_def.C2S_PET_INFO = 0x430;
+    protocol_def.S2C_PET_INFO = 0x430;
+    protocol_def.C2S_SKILL_INFO = 0x432;
+    protocol_def.S2C_SKILL_INFO = 0x432;
+    protocol_def.C2S_PARTNER_INFO = 0x431;
+    protocol_def.S2C_PARTNER_INFO = 0x431;
+    protocol_def.C2S_CLICK = 0x433;
+    protocol_def.S2C_CLICK = 0x433;
+    protocol_def.C2S_LV_UP = 0x434;
+    protocol_def.C2S_SKILL_LVUP = 0x435;
+    protocol_def.C2S_SPEC_SKILLINFO = 0x436;
+    protocol_def.S2C_SPEC_SKILLINFO = 0x436;
+    protocol_def.C2S_SPEC_SKILL_USE = 0x437;
+    protocol_def.C2S_SPEC_SKILL_LVUP = 0x438;
+    protocol_def.C2S_SKILL_CLICK = 0x439;
     protocol_def.C2S_ITEM_GETLIST = 0x401;
     protocol_def.C2S_ITEM_USE = 0x180;
     protocol_def.C2S_ITEM_MOVE = 0X402;
@@ -331,6 +361,11 @@ var protocol_def;
     protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_HANGMAP_INFO] = 'S2C_HANGMAP_INFO';
     protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_NPC_CHAT] = 'S2C_NPC_CHAT';
     protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_ROLE_INFO] = 'S2C_ROLE_INFO';
+    protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_PET_INFO] = 'S2C_PET_INFO';
+    protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_SKILL_INFO] = 'S2C_SKILL_INFO';
+    protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_PARTNER_INFO] = 'S2C_PARTNER_INFO';
+    protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_CLICK] = 'S2C_CLICK';
+    protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_SPEC_SKILLINFO] = 'S2C_SPEC_SKILLINFO';
     protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_ITEM_LIST] = 'S2C_ITEM_LIST';
     protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_ITEM_ADD] = 'S2C_ITEM_ADD';
     protocol_def.S2C_CMD_2_PROTODESC[protocol_def.S2C_ITEM_UPDATE] = 'S2C_ITEM_UPDATE';
@@ -391,6 +426,16 @@ var protocol_def;
     protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_NPC_LOOK] = 'C2S_NPC_LOOK';
     protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_NPC_RESPOND] = 'C2S_NPC_RESPOND';
     protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_ROLE_INFO] = 'C2S_ROLE_INFO';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_PET_INFO] = 'C2S_PET_INFO';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_SKILL_INFO] = 'C2S_SKILL_INFO';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_PARTNER_INFO] = 'C2S_PARTNER_INFO';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_CLICK] = 'C2S_CLICK';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_LV_UP] = 'C2S_LV_UP';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_SKILL_LVUP] = 'C2S_SKILL_LVUP';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_SPEC_SKILLINFO] = 'C2S_SPEC_SKILLINFO';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_SPEC_SKILL_USE] = 'C2S_SPEC_SKILL_USE';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_SPEC_SKILL_LVUP] = 'C2S_SPEC_SKILL_LVUP';
+    protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_SKILL_CLICK] = 'C2S_SKILL_CLICK';
     protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_ITEM_GETLIST] = 'C2S_ITEM_GETLIST';
     protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_ITEM_USE] = 'C2S_ITEM_USE';
     protocol_def.C2S_CMD_2_PROTODESC[protocol_def.C2S_ITEM_MOVE] = 'C2S_ITEM_MOVE';

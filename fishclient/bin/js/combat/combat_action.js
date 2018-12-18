@@ -70,17 +70,41 @@ var combat;
         combat_action.prototype._pop_skill_dst = function () {
             this.m_data.dst_list.pop();
         };
-        combat_action.prototype._parse_skill_move = function (tm, data) {
+        combat_action.prototype._parse_skill_move = function (tm, data, self_group) {
             var src_id = this._get_skill_unitid(data['param1']);
             var dst_id = this._get_skill_unitid(data['param2']);
-            var ud = { "src": src_id, "dst": dst_id };
+            var fdir = -1;
+            if (data['param3'] != null) {
+                fdir = parseInt(data['param3']);
+            }
+            else {
+                if (this._is_downteam(src_id, self_group)) {
+                    fdir = 3;
+                }
+                else {
+                    fdir = 7;
+                }
+            }
+            var ud = { "src": src_id, "dst": dst_id, "forcedir": fdir };
             this._add_node(tm, combat.COMBATSCENE_WARRIORMOVE2WARRIOR, ud);
         };
-        combat_action.prototype._parse_skill_move2 = function (tm, data) {
+        combat_action.prototype._parse_skill_move2 = function (tm, data, self_group) {
             var src_id = this._get_skill_unitid(data['param1']);
             var x = parseInt(data["param2"]);
             var y = parseInt(data["param3"]);
-            var ud = { "src": src_id, "x": x, "y": y };
+            var fdir = -1;
+            if (data['param4'] != null) {
+                fdir = parseInt(data['param4']);
+            }
+            else {
+                if (this._is_downteam(src_id, self_group)) {
+                    fdir = 3;
+                }
+                else {
+                    fdir = 7;
+                }
+            }
+            var ud = { "src": src_id, "x": x, "y": y, "forcedir": fdir };
             this._add_node(tm, combat.COMBATSCENE_WARRIORMOVE, ud);
         };
         combat_action.prototype._is_downteam = function (id, self_group) {
@@ -178,8 +202,10 @@ var combat;
                 var my = 0;
                 mx = dst_pos.x + dx;
                 my = dst_pos.y + dy;
-                var mud = { "src": clone_id, "x": mx, "y": my };
+                var mud = { "src": clone_id, "x": mx, "y": my, "forcedir": dir };
                 this._add_node(tm + 10, combat.COMBATSCENE_WARRIORMOVE, mud);
+                var dud = { "src": clone_id, "dir": dir };
+                this._add_node(tm + 310, combat.COMBATSCENE_WARRIORDIR, dud);
                 var aud = { "src": clone_id, "actionid": 3 /* ACTION_ATTACK */ };
                 this._add_node(tm + 400, combat.COMBATSCENE_WARRIORACTION, aud);
             }
@@ -284,16 +310,17 @@ var combat;
         };
         combat_action.prototype._parse_skill_moveback = function (tm, data, self_group) {
             var src_id = this._get_skill_unitid(data['param1']);
-            var ud = { "src": src_id };
-            this._add_node(tm, combat.COMBATSCENE_WARRIORMOVEBACK, ud);
+            var fdir = -1;
             if (this._is_downteam(src_id, self_group)) {
-                var ud_1 = { "src": src_id, "dir": 3 };
-                this._add_node(tm + 500, combat.COMBATSCENE_WARRIORDIR, ud_1);
+                fdir = 3;
             }
             else {
-                var ud_2 = { "src": src_id, "dir": 7 };
-                this._add_node(tm + 500, combat.COMBATSCENE_WARRIORDIR, ud_2);
+                fdir = 7;
             }
+            var ud = { "src": src_id, "forcedir": fdir };
+            this._add_node(tm, combat.COMBATSCENE_WARRIORMOVEBACK, ud);
+            var dud = { "src": src_id, "dir": fdir };
+            this._add_node(tm + 100, combat.COMBATSCENE_WARRIORDIR, dud);
         };
         combat_action.prototype._add_node = function (tm, node_type, user_data) {
             var node = this.m_mgr._get_player_ins(tm, node_type, user_data);
@@ -305,7 +332,7 @@ var combat;
         combat_action.prototype._parse_skill_action = function (tm, action, data, self_group) {
             switch (action) {
                 case "move":
-                    this._parse_skill_move(tm, data);
+                    this._parse_skill_move(tm, data, self_group);
                     break;
                 case "ninjaatk":
                     this._parse_ninjaatk(tm, data, self_group);
@@ -314,7 +341,7 @@ var combat;
                     this._parse_clearninja(tm, data);
                     break;
                 case "move2":
-                    this._parse_skill_move2(tm, data);
+                    this._parse_skill_move2(tm, data, self_group);
                     break;
                 case "dir":
                     this._parse_skill_dir(tm, data, self_group);

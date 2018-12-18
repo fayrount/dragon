@@ -19,6 +19,9 @@ class game_main(app.base.game_module_mgr.game_module):
 		return
 	def _init_module(self):
 		self.get_module(game_module_def.GM_MAIN).start();
+		self.get_module(game_module_def.MAIN_PLAYER).start();
+		self.get_module(game_module_def.PET).start();
+		self.get_module(game_module_def.PARTNER).start();
 		return
 	def start(self):
 		super(game_main,self).start();
@@ -96,7 +99,7 @@ class game_main(app.base.game_module_mgr.game_module):
 		svr_tm = helper.get_svr_tm();
 		send_data = {};
 		send_data['srvtime'] = svr_tm;
-		send_data['time'] = send_data;
+		send_data['time'] = client_tm;
 		self.fire_event(EVENT_SEND2CLIENT,[S2C_ASYNTIME,dId,send_data]);
 		return
 	def _float_msg(self,dId,msg):

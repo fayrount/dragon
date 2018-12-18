@@ -10,6 +10,9 @@ import app.util.lang_config as lang_config
 import app.game.memmode as memmode
 from firefly.server.globalobject import GlobalObject
 import app.game.core.game_module_def as game_module_def
+import app.config.partner_exp
+import app.config.partnerskill1
+import app.config.partnerskill2
 class partner(app.base.game_module_mgr.game_module):
 	def __init__(self):
 		super(partner,self).__init__();
@@ -18,7 +21,7 @@ class partner(app.base.game_module_mgr.game_module):
 		self.open_lv = 10;
 		self.lv_max = 99;
 		self.skill1id = 1;
-		self,skill2id = 2;
+		self.skill2id = 2;
 		self.skill1lv_max = 99;
 		self.skill2lv_max = 99;
 		return

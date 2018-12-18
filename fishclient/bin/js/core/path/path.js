@@ -7,6 +7,7 @@ var core;
             this.m_speed = 300; //pixels per sec
             this.m_ret_node = null;
             this.m_unit_id = 0;
+            this.m_force_dir = -1;
             this.m_nodes = new Array();
             this.init(spd);
         }
@@ -14,6 +15,7 @@ var core;
             this.m_speed = spd;
             this.m_ret_node = utils.getitembycls("pathnode", core.pathnode);
             this.m_ret_node.init(0, 0, 0, 0);
+            this.m_force_dir = -1;
         };
         path.prototype.push_pt = function (sx, sy, dx, dy) {
             var node = utils.getitembycls("pathnode", core.pathnode);
@@ -63,6 +65,9 @@ var core;
             this.m_ret_node.x = cur_node.x;
             this.m_ret_node.y = cur_node.y;
             this.m_ret_node.m_dir = this.m_nodes[idx].m_dir;
+            if (this.m_force_dir >= 0) {
+                this.m_ret_node.m_dir = this.m_force_dir;
+            }
             return this.m_ret_node;
         };
         path.prototype.dispose = function () {

@@ -291,8 +291,8 @@ var combat;
             _this.m_view_w = 720;
             _this.m_view_h = 1280;
             _this.m_render.setviewport(_this.m_view_w, _this.m_view_h);
-            sp.width = _this.m_view_w;
-            sp.height = _this.m_view_h;
+            sp.width = _this.m_mw;
+            sp.height = _this.m_mh;
             //
             _this.m_render.setcamerapos(_this.m_camera_x, _this.m_camera_y);
             //
@@ -488,6 +488,11 @@ var combat;
                 this.m_lineupsp.dispose();
                 this.m_lineupsp = null;
             }
+        };
+        combatscene.prototype.set_viewport = function (w, h) {
+            this.m_view_w = w;
+            this.m_view_h = h;
+            this.m_render.setviewport(w, h);
         };
         combatscene.prototype.on_enter = function (user_data) {
             //this.m_render.setmapbk(this.m_map);
@@ -1066,11 +1071,27 @@ var combat;
             var x = user_data["x"];
             var y = user_data["y"];
             this.m_render.unit_walk2(this.get_warrior_avatarid(src), x, y, true, true);
+            var fdir = -1;
+            if (user_data["forcedir"] != null) {
+                fdir = user_data["forcedir"];
+                var p = this.m_render.get_unit_walk(this.get_warrior_avatarid(src));
+                if (p != null) {
+                    p.m_force_dir = fdir;
+                }
+            }
         };
         combatscene.prototype.on_warriormoveback = function (user_data) {
             var src = user_data["src"];
             var pos = this.get_pos(this.get_posid_bywid(src));
             this.m_render.unit_walk2(this.get_warrior_avatarid(src), pos.x, pos.y, true, true);
+            var fdir = -1;
+            if (user_data["forcedir"] != null) {
+                fdir = user_data["forcedir"];
+                var p = this.m_render.get_unit_walk(this.get_warrior_avatarid(src));
+                if (p != null) {
+                    p.m_force_dir = fdir;
+                }
+            }
         };
         combatscene.prototype.on_warriormove2warrior = function (user_data) {
             var src = user_data["src"];
@@ -1085,6 +1106,14 @@ var combat;
                 pos.y -= this.m_pos_dy;
             }
             this.m_render.unit_walk2(this.get_warrior_avatarid(src), pos.x, pos.y, true, true);
+            var fdir = -1;
+            if (user_data["forcedir"] != null) {
+                fdir = user_data["forcedir"];
+                var p = this.m_render.get_unit_walk(this.get_warrior_avatarid(src));
+                if (p != null) {
+                    p.m_force_dir = fdir;
+                }
+            }
         };
         combatscene.prototype.on_warriordir2w = function (user_data) {
             var src = user_data["src"];

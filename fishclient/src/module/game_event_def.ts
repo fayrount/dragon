@@ -10,4 +10,10 @@ module game_event{
     export const EVENT_HIT_TREASURE:string = "hit_treasure";
     export const EVENT_CHANGE_SEAARE:string = "change_seaarea";
     export const EVENT_UPGRADE_STRENGTHEN:string = "upgrade_strengthen";
+
+    export const EVENT_TIMER_TICK_1S:string = "timer_tick_1s";
+    export const EVENT_PLAYERDATA_UPDATED:string = "playerdata_updated";
+
+    export const EVENT_UI_MAINTOPUPDATE:string = "ui_maintop_update";
+    export const EVENT_UI_MAINUPDATE:string = "ui_main_update";
 }

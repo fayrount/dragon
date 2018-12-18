@@ -64,6 +64,18 @@ var core;
         materialmgr.prototype.del_mat_ref = function (res) {
             this.get_mat_loader(res).delref();
         };
+        materialmgr.prototype.preload_mat = function (res, extrares, types) {
+            if (extrares === void 0) { extrares = ""; }
+            if (types === void 0) { types = ""; }
+            var mat_loader = this.get_mat_loader(res);
+            if (!mat_loader.m_loaded && !mat_loader.m_loading) {
+                if (extrares.length > 0) {
+                    mat_loader.setextrares(extrares, types);
+                }
+                mat_loader.load_res(0);
+                mat_loader.update_ref_tm();
+            }
+        };
         materialmgr.prototype.update = function (delta) {
         };
         materialmgr.prototype.onLoadmapslot = function (key, path) {
@@ -158,7 +170,9 @@ var core;
             }
             else {
                 mat_loader.add_unload_mat(mat);
-                mat_loader.load_res(4);
+                if (!mat_loader.m_loading) {
+                    mat_loader.load_res(4);
+                }
             }
             mat_loader.addref();
             core.core_tiplog("materialmgr geteffmat load ", aniid, slotpath);
@@ -190,7 +204,9 @@ var core;
             }
             else {
                 mat_loader.add_unload_mat(mat);
-                mat_loader.load_res(4);
+                if (!mat_loader.m_loading) {
+                    mat_loader.load_res(4);
+                }
             }
             mat_loader.addref();
             //
@@ -245,7 +261,9 @@ var core;
                 }
                 else {
                     mat_loader.add_unload_mat(mat);
-                    mat_loader.load_res(3);
+                    if (!mat_loader.m_loading) {
+                        mat_loader.load_res(3);
+                    }
                 }
                 mat_loader.addref();
                 //
@@ -293,7 +311,9 @@ var core;
                 }
                 else {
                     mat_loader.add_unload_mat(mat);
-                    mat_loader.load_res(3);
+                    if (!mat_loader.m_loading) {
+                        mat_loader.load_res(3);
+                    }
                 }
                 mat_loader.addref();
                 //
@@ -346,9 +366,11 @@ var core;
                 mat.load_res();
             }
             else {
-                mat_loader.addextrares(mat.m_ani_path, Laya.Loader.JSON);
                 mat_loader.add_unload_mat(mat);
-                mat_loader.load_res(4);
+                if (!mat_loader.m_loading) {
+                    mat_loader.addextrares(mat.m_ani_path, Laya.Loader.JSON);
+                    mat_loader.load_res(4);
+                }
             }
             mat_loader.addref();
             core.core_tiplog("materialmgr getlavataranimat load ", aniid, slotpath);
