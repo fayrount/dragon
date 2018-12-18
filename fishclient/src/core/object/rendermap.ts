@@ -126,17 +126,33 @@ module core {
             
             return null;
         }
-        public addscrollbk(res:string):void{
+        public addscrollbk(res:string,w:number,h:number):void{
             if(this.m_scrollbk == null){
                 this.m_scrollbk = utils.getitembycls("rendermapscrollbk",rendermapscrollbk);
                 this.m_scrollbk.re_init();
             }
-            this.m_scrollbk.addres(res);
+            this.m_scrollbk.addres(res,w,h);
         }
         public setscrollbkpos(x:number,y:number):void{
-            if(this.m_scrollbk != null){
-                this.m_scrollbk.setdeltapos(x,y);
+            if(this.m_scrollbk == null){
+                this.m_scrollbk = utils.getitembycls("rendermapscrollbk",rendermapscrollbk);
+                this.m_scrollbk.re_init();
             }
+            this.m_scrollbk.setdeltapos(x,y);
+        }
+        public setscrollbkview(w:number,h:number):void{
+            if(this.m_scrollbk == null){
+                this.m_scrollbk = utils.getitembycls("rendermapscrollbk",rendermapscrollbk);
+                this.m_scrollbk.re_init();
+            }
+            this.m_scrollbk.m_view_w = w;
+        }
+        public setscrollbkspd(spd:number):void{
+            if(this.m_scrollbk == null){
+                this.m_scrollbk = utils.getitembycls("rendermapscrollbk",rendermapscrollbk);
+                this.m_scrollbk.re_init();
+            }
+            this.m_scrollbk.setspd(spd);
         }
         public clearscrollbk():void{
             if(this.m_scrollbk != null){

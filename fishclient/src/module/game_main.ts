@@ -74,7 +74,13 @@ module game{
 
             net.net_ins().connect("123.207.239.21",11009);
 
-            this.m_render.setmapbk("map/city/2001/2001.jpg");
+            //this.m_render.setmapbk("map/city/2001/2001.jpg");
+            this.m_render.setmapscrollbkview(Laya.stage.designWidth,Laya.stage.designHeight);
+            this.m_render.addmapscrollbk("map/scrollmap/1001.png",1136,640);
+            this.m_render.addmapscrollbk("map/scrollmap/1001.png",1136,640);
+            this.m_render.addmapscrollbk("map/scrollmap/1001.png",1136,640);
+            this.m_render.setmapscrollbkpos(0,800);
+            this.m_render.setmapscrollbkspd(200);
         }
         private on_click_sp(e:Laya.Event):void{
             core.game_tiplog("onClick sp ",e.stageX,e.stageY);
