@@ -6,8 +6,11 @@ module core {
             this.m_graphic = new laya.display.Sprite();
         }
         public re_init(respath:string){
+            this.m_mat_res = respath;
+        }
+        public load_res():void{
             this.m_graphic.graphics.clear();
-            this.m_graphic.loadImage(respath);
+            this.m_graphic.loadImage(this.m_mat_res);
         }
         public clear(){
             this.m_graphic.graphics.clear();

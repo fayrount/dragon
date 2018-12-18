@@ -1,6 +1,7 @@
 module core {
     export class rendermap {
-        public m_bk:rendermapbk;
+        public m_bk:rendermapbk = null;
+        public m_scrollbk:rendermapscrollbk = null;
         //need code objects pool
         public m_slots:Array<rendermapslot>;
         public m_mapid:number = 0;
@@ -10,6 +11,7 @@ module core {
         public m_pathfind:pathfind;
         constructor(){
             this.m_bk = null;
+            this.m_scrollbk = null;
             this.m_slots = new Array<rendermapslot>();
             this.m_block = new rendermapblock();
             this.m_pathfind = new pathfind(null,0,0);
@@ -61,10 +63,11 @@ module core {
             this.m_slots = new Array<rendermapslot>();
         }
         public clear():void{
-            
+            this.clearscrollbk();
             if(this.m_bk != null)
             {
                 this.m_bk.dispose();
+                utils.recover("rendermapbk",this.m_bk);
                 this.m_bk = null;
             }
             this.delallslot();
@@ -123,23 +126,51 @@ module core {
             
             return null;
         }
+        public addscrollbk(res:string):void{
+            if(this.m_scrollbk == null){
+                this.m_scrollbk = utils.getitembycls("rendermapscrollbk",rendermapscrollbk);
+                this.m_scrollbk.re_init();
+            }
+            this.m_scrollbk.addres(res);
+        }
+        public setscrollbkpos(x:number,y:number):void{
+            if(this.m_scrollbk != null){
+                this.m_scrollbk.setdeltapos(x,y);
+            }
+        }
+        public clearscrollbk():void{
+            if(this.m_scrollbk != null){
+                this.m_scrollbk.dispose();
+                utils.recover("rendermapscrollbk",this.m_scrollbk);
+                this.m_scrollbk = null;
+            }
+        }
         public setbk(res:string):void
         {
-            if(this.m_bk != null)
-            {
-                this.m_bk.dispose();
-                this.m_bk = null;
-            }
+            
             if(res == null)
             {
+                if(this.m_bk != null)
+                {
+                    this.m_bk.dispose();
+                    utils.recover("rendermapbk",this.m_bk);
+                    this.m_bk = null;
+                }
                 return;
             }
-            this.m_bk = new rendermapbk();
+            if(this.m_bk == null){
+                this.m_bk = utils.getitembycls("rendermapbk",rendermapbk);
+                this.m_bk.re_init();
+            }
+            //this.m_bk = new rendermapbk();
+            
             this.m_bk.setres(res);
         }
         public setsp(sp:Laya.Sprite):void{
             if(this.m_bk == null){
-                this.m_bk = new rendermapbk();
+                //this.m_bk = new rendermapbk();
+                this.m_bk = utils.getitembycls("rendermapbk",rendermapbk);
+                this.m_bk.re_init();
             }
             this.m_bk.setsp(sp);
         }
@@ -159,11 +190,16 @@ module core {
         }
         public update(delta:number):void
         {
-            
+            if(this.m_scrollbk != null){
+                this.m_scrollbk.update(delta);
+            }
         }
         public project(context:rendercontext):boolean
         {
             let ret:boolean = false;
+            if(this.m_scrollbk != null){
+                ret = this.m_scrollbk.project(context) || ret;
+            }
             if(this.m_bk != null)
             {
                 ret = this.m_bk.project(context) || ret;

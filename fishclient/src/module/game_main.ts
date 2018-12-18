@@ -1,6 +1,8 @@
 module game{
     export class game_main extends utils.game_module{
-        public m_ui_sp:laya.display.Sprite;
+        public m_ui_sp:laya.display.Sprite = null;
+        public m_render_sp:laya.display.Sprite = null;
+        public m_render:core.renderagent = null;
         private m_curtime:number = 0;
         private m_roleid:number = 0;
         private m_itemlist:Array<Object> = new Array<Object>();
@@ -21,13 +23,27 @@ module game{
             super.start();
             core.game_tiplog('game_main start');
             this.m_ui_sp = new laya.display.Sprite();
-
+            this.m_render_sp = new laya.display.Sprite();
             utils.widget_ins().set_root(this.m_ui_sp);
 
+            Laya.stage.addChild(this.m_render_sp);
             Laya.stage.addChild(this.m_ui_sp);
 
             
+            this.m_render = new core.renderagent();
+            this.m_render.set_walk_spd(200);
+            this.m_render.set_avatar_config(config.Avatarinfo.get_Avatarinfo);
+            this.m_render.set_map_config(config.Mapinfo.get_Mapinfo);
+            this.m_render.set_ani_config(config.Aniinfo.get_Aniinfo);
+            this.m_render.set_eff_config(config.Effectinfo.get_Effectinfo);
 
+            this.m_render.initstage(this.m_render_sp);
+            this.m_render.m_render.setworldwh(2560,2560);
+            this.m_render.setviewport(Laya.stage.designWidth,Laya.stage.designHeight);
+            this.m_render.setcamerapos(0,0);
+            this.m_render_sp.width = 2560;
+            this.m_render_sp.height = 2560;
+            this.m_render_sp.on(Laya.Event.CLICK,this,this.on_click_sp);
             this.register_net_event(protocol_def.S2C_NOTIFY_MESSAGE,this.on_svr_messagebox);
             this.register_net_event(protocol_def.S2C_WEBSOCKET_HELLO,this.on_svr_notify);
             this.register_net_event(protocol_def.S2C_LOGIN,this.on_login_err);
@@ -57,15 +73,21 @@ module game{
 
 
             net.net_ins().connect("123.207.239.21",11009);
+
+            this.m_render.setmapbk("map/city/2001/2001.jpg");
+        }
+        private on_click_sp(e:Laya.Event):void{
+            core.game_tiplog("onClick sp ",e.stageX,e.stageY);
+
         }
         private on_net_error(ud:any = null):void{
-            console.log("on_net_error");
+            core.net_errlog("on_net_error");
         }
         private on_net_closed(ud:any = null):void{
-            console.log("on_net_closed");
+            core.net_errlog("on_net_closed");
         }
         private on_net_connected(ud:any = null):void{
-            console.log("on_net_connected");
+            core.net_tiplog("on_net_connected");
             let ld:Object = {};
             ld["clientver"] = {"major":0,"minor":0,"patch":0};
             ld["scriptver"] = {"major":0,"minor":0,"patch":0};
@@ -123,12 +145,14 @@ module game{
         }
         private on_testfunc3(ud:any = null):void{
             console.log("on_testfunc3 buyitem",ud);
-            net.net_ins().send(protocol_def.C2S_ITEM_BUY,{"id":1001});
+            this.m_render.setmapbk("map/city/2002/2002.jpg");
+            //net.net_ins().send(protocol_def.C2S_ITEM_BUY,{"id":1001});
         }
         private on_testfunc1(ud:any = null):void{
             console.log("on_testfunc1 refresh",ud);
-            net.net_ins().send(protocol_def.C2S_ROLE_INFO,{});
-            net.net_ins().send(protocol_def.C2S_ITEM_GETLIST,{});
+            this.m_render.setmapbk("map/city/2001/2001.jpg");
+            //net.net_ins().send(protocol_def.C2S_ROLE_INFO,{});
+            //net.net_ins().send(protocol_def.C2S_ITEM_GETLIST,{});
         }
         private on_testfunc(ud:any = null):void{
             console.log("haha,i get event from main_ui");
@@ -179,6 +203,17 @@ module game{
         }
         public update30():void{
             //update here
+            if(this.m_curtime == 0){
+                this.m_curtime = laya.utils.Browser.now();
+            }
+            else{
+                let nowtime:number = laya.utils.Browser.now();
+                let delta:number = nowtime - this.m_curtime;
+                this.m_curtime = nowtime;
+                if(this.m_render != null){
+                    this.m_render.update(delta);
+                }
+            }
             timer.timer_ins().update(laya.utils.Browser.now());
         }
         public update20():void{
@@ -190,23 +225,33 @@ module game{
         }
         public update1():void{
             utils.widget_ins().check_release();
+            if(this.m_render != null){
+                this.m_render.check_release();
+            }
         }
         public update(d:number):void
         {
-            this.update10();
             //
-            if(this.m_curtime == 0){
-                this.m_curtime = laya.utils.Browser.now();
-                return;
-            }
+            
             let nowtime:number = laya.utils.Browser.now();
             //render here
+            if(this.m_render != null){
+                this.m_render.render();
+            }
             let nowtimeafterrender:number = laya.utils.Browser.now();
             let tm_total:number = 17;
             frametask.run(tm_total - nowtimeafterrender + nowtime);
         }
         public dispose()
         {
+            if(this.m_render != null){
+                this.m_render.dispose();
+                this.m_render = null;
+            }
+            this.m_ui_sp.removeSelf();
+            this.m_render_sp.removeSelf();
+            this.m_ui_sp = null;
+            this.m_render_sp = null;
             super.dispose();
         }
     }

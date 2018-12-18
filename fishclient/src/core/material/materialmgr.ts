@@ -60,9 +60,9 @@ module core {
             }
             return null;
         }
-        public get_mat_loader(res:string):material_loader{
+        public get_mat_loader(res:string,restype:string = Laya.Loader.ATLAS):material_loader{
             if(this.m_mat_loader.hasOwnProperty(res) == false){
-                this.m_mat_loader[res] = new material_loader(res);
+                this.m_mat_loader[res] = new material_loader(res,restype);
             }
             return this.m_mat_loader[res];
         }
@@ -168,13 +168,31 @@ module core {
         }
         public getmapbkres(respath:string):mapbkmaterial
         {
-            let ret:mapbkmaterial = utils.getitembycls("mapbkmaterial",mapbkmaterial);
-            ret.re_init(respath);
-            return ret;
+            let mat:mapbkmaterial = utils.getitembycls("mapbkmaterial",mapbkmaterial);
+            mat.re_init(respath);
+            let mat_loader:material_loader = this.get_mat_loader(mat.m_mat_res,Laya.Loader.IMAGE);
+            if(mat_loader.m_loaded){
+                mat.load_res();
+            }
+            else{
+                mat_loader.add_unload_mat(mat);
+                if(!mat_loader.m_loading){
+                    mat_loader.load_res(3);
+                }
+            }
+            mat_loader.addref();
+
+            return mat;
         }
         public delmapbkres(mat:mapbkmaterial):void{
+            //
+            let mat_loader:material_loader = this.get_mat_loader(mat.m_mat_res);
+            mat_loader.del_unload_mat(mat);
+            mat_loader.delref();
+            mat.delref();
             mat.clear();
             utils.recover("mapbkmaterial",mat);
+            //
         }
         ///////
         public geteffmat(aniid:number):effmaterial

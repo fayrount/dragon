@@ -90,6 +90,15 @@ module core {
         {
             this.m_render.m_scene.m_map.setbk(res);
         }
+        public addmapscrollbk(res:string):void{
+            this.m_render.m_scene.m_map.addscrollbk(res);
+        }
+        public setmapscrollbkpos(x:number,y:number):void{
+            this.m_render.m_scene.m_map.setscrollbkpos(x,y);
+        }
+        public clearmapscrollbk():void{
+            this.m_render.m_scene.m_map.clearscrollbk();
+        }
         public setmapbksp(sp:Laya.Sprite):void{
             this.m_render.m_scene.m_map.setsp(sp);
         }
