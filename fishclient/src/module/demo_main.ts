@@ -1,14 +1,12 @@
 module game{
     export class demo_main extends utils.game_module{
         public m_ui_sp:laya.display.Sprite;
-       
-        private goldLabel: Laya.Label;
-        private strengthenLabel: Laya.Label;
 
         private sea_area: utils.game_module = null;
 
         private world_map: utils.game_module = null;
         private strengthen: utils.game_module = null;
+        private pets: utils.game_module = null;
 
         constructor()
         {
@@ -29,24 +27,15 @@ module game{
             this.register_event(game_event.EVENT_MAIN_VIEW_INIT,this.onMainViewInit);
             this.register_event(game_event.EVENT_WORLD_MAP_CLICK,this.showWorldMap);
             this.register_event(game_event.EVENT_STRENGTHEN_CLICK,this.showStrengthen);
+            this.register_event(game_event.EVENT_PETS_CLICK,this.showPets);
             this.register_event(game_event.EVENT_HIT_TREASURE,this.hitTreasure);
-            this.register_event(game_event.EVENT_UPGRADE_STRENGTHEN, this.upgradeStrengthen);
-
+            
             this.sea_area = utils.module_ins().get_module(module_enum.MODULE_SEA_AREA);
             this.sea_area.start();
         }
         
         onMainViewInit() {
             let uiIns: utils.game_widget = utils.widget_ins().get_module(widget_enum.WIDGET_MAIN_VIEW);
-
-            this.strengthenLabel = uiIns.get_con("strengthenLabel") as Laya.Label;
-            this.goldLabel = uiIns.get_con("goldLabel") as Laya.Label;
-        }
-
-        upgradeStrengthen(strengthenLevel: data.strengthen_level): void {
-            this.strengthenLabel.text = strengthenLevel.name;
-
-            this.updateGoldLabel();
         }
 
         showWorldMap() {
@@ -65,16 +54,19 @@ module game{
             utils.widget_ins().show_widget(widget_enum.WIDGET_STRENGTHEN, true);
         }
 
+        showPets() {
+            if (this.pets === null) {
+                this.pets = utils.module_ins().get_module(module_enum.MODULE_UPGRADE_PET);
+                this.pets.start();
+            }
+            utils.widget_ins().show_widget(widget_enum.WIDGET_UPGRADE_PET, true);
+        }
+
         hitTreasure(treasure: Treasure) {
             let accountData: data.account_data = utils.data_ins().get_data(data_enum.DATA_ACCOUNT) as data.account_data;
             accountData.m_gold += treasure.gold;
 
-            this.updateGoldLabel();
-        }
-
-        updateGoldLabel(): void {
-            let accountData: data.account_data = utils.data_ins().get_data(data_enum.DATA_ACCOUNT) as data.account_data;
-            this.goldLabel.text = accountData.m_gold.toString();
+            this.fire_event_next_frame(game_event.EVENT_UPDATE_GOLD);
         }
 
         public update(delta:number):void

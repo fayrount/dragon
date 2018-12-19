@@ -6,6 +6,7 @@ module widget {
             super("res/atlas/mainui.atlas", ui.game.main_uiUI);
             this.append_extrares("res/atlas/ui.atlas", Laya.Loader.ATLAS);
             this.append_extrares("res/atlas/ui/sys.atlas", Laya.Loader.ATLAS);
+            this.append_extrares("res/atlas/ani_res/uiloading.atlas", Laya.Loader.ATLAS);
             this.append_extrares("bigpic/mainuibg.png", Laya.Loader.IMAGE);
             this.m_layer = utils.WIDGET_LAYER.NORMAL;
         }
@@ -64,7 +65,7 @@ module widget {
         }
 
         public on_summon(ud: any = null): void {
-            this.fire_event_next_frame(game_event.EVENT_TEST3);
+            this.fire_event_next_frame(game_event.EVENT_PETS_CLICK);
         }
 
         

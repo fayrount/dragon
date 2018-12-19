@@ -8,6 +8,10 @@ module game{
         private m_itemlist:Array<Object> = new Array<Object>();
         private m_svr_tm:number = 0;
         private m_svr_clitm:number = 0;
+
+        private m_pdata_ins:data.player_data = null;
+        private pets: utils.game_module = null;
+
         constructor()
         {
             super();
@@ -29,7 +33,8 @@ module game{
             Laya.stage.addChild(this.m_render_sp);
             Laya.stage.addChild(this.m_ui_sp);
 
-            
+            this.m_pdata_ins = data.get_data(data_enum.DATA_PLAYER) as data.player_data;
+
             this.m_render = new core.renderagent();
             this.m_render.set_walk_spd(200);
             this.m_render.set_avatar_config(config.Avatarinfo.get_Avatarinfo);
@@ -63,6 +68,9 @@ module game{
             this.register_event(game_event.EVENT_TEST1,this.on_testfunc1);
             this.register_event(game_event.EVENT_TEST2,this.on_testfunc2);
             this.register_event(game_event.EVENT_TEST3,this.on_testfunc3);
+
+            this.register_event(game_event.EVENT_PETS_CLICK,this.show_pets);
+            this.register_event(game_event.EVENT_PETS_CHANGED,this.create_pet_avatars);
 
             timer.timer_ins().add_timer(1000,this,this.on_1s_tick);
 
@@ -190,6 +198,38 @@ module game{
             this.m_svr_clitm = clitm;
             console.log("on_sync_svrtime cur svrtm ",clitm,this.m_svr_tm);
         }
+
+        private show_pets(): void {
+            if (this.pets === null) {
+                this.pets = utils.module_ins().get_module(module_enum.MODULE_UPGRADE_PET);
+                this.pets.start();
+            }
+            utils.widget_ins().show_widget(widget_enum.WIDGET_UPGRADE_PET, true);
+        }
+
+        private create_pet_avatars(): void {
+            let newPets: data.pet_data[] = [];
+            let startShape = 9;
+            let startY = 1000;
+            for (let pet of this.m_pdata_ins.m_pets) {
+                let petUnit = this.m_render.getunitbyud("pet: " + pet.m_id);
+                if (petUnit) {
+                    petUnit.set_name(pet.m_id + "[" + pet.m_level + "]");
+                    startY = petUnit.y + 60;
+                    startShape += 1;
+                } else {
+                    newPets.push(pet);
+                }
+            }
+
+            for (let pet of newPets) {
+                let uid = this.m_render.addunit(pet.m_id + "[" + pet.m_level + "]", startShape, 100, startY);
+                let petUnit = this.m_render.getunit(uid);
+                petUnit.m_user_data = "pet: " + pet.m_id;
+                startY += 60;
+            }
+        }
+
         private on_testfunc2(ud:any = null):void{
             console.log("on_testfunc2 move item",ud);
             if(this.m_itemlist.length > 1){

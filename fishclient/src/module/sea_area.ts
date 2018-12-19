@@ -1,6 +1,6 @@
 module game{
     export class sea_area extends utils.game_module{
-        private pet: Laya.Sprite;
+        private petsZone: Laya.Sprite;
         private treasureBox: Laya.Sprite;
         private background: Laya.Image;
 
@@ -12,7 +12,7 @@ module game{
         onMainViewInit() {
             let uiIns: utils.game_widget = utils.widget_ins().get_module(widget_enum.WIDGET_MAIN_VIEW);
 
-            this.pet = uiIns.get_con("pet");
+            this.petsZone = uiIns.get_con("petsZone");
             this.treasureBox = uiIns.get_con("treasureBox");
             this.background = uiIns.get_con("bg") as Laya.Image;
         }
@@ -64,9 +64,12 @@ module game{
 
                 treasure.x -= treasure.speed;
                 
-                if (treasure.getBounds().intersects(this.pet.getBounds())) {
-                    hitTreasures.push(treasure);
-                    this.onHit(treasure);
+                for(let j=1; j < this.petsZone.numChildren; j +=1) {
+                    let petImage: Laya.Image = this.petsZone.getChildAt(j) as Laya.Image;
+                    if (treasure.getBounds().intersects(petImage.getBounds())) {
+                        hitTreasures.push(treasure);
+                        this.onHit(treasure);
+                    }
                 }
             }
 

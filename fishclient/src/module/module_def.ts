@@ -7,6 +7,7 @@ module game{
         utils.module_ins().register_module(module_enum.MODULE_SEA_AREA,game.sea_area);
         utils.module_ins().register_module(module_enum.MODULE_WORLD_MAP,game.world_map);
         utils.module_ins().register_module(module_enum.MODULE_STRENGTHEN,game.strengthen);
+        utils.module_ins().register_module(module_enum.MODULE_UPGRADE_PET,game.upgrade_pet);
 
         utils.module_ins().register_module(module_enum.MODULE_PLAYER,game.player_main);
     }

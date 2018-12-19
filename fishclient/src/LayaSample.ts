@@ -109,7 +109,7 @@ class GameMain{
         //net.net_ins().connect()
         //net.net_ins().send()
 
-        game.init_data_module();
+        data.init_data_module();
         widget.init_game_widget();
         game.init_game_module();
         this.m_game_start = true;
@@ -130,4 +130,5 @@ class GameMain{
         this.m_gamemain_ins.update(0);
     }
 }
-new DemoMain();
+new GameMain();
+//new DemoMain();

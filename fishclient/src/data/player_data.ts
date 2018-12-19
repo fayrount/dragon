@@ -9,6 +9,9 @@ module data{
         public m_goldspd:number = 0;
         public m_stamina:number = 0;
         public m_last_time:number = 0;
+
+        public m_pets:pet_data[] = [];
+
         constructor()
         {
             super();
