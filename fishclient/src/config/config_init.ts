@@ -5,7 +5,7 @@ export function config_init(config_obj:Object):void{
 	buff_map_init(config_obj);
 	skill_map_init(config_obj);
 	skillpassive_map_init(config_obj);
-	item_map_init(config_obj);
+	sea_area_map_init(config_obj);
 	itemmerge_map_init(config_obj);
 	player_exp_map_init(config_obj);
 	pet_exp_map_init(config_obj);

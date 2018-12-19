@@ -130,4 +130,5 @@ class GameMain{
         this.m_gamemain_ins.update(0);
     }
 }
-new DemoMain();
+new GameMain();
+//new DemoMain();

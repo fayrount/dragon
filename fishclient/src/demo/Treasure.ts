@@ -25,8 +25,8 @@ class Treasure extends Laya.Sprite {
 
         this.autoSize = true;
 
-        this.image.width = 60;
-        this.image.height = 60;
+        this.image.width = 120;
+        this.image.height = 120;
     }
 
     // 根据珍宝种类创建实例

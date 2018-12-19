@@ -33,15 +33,58 @@ module ui.demo {
 
 module ui.demo {
     export class MainViewUI extends View {
-		public goldBox:ui.demo.GoldBoxUI;
-		public mapBtn:Laya.Image;
+		public btn1:Laya.Button;
+		public btn2:Laya.Button;
+		public btn3:Laya.Button;
+		public btn4:Laya.Button;
+		public btn5:Laya.Button;
+		public goldLabel:Laya.Label;
+		public treasureBox:Laya.Sprite;
+		public strengthenLabel:Laya.Label;
+		public petsZone:Laya.Sprite;
 
         constructor(){ super()}
         createChildren():void {
-        			View.regComponent("ui.demo.GoldBoxUI",ui.demo.GoldBoxUI);
-
+        
             super.createChildren();
             this.loadUI("demo/MainView");
+
+        }
+
+    }
+}
+
+module ui.demo {
+    export class StrengthenUI extends Dialog {
+		public btn_close:Laya.Button;
+		public btn_use:Laya.Button;
+		public red_up:Laya.Image;
+		public img_dan1:Laya.Image;
+		public img_dan2:Laya.Image;
+		public img_dan3:Laya.Image;
+		public img_dan4:Laya.Image;
+		public img_dan5:Laya.Image;
+		public img_dan6:Laya.Image;
+		public img_dan7:Laya.Image;
+		public img_dan8:Laya.Image;
+		public img_select:Laya.Image;
+		public lab_name1:Laya.Label;
+		public lab_name2:Laya.Label;
+		public lab_name3:Laya.Label;
+		public lab_name4:Laya.Label;
+		public lab_name5:Laya.Label;
+		public lab_name6:Laya.Label;
+		public lab_name7:Laya.Label;
+		public lab_name8:Laya.Label;
+		public lab_showname:Laya.Label;
+		public lab_showprop:Laya.Label;
+		public lab_showvalue:Laya.Label;
+
+        constructor(){ super()}
+        createChildren():void {
+        
+            super.createChildren();
+            this.loadUI("demo/Strengthen");
 
         }
 
@@ -6942,6 +6985,41 @@ module ui.game {
         
             super.createChildren();
             this.loadUI("game/unit_shop");
+
+        }
+
+    }
+}
+
+module ui.game {
+    export class upgrade_petUI extends Dialog {
+		public btn_close:Laya.Button;
+		public petList:Laya.List;
+
+        constructor(){ super()}
+        createChildren():void {
+        			View.regComponent("ui.game.upgrade_pet_boxUI",ui.game.upgrade_pet_boxUI);
+
+            super.createChildren();
+            this.loadUI("game/upgrade_pet");
+
+        }
+
+    }
+}
+
+module ui.game {
+    export class upgrade_pet_boxUI extends View {
+		public petImage:Laya.Image;
+		public petLevel:Laya.Label;
+		public btn_use:Laya.Button;
+		public petCost:Laya.Label;
+
+        constructor(){ super()}
+        createChildren():void {
+        
+            super.createChildren();
+            this.loadUI("game/upgrade_pet_box");
 
         }
 

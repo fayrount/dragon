@@ -8,7 +8,7 @@ NOTE: Don't modify this file, it's build by xml-to-python!!!
 module config{
 
 let item_map = null;
-export function item_map_init(config_obj:Object):void{
+export function sea_area_map_init(config_obj:Object):void{
 	item_map = config_obj["item_map"];
 }
 

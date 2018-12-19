@@ -22,7 +22,8 @@
             "hasChild":false,
             "compId":2,
             "child":[
-                ]
+                ],
+            "$HIDDEN":false
         },
         {
             "type":"Button",
@@ -142,7 +143,8 @@
             "hasChild":false,
             "compId":15,
             "child":[
-                ]
+                ],
+            "$LOCKED":true
         },
         {
             "type":"Image",
