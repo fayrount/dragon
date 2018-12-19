@@ -1,9 +1,6 @@
 module config{
 export function config_init(config_obj:Object):void{
 	assist_info_map_init(config_obj);
-	mapinfo_map_init(config_obj);
-	avatarinfo_map_init(config_obj);
-	aniinfo_map_init(config_obj);
 	randomname_map_init(config_obj);
 	buff_map_init(config_obj);
 	skill_map_init(config_obj);
@@ -23,5 +20,18 @@ export function config_init(config_obj:Object):void{
 	specialskill2_map_init(config_obj);
 	specialskill3_map_init(config_obj);
 	specialskill4_map_init(config_obj);
+	mapinfo_map_init(config_obj);
+	avatarinfo_map_init(config_obj);
+	skininfo_map_init(config_obj);
+	weaponinfo_map_init(config_obj);
+	rideinfo_map_init(config_obj);
+	winginfo_map_init(config_obj);
+	fairyinfo_map_init(config_obj);
+	aniinfo_map_init(config_obj);
+	effectinfo_map_init(config_obj);
+	iconinfo_map_init(config_obj);
+	auraresinfo_map_init(config_obj);
+	titleresinfo_map_init(config_obj);
+	buffinfo_map_init(config_obj);
 }
 }

@@ -188,6 +188,8 @@ module core {
     }
     //////
     export class renderavatar_old extends renderobject {
+        public m_designw:number = 512;
+        public m_designh:number = 512;
         public m_shape:number = 0;
         public m_shape_weapon:number = 0;
         public m_shape_wing:number = 0;
@@ -216,7 +218,7 @@ module core {
         public m_frametotalmillsec:number = 0;
         public m_framecurrenttm:number = 0;
         public m_mat_dx:number = 0;//-256;
-        public m_mat_dy:number = -256;//-256;
+        public m_mat_dy:number = -this.m_designh/2;//-256;
         public m_ride_h:number = 0;
         public m_user_data:any = 0;
         public m_name:string = "";
@@ -267,7 +269,7 @@ module core {
             this.m_shadow_sp.x = -50;
             this.m_shadow_sp.y = -35;
             this.set_ride_h(0);
-            this.m_mat_dy = -256;
+            this.m_mat_dy = -this.m_designh/2;
             this.m_use_default = use_default;
             if(this.m_use_default){
                 this.m_draw_avatar = false;
@@ -483,7 +485,10 @@ module core {
             }
         }
         public set_dy(dy:number):void{
-            this.m_mat_dy = dy-256;
+            this.m_mat_dy = dy-this.m_ah/2;
+        }
+        public set_dx(dx:number):void{
+            this.m_mat_dx = dx;
         }
         public get_buffui():avatarbuffui{
             if(this.m_buff == null){
@@ -1110,6 +1115,8 @@ module core {
     }
 //////////////////////////////////////////////////////////////////////////////////////
     export class renderavatar_new extends renderobject {
+        public m_designw:number = 512;
+        public m_designh:number = 512;
         public m_shape:number = 0;
         public m_shape_weapon:number = 0;
         public m_shape_wing:number = 0;
@@ -1132,7 +1139,7 @@ module core {
         public m_frametotalmillsec:number = 0;
         public m_framecurrenttm:number = 0;
         public m_mat_dx:number = 0;//-256;
-        public m_mat_dy:number = -256;//-256;
+        public m_mat_dy:number = -this.m_designh/2;//-256;
         public m_ride_h:number = 0;
         public m_user_data:any = 0;
         public m_name:string = "";
@@ -1193,7 +1200,7 @@ module core {
             this.m_shadow_sp = mat_mgr().get_avatar_shadow_mat();
             
             this.set_ride_h(0);
-            this.m_mat_dy = -256;
+            this.m_mat_dy = -this.m_designh/2;
             this.m_use_default = use_default;
             if(this.m_use_default){
                 this.m_draw_avatar = false;
@@ -1359,6 +1366,7 @@ module core {
         {
             this.m_aw = matinfo_mgr().getavataractionw(this.m_shape,this.m_action);
             this.m_ah = matinfo_mgr().getavataractionh(this.m_shape,this.m_action);
+            this.m_mat_dy = -this.m_ah/2;
             this.m_framecount = matinfo_mgr().getavataractionframecount(this.m_shape,this.m_action);
             this.m_framespeed = matinfo_mgr().getavataractionframespeed(this.m_shape,this.m_action);
             this.m_framemillsec = 1000.0/this.m_framespeed;
@@ -1394,7 +1402,10 @@ module core {
             }
         }
         public set_dy(dy:number):void{
-            this.m_mat_dy = dy-256;
+            this.m_mat_dy = dy-this.m_ah/2;
+        }
+        public set_dx(dx:number):void{
+            this.m_mat_dx = dx;
         }
         public get_buffui():avatarbuffui{
             if(this.m_buff == null){
