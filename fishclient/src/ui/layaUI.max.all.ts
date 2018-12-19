@@ -1,6 +1,81 @@
 
 import View=laya.ui.View;
 import Dialog=laya.ui.Dialog;
+module ui.demo {
+    export class BackGroundUI extends View {
+		public bg:Laya.Image;
+
+        constructor(){ super()}
+        createChildren():void {
+        
+            super.createChildren();
+            this.loadUI("demo/BackGround");
+
+        }
+
+    }
+}
+
+module ui.demo {
+    export class GoldBoxUI extends View {
+		public goldLabel:Laya.Label;
+
+        constructor(){ super()}
+        createChildren():void {
+        
+            super.createChildren();
+            this.loadUI("demo/GoldBox");
+
+        }
+
+    }
+}
+
+module ui.demo {
+    export class MainViewUI extends View {
+		public goldBox:ui.demo.GoldBoxUI;
+		public mapBtn:Laya.Image;
+
+        constructor(){ super()}
+        createChildren():void {
+        			View.regComponent("ui.demo.GoldBoxUI",ui.demo.GoldBoxUI);
+
+            super.createChildren();
+            this.loadUI("demo/MainView");
+
+        }
+
+    }
+}
+
+module ui.demo {
+    export class WorldMapUI extends Dialog {
+		public closeBtn:Laya.Image;
+		public b1:Laya.Box;
+		public a1:Laya.Animation;
+		public b2:Laya.Box;
+		public a2:Laya.Animation;
+		public b3:Laya.Box;
+		public a3:Laya.Animation;
+		public b4:Laya.Box;
+		public a4:Laya.Animation;
+		public b5:Laya.Box;
+		public a5:Laya.Animation;
+		public desBox:Laya.Box;
+		public desLabel:Laya.Label;
+		public btnGo:Laya.Button;
+
+        constructor(){ super()}
+        createChildren():void {
+        
+            super.createChildren();
+            this.loadUI("demo/WorldMap");
+
+        }
+
+    }
+}
+
 module ui.game {
     export class accountinputUI extends Dialog {
 		public m_bk:Laya.Image;
